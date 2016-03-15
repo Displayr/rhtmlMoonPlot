@@ -18,11 +18,8 @@ HTMLWidgets.widget({
                                         .attr("height", 200);	
     
     
-    var textnode = document.createTextNode("water");    
-    //svgContainer.append("circle")
-    //            .attr("cx", 30)
-    //            .attr("cy", 30)
-    //            .attr("r", 20);
+    var textnode = document.createTextNode(x.message);    
+
 	  
 	  el.id = svgContainer.append("circle")
 	                      .attr("cx", 30)
