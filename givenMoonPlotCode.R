@@ -137,10 +137,13 @@ moonplot.symmetric <- function (x, y, var.axes = TRUE, col, cex = rep(par("cex")
   par(new = TRUE)
   plot(y, axes = FALSE, type = "n", xlim = xlim * ratio, ylim = ylim *
          ratio, xlab = "", ylab = "", col = col[1],asp=T, ...)
-  temp <<- ylabs
   yCoords <<- y.moved
   temp2 <<- xlabs
   xCoords <<- x
+  sizeOfYLabels <<- c()
+  temp <<- y.srt
+  for (i in 1:p)  
+    sizeOfYLabels <<- c(sizeOfYLabels, c(cex[2]*y.cex*(y.dist[i]/y.max.dist)^y.cex.scale))
   for (i in 1:p)
     text(y.moved[i,1],y.moved[i,2], labels = ylabs[i], cex = cex[2]*y.cex*(y.dist[i]/y.max.dist)^y.cex.scale, col = col[2],pos=y.pos[i],offset=0,srt=y.srt[i],...)
   symbols(offsets[1],offsets[2],sqrt(min(apply((y.moved^2),1,sum)))*.98,inches=F,add=TRUE)

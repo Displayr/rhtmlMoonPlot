@@ -6,7 +6,20 @@ HTMLWidgets.widget({
 	
 	initialize: function(el, width, height) {
 	  var xlabels = ["Coke", "V", "Red Bull", "Lift Plus", "Diet Coke", "Fanta", "Lift", "Pepsi"];
-	  
+	  var ylabels = [
+	    "Kids",
+	    "Teens",
+	    "Enjoy life",
+	    "Picks you up",
+	    "Refreshes",
+	    "Cheers you up",
+	    "Energy",
+	    "Up-to-date",
+	    "Fun",
+	    "When tired",
+	    "Relax"
+	  ];
+	 
 	  
 	  var xCoords1 = [-0.24883943,
 	                  0.44569980,
@@ -27,7 +40,63 @@ HTMLWidgets.widget({
       0.4705187,
       -0.5165743,
       -0.2601922
-    ];	                 
+    ];
+    
+    var yCoords1 = [
+      -1.4490230,
+      0.2237083,
+      -0.4205097,
+      1.4263324,
+      -0.8261270,
+      -1.4761390,
+      1.3724406,
+      1.4721795,
+      -1.4674736,
+      1.4545696,
+      -0.7609452
+    ];
+    
+    var yCoords2 = [
+      0.4344938,
+      -1.4961307,
+      -1.4531428,
+      0.5040123,
+      -1.2672674,
+      -0.3308567,
+      0.6362856,
+      0.3480518,
+      0.3673875,
+      0.4155474,
+      -1.3074459
+    ];
+    
+    var ySizes = [
+      1.5000000,
+      0.6266882,
+      0.6970214,
+      0.9217203,
+      0.9309172,
+      0.6470796,
+      1.0432836,
+      0.7041052,
+      1.2600717,
+      0.8850954,
+      0.9335861
+    ];
+    
+    var yRotation = [
+      -16.69151,
+      -81.49588,
+      73.86064,
+      19.46150,
+      56.89981,
+      12.63329,
+      24.87320,
+      13.30160,
+      -14.05532,
+      15.94379,
+      59.80021
+    ];
 	                 
 	  
 	  var svgContainer = d3.select("body").append("svg")
@@ -73,6 +142,33 @@ HTMLWidgets.widget({
   	              .attr("x", x)
   	              .attr("y", y)
   	              .text(xlabels[i]);
+    }
+    
+    for (var i=0; i<ylabels.length; i++) {
+      if (yCoords1[i] < -1) {
+        yCoords1[i] = -1;
+      }
+      if (yCoords1[i] > 1) {
+        yCoords1[i] = 1;
+      }
+      if (yCoords2[i] < -1) {
+        yCoords2[i] = -1;
+      }
+      if (yCoords2[i] > 1) {
+        yCoords2[i] = 1;
+      }
+      
+      var x = yCoords1[i]*radius + xCenter;
+      var y = -yCoords2[i]*radius + yCenter;
+      var a = -90;
+      
+      svgContainer.append("text")
+  	              .style("fill", "black")
+  	              .attr("x", x)
+  	              .attr("y", y)
+  	              .attr("font-size", (ySizes[i]*20).toString() + "px")
+  	              .attr("transform", "rotate("+(-yRotation[i]).toString()+","+x.toString()+", "+y.toString()+")")
+  	              .text(ylabels[i]);
     }
 	  
 	              
