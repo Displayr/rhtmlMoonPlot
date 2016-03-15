@@ -5,7 +5,7 @@ HTMLWidgets.widget({
 	type: "output",
 	
 	initialize: function(el, width, height) {
-	  var xlabels = ["Coke", "V", "Red Bull", "Lift", "Lift Plus", "Diet Coke", "Fanta", "Pepsi"]
+	  var xlabels = ["Coke", "V", "Red Bull", "Lift Plus", "Diet Coke", "Fanta", "Lift", "Pepsi"];
 	  
 	  
 	  var xCoords1 = [-0.24883943,
@@ -37,9 +37,9 @@ HTMLWidgets.widget({
     
     //var textnode = document.createTextNode(x.message);    
 
-	  var xCenter = 100;
-	  var yCenter = 100;
-	  var radius = 100;
+	  var xCenter = 200;
+	  var yCenter = 200;
+	  var radius = 200;
 	  svgContainer.append("circle")
 	              .attr("cx", xCenter)
 	              .attr("cy", yCenter)
@@ -48,20 +48,27 @@ HTMLWidgets.widget({
 	              .style("stroke", "red")
 	              .style("fill-opacity", 0.2);
 	              
-	  var x = xCoords1[0]*radius + xCenter;
-	  var y = -xCoords2[0]*radius + yCenter;
+	  
+    for(var i = 0; i < xlabels.length; i++) {
+      
+      if (xCoords1[i] < -1) {
+        xCoords1[i] = -1;
+      }
+      
+      var x = xCoords1[i]*radius + xCenter;
+      var y = -xCoords2[i]*radius + yCenter;
+      
+      
+  	  svgContainer.append("text")
+  	              .style("fill", "black")
+  	              .attr("x", x)
+  	              .attr("y", y)
+  	              .text(xlabels[i]);
+    }
+	  
 	              
-	  svgContainer.append("text")
-	              .style("fill", "black")
-	              //.attr("x", xCoords1[0]*width)
-	              //.attr("y", xCoords2[0]*height)
-	              .attr("x", x)
-	              .attr("y", y)
-	              .text(xlabels[0]);
 	 
 	  el.id = svgContainer;
-	                      
-	  //el.appendChild(textnode);
 	},
 	
 	resize: function(el, width, height, instance) {
