@@ -145,21 +145,8 @@ HTMLWidgets.widget({
     }
     
     for (var i=0; i<ylabels.length; i++) {
-      if (yCoords1[i] < -1) {
-        yCoords1[i] = -1.1;
-      }
-      if (yCoords1[i] > 1) {
-        yCoords1[i] = 1.1;
-      }
-      if (yCoords2[i] < -1) {
-        yCoords2[i] = -1.1;
-      }
-      if (yCoords2[i] > 1) {
-        yCoords2[i] = 1.1;
-      }
-      
-      var x = yCoords1[i]*radius*0.9 + xCenter;
-      var y = -yCoords2[i]*radius*0.9 + yCenter;
+      var x = yCoords1[i]*radius*0.7 + xCenter;
+      var y = -yCoords2[i]*radius*0.7 + yCenter;
       
       if (yCoords1[i] < 0) {
         svgContainer.append("text")
@@ -183,8 +170,6 @@ HTMLWidgets.widget({
       
       
     }
-	  
-	              
 	 
 	  el.id = svgContainer;
 	},
