@@ -52,7 +52,16 @@ HTMLWidgets.widget({
     for(var i = 0; i < xlabels.length; i++) {
       
       if (xCoords1[i] < -1) {
-        xCoords1[i] = -1;
+        xCoords1[i] = -0.9;
+      }
+      if (xCoords1[i] > 1) {
+        xCoords1[i] = 0.9;
+      }
+      if (xCoords2[i] < -1) {
+        xCoords2[i] = -0.9;
+      }
+      if (xCoords2[i] > 1) {
+        xCoords2[i] = 0.9;
       }
       
       var x = xCoords1[i]*radius + xCenter;
