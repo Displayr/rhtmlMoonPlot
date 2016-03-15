@@ -106,15 +106,15 @@ HTMLWidgets.widget({
     
     //var textnode = document.createTextNode(x.message);    
 
-	  var xCenter = 200;
+	  var xCenter = 250;
 	  var yCenter = 200;
 	  var radius = 200;
 	  svgContainer.append("circle")
 	              .attr("cx", xCenter)
 	              .attr("cy", yCenter)
 	              .attr("r", radius)
-	              .style("fill", "green")
-	              .style("stroke", "red")
+	              .style("fill", "none")
+	              .style("stroke", "black")
 	              .style("fill-opacity", 0.2);
 	              
 	  
@@ -146,29 +146,42 @@ HTMLWidgets.widget({
     
     for (var i=0; i<ylabels.length; i++) {
       if (yCoords1[i] < -1) {
-        yCoords1[i] = -1;
+        yCoords1[i] = -1.1;
       }
       if (yCoords1[i] > 1) {
-        yCoords1[i] = 1;
+        yCoords1[i] = 1.1;
       }
       if (yCoords2[i] < -1) {
-        yCoords2[i] = -1;
+        yCoords2[i] = -1.1;
       }
       if (yCoords2[i] > 1) {
-        yCoords2[i] = 1;
+        yCoords2[i] = 1.1;
       }
       
-      var x = yCoords1[i]*radius + xCenter;
-      var y = -yCoords2[i]*radius + yCenter;
-      var a = -90;
+      var x = yCoords1[i]*radius*0.9 + xCenter;
+      var y = -yCoords2[i]*radius*0.9 + yCenter;
       
-      svgContainer.append("text")
+      if (yCoords1[i] < 0) {
+        svgContainer.append("text")
   	              .style("fill", "black")
   	              .attr("x", x)
   	              .attr("y", y)
   	              .attr("font-size", (ySizes[i]*20).toString() + "px")
   	              .attr("transform", "rotate("+(-yRotation[i]).toString()+","+x.toString()+", "+y.toString()+")")
+  	              .attr("text-anchor", "end")
   	              .text(ylabels[i]);
+      } else {
+        svgContainer.append("text")
+  	              .style("fill", "black")
+  	              .attr("x", x)
+  	              .attr("y", y)
+  	              .attr("font-size", (ySizes[i]*20).toString() + "px")
+  	              .attr("transform", "rotate("+(-yRotation[i]).toString()+","+x.toString()+", "+y.toString()+")")
+  	              .attr("text-anchor", "start")
+  	              .text(ylabels[i]);
+      }
+      
+      
     }
 	  
 	              
