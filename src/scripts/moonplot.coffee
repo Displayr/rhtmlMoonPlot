@@ -119,13 +119,14 @@ HTMLWidgets.widget
 
 
     # Add cross to middle of circle
-    crossSize = 10
+    crossSize = 6
+    crossWidth = 1
     svgContainer.append('line')
                 .attr('x1', xCenter - crossSize)
                 .attr('y1', yCenter)
                 .attr('x2', xCenter + crossSize)
                 .attr('y2', yCenter)
-                .attr('stroke-width', 1)
+                .attr('stroke-width', crossWidth)
                 .attr('stroke', 'black')
 
     svgContainer.append('line')
@@ -133,7 +134,7 @@ HTMLWidgets.widget
                 .attr('y1', yCenter - crossSize)
                 .attr('x2', xCenter)
                 .attr('y2', yCenter + crossSize)
-                .attr('stroke-width', 1)
+                .attr('stroke-width', crossWidth)
                 .attr('stroke', 'black')
 
     i = 0
