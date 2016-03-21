@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .DSStore
+bower_components
+node_modules
+dist/browser
+dist/package
