@@ -2,6 +2,8 @@ HTMLWidgets.widget
   name: 'moonplot'
   type: 'output'
   initialize: (el, width, height) ->
+    console.log 'initialized'
+
     xlabels = [
       'Coke'
       'V'
@@ -109,6 +111,7 @@ HTMLWidgets.widget
       `var i`
       svgContainer.select('circle').style 'fill', 'red'
       return
+
     i = 0
     while i < xlabels.length
       if xCoords1[i] < -1
@@ -123,6 +126,7 @@ HTMLWidgets.widget
       y = -xCoords2[i] * radius + yCenter
       svgContainer.append('text').style('fill', 'black').attr('x', x).attr('y', y).style('font-family', 'Arial').text xlabels[i]
       i++
+
     i = 0
     while i < ylabels.length
       x = yCoords1[i] * radius * 0.7 + xCenter
