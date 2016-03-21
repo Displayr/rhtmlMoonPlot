@@ -36,7 +36,8 @@ HTMLWidgets.widget
       -1.26063599
       -0.49093411
       -0.26108416
-    ]
+    ]src-i386/
+
     xCoords2 = [
       -0.2010188
       0.1067263
@@ -100,7 +101,10 @@ HTMLWidgets.widget
       59.80021
     ]
 
-    svgContainer = d3.select('body').append('svg').attr('width', width).attr('height', height)
+    svgContainer = d3.select('body')
+                     .append('svg')
+                     .attr('width', width)
+                     .attr('height', height)
     xCenter = width / 2
     yCenter = xCenter
     radius = width / 3
@@ -149,17 +153,40 @@ HTMLWidgets.widget
         xCoords2[i] = 0.9
       x = xCoords1[i] * radius + xCenter
       y = -xCoords2[i] * radius + yCenter
-      svgContainer.append('text').style('fill', 'black').attr('x', x).attr('y', y).style('font-family', 'Arial').text xlabels[i]
+
+      svgContainer.append('text')
+                  .style('fill', 'black')
+                  .attr('x', x)
+                  .attr('y', y)
+                  .style('font-family', 'Arial')
+                  .text xlabels[i]
       i++
 
     i = 0
     while i < ylabels.length
       x = yCoords1[i] * radius * 0.7 + xCenter
       y = -yCoords2[i] * radius * 0.7 + yCenter
+
       if yCoords1[i] < 0
-        svgContainer.append('text').style('fill', 'black').attr('x', x).attr('y', y).attr('font-size', (ySizes[i] * 20).toString() + 'px').attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'end').style('font-family', 'Arial').text ylabels[i]
+        svgContainer.append('text')
+                    .style('fill', 'black')
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('font-size', (ySizes[i] * 20).toString() + 'px')
+                    .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
+                    .attr('text-anchor', 'end')
+                    .style('font-family', 'Arial')
+                    .text ylabels[i]
       else
-        svgContainer.append('text').style('fill', 'black').attr('x', x).attr('y', y).attr('font-size', (ySizes[i] * 20).toString() + 'px').attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'start').style('font-family', 'Arial').text ylabels[i]
+        svgContainer.append('text')
+                    .style('fill', 'black')
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('font-size', (ySizes[i] * 20).toString() + 'px')
+                    .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
+                    .attr('text-anchor', 'start')
+                    .style('font-family', 'Arial')
+                    .text ylabels[i]
       i++
     el.id = svgContainer
     return
