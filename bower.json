@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "lodash": "~2.4.1",
-    "jquery": "~2.2.1"
+    "jquery": "~2.2.1",
+    "d3": "^3.5.16"
   }
 }
