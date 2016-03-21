@@ -1,5 +1,5 @@
-# devtools::install()
-# moonplot::moonplot("asldfj")
+devtools::install()
+moonplot::moonplot("asldfj")
 
 
 CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.1916, 0.284,  0.3514, 0.2534, 0.2089,
@@ -13,4 +13,5 @@ CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.191
                          dimnames=list(Brand=c('Coke','V',"Red\nBull","Lift\nPlus",'Diet.Coke','Fanta','Lift','Pepsi'),
                                        Attribute=c('Kids', 'Teens',    "Enjoy life",   'Picks you up', 'Refreshes',    'Cheers you up',    'Energy',   'Up-to-date',   'Fun',  'When tired',   'Relax')))
 
-roundedCSDperceptions <- round(100*CSDperceptions)
+
+moonplot::moonplot(CSDperceptions)

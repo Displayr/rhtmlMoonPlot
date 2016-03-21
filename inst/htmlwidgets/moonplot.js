@@ -1,9 +1,9 @@
 HTMLWidgets.widget({
-	
+
 	name: "moonplot",
-	
+
 	type: "output",
-	
+
 	initialize: function(el, width, height) {
 	  var xlabels = ["Coke", "V", "Red Bull", "Lift Plus", "Diet Coke", "Fanta", "Lift", "Pepsi"];
 	  var ylabels = [
@@ -19,8 +19,8 @@ HTMLWidgets.widget({
 	    "When tired",
 	    "Relax"
 	  ];
-	 
-	  
+
+
 	  var xCoords1 = [-0.24883943,
 	                  0.44569980,
 	                  0.46998036,
@@ -30,7 +30,7 @@ HTMLWidgets.widget({
 	                  -0.49093411,
 	                  -0.26108416
 	                 ];
-	                 
+
     var xCoords2 = [
       -0.2010188,
       0.1067263,
@@ -41,7 +41,7 @@ HTMLWidgets.widget({
       -0.5165743,
       -0.2601922
     ];
-    
+
     var yCoords1 = [
       -1.4490230,
       0.2237083,
@@ -55,7 +55,7 @@ HTMLWidgets.widget({
       1.4545696,
       -0.7609452
     ];
-    
+
     var yCoords2 = [
       0.4344938,
       -1.4961307,
@@ -69,7 +69,7 @@ HTMLWidgets.widget({
       0.4155474,
       -1.3074459
     ];
-    
+
     var ySizes = [
       1.5000000,
       0.6266882,
@@ -83,7 +83,7 @@ HTMLWidgets.widget({
       0.8850954,
       0.9335861
     ];
-    
+
     var yRotation = [
       -16.69151,
       -81.49588,
@@ -97,18 +97,17 @@ HTMLWidgets.widget({
       15.94379,
       59.80021
     ];
-	                 
-	  
+
+
 	  var svgContainer = d3.select("body").append("svg")
                                         .attr("width", width)
-                                        .attr("height", height);	
-    
-    
-    //var textnode = document.createTextNode(x.message);    
+                                        .attr("height", height);
 
-	  var xCenter = 250;
-	  var yCenter = 200;
-	  var radius = 200;
+
+	  var xCenter = width/2;
+	  var yCenter = xCenter;
+	  var radius = width/3;
+
 	  svgContainer.append("circle")
 	              .attr("cx", xCenter)
 	              .attr("cy", yCenter)
@@ -116,10 +115,16 @@ HTMLWidgets.widget({
 	              .style("fill", "none")
 	              .style("stroke", "black")
 	              .style("fill-opacity", 0.2);
-	              
-	  
+
+	  // TODO
+	  svgContainer.selectAll("circle")
+	              .on("mouseenter", function(d) {
+	                 svgContainer.select("circle").style("fill", "red");
+	              });
+
+
     for(var i = 0; i < xlabels.length; i++) {
-      
+
       if (xCoords1[i] < -1) {
         xCoords1[i] = -0.9;
       }
@@ -132,22 +137,23 @@ HTMLWidgets.widget({
       if (xCoords2[i] > 1) {
         xCoords2[i] = 0.9;
       }
-      
+
       var x = xCoords1[i]*radius + xCenter;
       var y = -xCoords2[i]*radius + yCenter;
-      
-      
+
+
   	  svgContainer.append("text")
   	              .style("fill", "black")
   	              .attr("x", x)
   	              .attr("y", y)
+  	              .style("font-family", "Arial")
   	              .text(xlabels[i]);
     }
-    
+
     for (var i=0; i<ylabels.length; i++) {
       var x = yCoords1[i]*radius*0.7 + xCenter;
       var y = -yCoords2[i]*radius*0.7 + yCenter;
-      
+
       if (yCoords1[i] < 0) {
         svgContainer.append("text")
   	              .style("fill", "black")
@@ -156,7 +162,9 @@ HTMLWidgets.widget({
   	              .attr("font-size", (ySizes[i]*20).toString() + "px")
   	              .attr("transform", "rotate("+(-yRotation[i]).toString()+","+x.toString()+", "+y.toString()+")")
   	              .attr("text-anchor", "end")
+  	              .style("font-family", "Arial")
   	              .text(ylabels[i]);
+
       } else {
         svgContainer.append("text")
   	              .style("fill", "black")
@@ -165,20 +173,21 @@ HTMLWidgets.widget({
   	              .attr("font-size", (ySizes[i]*20).toString() + "px")
   	              .attr("transform", "rotate("+(-yRotation[i]).toString()+","+x.toString()+", "+y.toString()+")")
   	              .attr("text-anchor", "start")
+  	              .style("font-family", "Arial")
   	              .text(ylabels[i]);
       }
-      
-      
+
+
     }
-	 
+
 	  el.id = svgContainer;
 	},
-	
+
 	resize: function(el, width, height, instance) {
-	  
+
 	},
-	
+
 	renderValue: function(el, x, instance) {
-    
+
 	}
 });
