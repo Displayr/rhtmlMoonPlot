@@ -131,7 +131,7 @@ gulp.task('watch', ['connect'], function () {
 
 //clean doesn't finish before next task ..
 //gulp.task('build', ['clean', 'wiredep', 'images', 'fonts', 'styles', 'copy'], function () {
-gulp.task('build', ['compile-coffee', 'images', 'less', 'copy'], function () {
+gulp.task('build', ['compile-coffee', 'less', 'copy'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
