@@ -99,18 +99,42 @@ HTMLWidgets.widget
       15.94379
       59.80021
     ]
+
     svgContainer = d3.select('body').append('svg').attr('width', width).attr('height', height)
     xCenter = width / 2
     yCenter = xCenter
     radius = width / 3
-    svgContainer.append('circle').attr('cx', xCenter).attr('cy', yCenter).attr('r', radius).style('fill', 'none').style('stroke', 'black').style 'fill-opacity', 0.2
-    # TODO
-    svgContainer.selectAll('circle').on 'mouseenter', (d) ->
-      `var y`
-      `var x`
-      `var i`
-      svgContainer.select('circle').style 'fill', 'red'
-      return
+
+    mouseDownEvent = ->
+      console.log 'blah'
+
+    svgContainer.append('circle')
+                .attr('cx', xCenter)
+                .attr('cy', yCenter)
+                .attr('r', radius)
+                .style('fill', 'none')
+                .style('stroke', 'black')
+                .style 'fill-opacity', 0.2
+                .on('mousedown', mouseDownEvent)
+
+
+    # Add cross to middle of circle
+    crossSize = 10
+    svgContainer.append('line')
+                .attr('x1', xCenter - crossSize)
+                .attr('y1', yCenter)
+                .attr('x2', xCenter + crossSize)
+                .attr('y2', yCenter)
+                .attr('stroke-width', 1)
+                .attr('stroke', 'black')
+
+    svgContainer.append('line')
+                .attr('x1', xCenter)
+                .attr('y1', yCenter - crossSize)
+                .attr('x2', xCenter)
+                .attr('y2', yCenter + crossSize)
+                .attr('stroke-width', 1)
+                .attr('stroke', 'black')
 
     i = 0
     while i < xlabels.length
