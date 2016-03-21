@@ -7,4 +7,3 @@ dependencies:
     version: 0.0.1
     src: htmlwidgets/lib/moonplot
     stylesheet: moonplot.css
-

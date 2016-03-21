@@ -2,7 +2,7 @@
 'use strict';
 // generated on 2015-01-10 using generator-gulp-webapp 0.2.0
 
-var widgetName = 'MoonPlot';
+var widgetName = 'moonplot';
 
 var _ = require('lodash');
 var gulp = require('gulp');
