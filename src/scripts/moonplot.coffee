@@ -2,7 +2,6 @@ HTMLWidgets.widget
   name: 'moonplot'
   type: 'output'
   initialize: (el, width, height) ->
-    console.log 'initialized'
 
     xlabels = [
       'Coke'
@@ -36,7 +35,7 @@ HTMLWidgets.widget
       -1.26063599
       -0.49093411
       -0.26108416
-    ]src-i386/
+    ]
 
     xCoords2 = [
       -0.2010188
@@ -125,43 +124,80 @@ HTMLWidgets.widget
     # Add cross to middle of circle
     crossSize = 6
     crossWidth = 1
-    svgContainer.append('line')
-                .attr('x1', xCenter - crossSize)
-                .attr('y1', yCenter)
-                .attr('x2', xCenter + crossSize)
-                .attr('y2', yCenter)
-                .attr('stroke-width', crossWidth)
-                .attr('stroke', 'black')
+    crossLine1 = d3.select('svg')
+                   .append('line')
+                     .attr('x1', xCenter - crossSize)
+                     .attr('y1', yCenter)
+                     .attr('x2', xCenter + crossSize)
+                     .attr('y2', yCenter)
+                     .attr('stroke-width', crossWidth)
+                     .attr('stroke', 'black')
+    crossLine2 = d3.select('svg')
+                   .append('line')
+                     .attr('x1', xCenter)
+                     .attr('y1', yCenter - crossSize)
+                     .attr('x2', xCenter)
+                     .attr('y2', yCenter + crossSize)
+                     .attr('stroke-width', crossWidth)
+                     .attr('stroke', 'black')
 
-    svgContainer.append('line')
-                .attr('x1', xCenter)
-                .attr('y1', yCenter - crossSize)
-                .attr('x2', xCenter)
-                .attr('y2', yCenter + crossSize)
-                .attr('stroke-width', crossWidth)
-                .attr('stroke', 'black')
 
+    # Loop through lunar core labels
     i = 0
+    coreLabels = []
     while i < xlabels.length
-      if xCoords1[i] < -1
-        xCoords1[i] = -0.9
-      if xCoords1[i] > 1
-        xCoords1[i] = 0.9
-      if xCoords2[i] < -1
-        xCoords2[i] = -0.9
-      if xCoords2[i] > 1
-        xCoords2[i] = 0.9
+      # Block lunar core labels from escaping the moon
+      threshold = 1
+      barrier = 0.9
+      if xCoords1[i] < -threshold
+        xCoords1[i] = -barrier
+      if xCoords1[i] > threshold
+        xCoords1[i] = barrier
+      if xCoords2[i] < -threshold
+        xCoords2[i] = -barrier
+      if xCoords2[i] > threshold
+        xCoords2[i] = barrier
       x = xCoords1[i] * radius + xCenter
       y = -xCoords2[i] * radius + yCenter
 
-      svgContainer.append('text')
-                  .style('fill', 'black')
-                  .attr('x', x)
-                  .attr('y', y)
-                  .style('font-family', 'Arial')
-                  .text xlabels[i]
+      lunarCoreLabel = d3.select('svg')
+                         .append('text')
+                            .style('fill', 'black')
+                            .attr('x', x)
+                            .attr('y', y)
+                            .style('font-family', 'Arial')
+                            .text xlabels[i]
+      coreLabels.push(lunarCoreLabel)
       i++
 
+    # Check if labels are overlapping
+    boundingBoxesOverlap = (box1, box2) ->
+      box1 = box1.getBoundingClientRect()
+      box2 = box2.getBoundingClientRect()
+      if box1.bottom < box2.top # is box1 on top of box2
+        false
+      else if box1.top > box2.bottom # is box1 underneath box2
+        false
+      else if box1.right < box2.left # box1 is to the left of box2
+        false
+      else if box1.left > box2.right # box1 is to the right of box2
+        false
+      else
+        true
+
+    i = 0
+    while i < coreLabels.length
+      j = i + 1
+      while j < coreLabels.length
+        if boundingBoxesOverlap(coreLabels[i][0][0], coreLabels[j][0][0])
+          console.log coreLabels[i][0][0]
+          console.log coreLabels[j][0][0]
+          console.log '----'
+        j++
+      i++
+
+
+    # Loop through lunar surface labels
     i = 0
     while i < ylabels.length
       x = yCoords1[i] * radius * 0.7 + xCenter
@@ -188,7 +224,9 @@ HTMLWidgets.widget
                     .style('font-family', 'Arial')
                     .text ylabels[i]
       i++
+
     el.id = svgContainer
+
     return
   resize: (el, width, height, instance) ->
   renderValue: (el, x, instance) ->
