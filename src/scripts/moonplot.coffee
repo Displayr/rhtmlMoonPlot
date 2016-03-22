@@ -1,3 +1,5 @@
+'use strict'
+
 HTMLWidgets.widget
   name: 'moonplot'
   type: 'output'
@@ -213,28 +215,29 @@ HTMLWidgets.widget
       else
         true
 
-    repositionBoxes = (box1, box2) ->
-      vgap = 10
-      hgap = 1
-      # Get position of bounding bounding boxes
-      box1Coords = box1.getBoundingClientRect()
-      box2Coords = box2.getBoundingClientRect()
+    repositionBoxes = (box1Obj, box2Obj) ->
+      # Get basic params
+      box1 = box1Obj.getBoundingClientRect()
+      box2 = box2Obj.getBoundingClientRect()
 
-      console.log box1Coords
+      # Calculate magnitude through area of overlap
+      intersectArea =
+        Math.max(0, Math.max(box1.x, box2.x) - Math.min(box1.x, box2.x)) *
+          Math.max(0, Math.max(box1.y, box2.y) - Math.min(box1.y, box2.y))
 
-      # Increase the space between the boxes
-      if  box1Coords.bottom > box2Coords.top # is box1 on top of box2
-        d3.select(box1).attr('dy', -vgap)
-        d3.select(box2).attr('dy', vgap)
-      if box1Coords.top > box2Coords.bottom # is box1 underneath box2
-        d3.select(box1).attr('dy', vgap)
-        d3.select(box2).attr('dy', -vgap)
-      if box1Coords.right > box2Coords.left # box1 is to the left of box2
-        d3.select(box1).attr('dx', hgap)
-        d3.select(box2).attr('dx', -hgap)
-      if box1Coords.left < box2Coords.right  # box1 is to the right of box2
-        d3.select(box1).attr('dx', hgap)
-        d3.select(box2).attr('dx', -hgap)
+      # Calculate vectors for each pair
+      b1pt = new Victor(box1.x, box1.y)
+      b2pt = new Victor(box2.x, box2.y)
+      b1v = b1pt.clone().subtract(b2pt).normalize()
+      b1v.x *= intersectArea
+      b1v.y *= intersectArea
+      b2v = b2pt.clone().subtract(b1pt).normalize()
+      b2v.x *= intersectArea
+      b2v.y *= intersectArea
+
+      console.log 'here'
+      console.log intersectArea
+
 
     i = 0
     while i < coreLabels.length
@@ -242,10 +245,6 @@ HTMLWidgets.widget
       while j < coreLabels.length
         if boundingBoxesOverlap(coreLabels[i][0][0], coreLabels[j][0][0])
           repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0]
-          console.log coreLabels[i][0][0]
-          console.log coreLabels[j][0][0]
-          console.log '----'
-
         j++
       i++
 
