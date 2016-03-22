@@ -3,6 +3,27 @@ HTMLWidgets.widget
   type: 'output'
   initialize: (el, width, height) ->
 
+    dragMove = () ->
+      d3.select(this)
+        .attr('x', d3.select(this).x = d3.event.x)
+        .attr('y', d3.select(this).y = d3.event.y)
+        .attr('cursor', 'all-scroll')
+
+    dragStart = ->
+      d3.select(this).style('fill', 'red')
+
+    dragEnd = ->
+      d3.select(this).style('fill', 'black')
+
+    drag = d3.behavior.drag()
+             .origin(() ->
+               t = d3.select(this)
+               {x: t.attr("x"), y: t.attr("y")}
+              )
+             .on('dragstart', dragStart)
+             .on('drag', dragMove)
+             .on('dragend', dragEnd)
+
     xlabels = [
       'Coke'
       'V'
@@ -142,9 +163,11 @@ HTMLWidgets.widget
                      .attr('stroke', 'black')
 
 
-    # Loop through lunar core labels
+    # Lunar core labels
+
     i = 0
     coreLabels = []
+    drags = []
     while i < xlabels.length
       # Block lunar core labels from escaping the moon
       threshold = 1
@@ -160,17 +183,22 @@ HTMLWidgets.widget
       x = xCoords1[i] * radius + xCenter
       y = -xCoords2[i] * radius + yCenter
 
+
+
       lunarCoreLabel = d3.select('svg')
                          .append('text')
                             .style('fill', 'black')
                             .attr('x', x)
                             .attr('y', y)
+                            .attr('cursor', 'all-scroll')
                             .style('font-family', 'Arial')
                             .text xlabels[i]
+                            .call(drag)
       coreLabels.push(lunarCoreLabel)
       i++
 
-    # Check if labels are overlapping
+
+    # Check if labels are overlapping and if need to be repositioned
     boundingBoxesOverlap = (box1, box2) ->
       box1 = box1.getBoundingClientRect()
       box2 = box2.getBoundingClientRect()
@@ -185,14 +213,39 @@ HTMLWidgets.widget
       else
         true
 
+    repositionBoxes = (box1, box2) ->
+      vgap = 10
+      hgap = 1
+      # Get position of bounding bounding boxes
+      box1Coords = box1.getBoundingClientRect()
+      box2Coords = box2.getBoundingClientRect()
+
+      console.log box1Coords
+
+      # Increase the space between the boxes
+      if  box1Coords.bottom > box2Coords.top # is box1 on top of box2
+        d3.select(box1).attr('dy', -vgap)
+        d3.select(box2).attr('dy', vgap)
+      if box1Coords.top > box2Coords.bottom # is box1 underneath box2
+        d3.select(box1).attr('dy', vgap)
+        d3.select(box2).attr('dy', -vgap)
+      if box1Coords.right > box2Coords.left # box1 is to the left of box2
+        d3.select(box1).attr('dx', hgap)
+        d3.select(box2).attr('dx', -hgap)
+      if box1Coords.left < box2Coords.right  # box1 is to the right of box2
+        d3.select(box1).attr('dx', hgap)
+        d3.select(box2).attr('dx', -hgap)
+
     i = 0
     while i < coreLabels.length
       j = i + 1
       while j < coreLabels.length
         if boundingBoxesOverlap(coreLabels[i][0][0], coreLabels[j][0][0])
+          repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0]
           console.log coreLabels[i][0][0]
           console.log coreLabels[j][0][0]
           console.log '----'
+
         j++
       i++
 
@@ -211,8 +264,10 @@ HTMLWidgets.widget
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
                     .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                     .attr('text-anchor', 'end')
+                    .attr('cursor', 'all-scroll')
                     .style('font-family', 'Arial')
                     .text ylabels[i]
+                    .call(drag)
       else
         svgContainer.append('text')
                     .style('fill', 'black')
@@ -221,8 +276,10 @@ HTMLWidgets.widget
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
                     .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                     .attr('text-anchor', 'start')
+                    .attr('cursor', 'all-scroll')
                     .style('font-family', 'Arial')
                     .text ylabels[i]
+                    .call(drag)
       i++
 
     el.id = svgContainer
