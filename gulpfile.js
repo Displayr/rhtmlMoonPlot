@@ -77,6 +77,10 @@ gulp.task('copy', function () {
     {
       src: 'bower_components/d3/d3.min.js',
       dest: 'dist/package/inst/htmlwidgets/lib/d3/'
+    },
+    {
+      src: 'bower_components/victor/build/victor.min.js',
+      dest: 'dist/package/inst/htmlwidgets/lib/victor/'
     }
   ]
 
