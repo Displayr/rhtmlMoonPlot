@@ -214,7 +214,7 @@ HTMLWidgets.widget
       else
         true
 
-    repositionBoxes = (box1Obj, box2Obj) ->
+    repositionBoxes = (box1Obj, box2Obj, movedNodes) ->
       # Get basic params
       box1 = box1Obj.getBBox()
       box2 = box2Obj.getBBox()
@@ -234,7 +234,9 @@ HTMLWidgets.widget
       b2v.x *= intersectArea
       b2v.y *= intersectArea
 
-      console.log intersectArea
+      console.log b1v
+      console.log b2v
+      # console.log intersectArea
 
       # svgContainer.append('rect')
       #             .attr('x', box1.x)
@@ -252,18 +254,36 @@ HTMLWidgets.widget
 
       console.log box1Obj.innerHTML
       console.log box2Obj.innerHTML
+      # Plot the dot anchor
+      unless movedNodes.has box1Obj.innerHTML
+        svgContainer.append("circle")
+                    .attr('cx', box1.x)
+                    .attr('cy', box1.y)
+                    .attr('fill', 'black')
+                    .attr('r', '3')
+        movedNodes.add box1Obj.innerHTML
 
-      moveDistanceX = b1v.x + box1.x
-      moveDistanceY = b1v.y + box1.y
-      box1Obj.setAttribute 'x', moveDistanceX
-      box1Obj.setAttribute 'y', moveDistanceY
+      unless movedNodes.has box2Obj.innerHTML
+        svgContainer.append("circle")
+                    .attr('cx', box2.x)
+                    .attr('cy', box2.y)
+                    .attr('fill', 'black')
+                    .attr('r', '3')
+        movedNodes.add box2Obj.innerHTML
 
-      moveDistanceX = b2v.x + box2.x
-      moveDistanceY = b2v.y + box2.y
-      box2Obj.setAttribute 'x', moveDistanceX
-      box2Obj.setAttribute 'y', moveDistanceY
+      # Move the labels
+      # moveDistanceX = b1v.x + box1.x
+      # moveDistanceY = b1v.y + box1.y
+      # box1Obj.setAttribute 'x', moveDistanceX
+      # box1Obj.setAttribute 'y', moveDistanceY
+      #
+      # moveDistanceX = b2v.x + box2.x
+      # moveDistanceY = b2v.y + box2.y
+      # box2Obj.setAttribute 'x', moveDistanceX
+      # box2Obj.setAttribute 'y', moveDistanceY
 
     checkOverlap = true
+    movedNodes = new Set()
     while checkOverlap
       checkOverlap = false
       i = 0
@@ -271,7 +291,7 @@ HTMLWidgets.widget
         j = i + 1
         while j < coreLabels.length
           if boundingBoxesOverlap(coreLabels[i][0][0], coreLabels[j][0][0])
-            repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0]
+            repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0], movedNodes
             # Since we have repositioned the labels,
             # need to check again for overlaps
             checkOverlap = true
