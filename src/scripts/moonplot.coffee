@@ -166,7 +166,6 @@ HTMLWidgets.widget
 
 
     # Lunar core labels
-
     i = 0
     coreLabels = []
     drags = []
@@ -217,8 +216,8 @@ HTMLWidgets.widget
 
     repositionBoxes = (box1Obj, box2Obj) ->
       # Get basic params
-      box1 = box1Obj.getBoundingClientRect()
-      box2 = box2Obj.getBoundingClientRect()
+      box1 = box1Obj.getBBox()
+      box2 = box2Obj.getBBox()
 
       # Calculate magnitude through area of overlap
       intersectArea =
@@ -235,18 +234,41 @@ HTMLWidgets.widget
       b2v.x *= intersectArea
       b2v.y *= intersectArea
 
-      console.log 'here'
       console.log intersectArea
 
+      # svgContainer.append('rect')
+      #             .attr('x', box1.x)
+      #             .attr('y', box1.y)
+      #             .attr('width', box1.width)
+      #             .attr('height', box1.height)
+      #             .attr('fill', 'blue')
 
-    i = 0
-    while i < coreLabels.length
-      j = i + 1
-      while j < coreLabels.length
-        if boundingBoxesOverlap(coreLabels[i][0][0], coreLabels[j][0][0])
-          repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0]
-        j++
-      i++
+      # svgContainer.append('rect')
+      #             .attr('x', box2.x)
+      #             .attr('y', box2.y)
+      #             .attr('width', box2.width)
+      #             .attr('height', box2.height)
+      #             .attr('fill', 'red')
+
+      console.log box1Obj
+      moveDistance = box1.y - intersectArea * 10
+      # moveDistance = box1Obj.y
+      console.log svgContainer.select(box1)
+      # console.log a[0]
+      # a.attr('y', a[0][0].y + moveDistance)
+
+    checkOverlap = true
+    while checkOverlap
+      checkOverlap = false
+      i = 0
+      while i < coreLabels.length
+        j = i + 1
+        while j < coreLabels.length
+          if boundingBoxesOverlap(coreLabels[i][0][0], coreLabels[j][0][0])
+            repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0]
+            # checkOverlap = true
+          j++
+        i++
 
 
     # Loop through lunar surface labels
