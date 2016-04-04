@@ -228,8 +228,8 @@ HTMLWidgets.widget
       b1pt = new Victor(box1.x, box1.y)
       b2pt = new Victor(box2.x, box2.y)
       b1v = b1pt.clone().subtract(b2pt).normalize()
-      b1v.x *= intersectArea
-      b1v.y *= intersectArea
+      # b1v.x *= intersectArea
+      # b1v.y *= intersectArea
       b2v = b2pt.clone().subtract(b1pt).normalize()
       b2v.x *= intersectArea
       b2v.y *= intersectArea
@@ -242,7 +242,7 @@ HTMLWidgets.widget
       #             .attr('width', box1.width)
       #             .attr('height', box1.height)
       #             .attr('fill', 'blue')
-
+      #
       # svgContainer.append('rect')
       #             .attr('x', box2.x)
       #             .attr('y', box2.y)
@@ -250,12 +250,18 @@ HTMLWidgets.widget
       #             .attr('height', box2.height)
       #             .attr('fill', 'red')
 
-      console.log box1Obj
-      moveDistance = box1.y - intersectArea * 10
-      # moveDistance = box1Obj.y
-      console.log svgContainer.select(box1)
-      # console.log a[0]
-      # a.attr('y', a[0][0].y + moveDistance)
+      console.log box1Obj.innerHTML
+      console.log box2Obj.innerHTML
+
+      moveDistanceX = b1v.x + box1.x
+      moveDistanceY = b1v.y + box1.y
+      box1Obj.setAttribute 'x', moveDistanceX
+      box1Obj.setAttribute 'y', moveDistanceY
+
+      moveDistanceX = b2v.x + box2.x
+      moveDistanceY = b2v.y + box2.y
+      box2Obj.setAttribute 'x', moveDistanceX
+      box2Obj.setAttribute 'y', moveDistanceY
 
     checkOverlap = true
     while checkOverlap
@@ -266,7 +272,9 @@ HTMLWidgets.widget
         while j < coreLabels.length
           if boundingBoxesOverlap(coreLabels[i][0][0], coreLabels[j][0][0])
             repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0]
-            # checkOverlap = true
+            # Since we have repositioned the labels,
+            # need to check again for overlaps
+            checkOverlap = true
           j++
         i++
 
