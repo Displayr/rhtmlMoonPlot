@@ -192,6 +192,7 @@ HTMLWidgets.widget
                             .attr('x', x)
                             .attr('y', y)
                             .attr('cursor', 'all-scroll')
+                            .attr('text-anchor', 'middle')
                             .style('font-family', 'Arial')
                             .text xlabels[i]
                             .call(drag)
@@ -200,9 +201,18 @@ HTMLWidgets.widget
 
 
     # Check if labels are overlapping and if need to be repositioned
-    boundingBoxesOverlap = (box1, box2) ->
-      box1 = box1.getBoundingClientRect()
-      box2 = box2.getBoundingClientRect()
+    boundingBoxesOverlap = (box1Obj, box2Obj) ->
+      box1 = box1Obj.getBBox()
+      box2 = box2Obj.getBBox()
+      box1.top = box1.y
+      box1.bottom = box1.y + box1.height
+      box1.left = box1.x
+      box1.right = box1.x + box1.width
+      box2.top = box2.y
+      box2.bottom = box2.y + box2.height
+      box2.left = box2.x
+      box2.right = box2.x + box2.width
+
       if box1.bottom < box2.top # is box1 on top of box2
         false
       else if box1.top > box2.bottom # is box1 underneath box2
@@ -218,25 +228,39 @@ HTMLWidgets.widget
       # Get basic params
       box1 = box1Obj.getBBox()
       box2 = box2Obj.getBBox()
+      box1.cx = box1.x + box1.width/2
+      box1.cy = box1.y + box1.height/2
+      box2.cx = box2.x + box2.width/2
+      box2.cy = box2.y + box2.height/2
 
       # Calculate magnitude through area of overlap
-      intersectArea =
-        Math.max(0, Math.max(box1.x, box2.x) - Math.min(box1.x, box2.x)) *
-          Math.max(0, Math.max(box1.y, box2.y) - Math.min(box1.y, box2.y))
+      intersect_left = Math.max(box1.x, box2.x)
+      intersect_right = Math.min(box1.x + box1.width, box2.x + box2.width)
+      intersect_top = Math.max(box1.y + box1.height, box2.y + box2.height)
+      intersect_bottom = Math.min(box1.y, box2.y)
+      intersectArea = (intersect_top - intersect_bottom) * (intersect_right - intersect_left)
 
       # Calculate vectors for each pair
-      b1pt = new Victor(box1.x, box1.y)
-      b2pt = new Victor(box2.x, box2.y)
-      b1v = b1pt.clone().subtract(b2pt).normalize()
-      # b1v.x *= intersectArea
-      # b1v.y *= intersectArea
-      b2v = b2pt.clone().subtract(b1pt).normalize()
-      b2v.x *= intersectArea
-      b2v.y *= intersectArea
+      # svgContainer.append('line')
+      #             .attr('x1', box1.cx)
+      #             .attr('y1', box1.cy)
+      #             .attr('x2', box2.cx)
+      #             .attr('y2', box2.cy)
+      #             .attr('stroke-width', '5')
+      #             .attr('stroke', 'blue')
 
+      b1v = new Victor(box1.cx - box2.cx, box1.cy - box2.cy)
+      b2v = new Victor(box2.cx - box1.cx, box2.cy - box1.cy)
+      fudgeConst = 0.001
+      # b1v.x *= intersectArea * fudgeConst
+      # b1v.y *= intersectArea * fudgeConst
+      # b2v.x *= intersectArea * fudgeConst
+      # b2v.y *= intersectArea * fudgeConst
+
+      console.log '---'
+      console.log intersectArea
       console.log b1v
       console.log b2v
-      # console.log intersectArea
 
       # svgContainer.append('rect')
       #             .attr('x', box1.x)
@@ -253,34 +277,40 @@ HTMLWidgets.widget
       #             .attr('fill', 'red')
 
       console.log box1Obj.innerHTML
+      # console.log box1
       console.log box2Obj.innerHTML
+      # console.log box2
       # Plot the dot anchor
       unless movedNodes.has box1Obj.innerHTML
         svgContainer.append("circle")
-                    .attr('cx', box1.x)
-                    .attr('cy', box1.y)
+                    .attr('cx', box1.x + box1.width/2)
+                    .attr('cy', box1.y + box1.height/2)
                     .attr('fill', 'black')
                     .attr('r', '3')
         movedNodes.add box1Obj.innerHTML
 
       unless movedNodes.has box2Obj.innerHTML
         svgContainer.append("circle")
-                    .attr('cx', box2.x)
-                    .attr('cy', box2.y)
+                    .attr('cx', box2.x + box2.width/2)
+                    .attr('cy', box2.y + box2.height/2)
                     .attr('fill', 'black')
                     .attr('r', '3')
         movedNodes.add box2Obj.innerHTML
 
       # Move the labels
-      # moveDistanceX = b1v.x + box1.x
-      # moveDistanceY = b1v.y + box1.y
-      # box1Obj.setAttribute 'x', moveDistanceX
-      # box1Obj.setAttribute 'y', moveDistanceY
-      #
-      # moveDistanceX = b2v.x + box2.x
-      # moveDistanceY = b2v.y + box2.y
-      # box2Obj.setAttribute 'x', moveDistanceX
-      # box2Obj.setAttribute 'y', moveDistanceY
+      moveDistanceX1 = box1.cx + b1v.x
+      moveDistanceY1 = box1.cy + b1v.y
+      box1Obj.setAttribute 'x', moveDistanceX1
+      box1Obj.setAttribute 'y', moveDistanceY1
+
+      moveDistanceX2 = box2.cx + b2v.x
+      moveDistanceY2 = box2.cy + b2v.y
+      console.log box2.x
+      console.log box2.y
+      console.log "moveDistanceX2 #{moveDistanceX2}"
+      console.log "moveDistanceY2 #{moveDistanceY2}"
+      box2Obj.setAttribute 'x', moveDistanceX2
+      box2Obj.setAttribute 'y', moveDistanceY2
 
     checkOverlap = true
     movedNodes = new Set()
@@ -294,7 +324,7 @@ HTMLWidgets.widget
             repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0], movedNodes
             # Since we have repositioned the labels,
             # need to check again for overlaps
-            checkOverlap = true
+            # checkOverlap = true
           j++
         i++
 
