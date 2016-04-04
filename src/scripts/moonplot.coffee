@@ -172,7 +172,7 @@ HTMLWidgets.widget
     while i < xlabels.length
       # Block lunar core labels from escaping the moon
       threshold = 1
-      barrier = 0.9
+      barrier = 0.7
       if xCoords1[i] < -threshold
         xCoords1[i] = -barrier
       if xCoords1[i] > threshold
@@ -251,11 +251,11 @@ HTMLWidgets.widget
 
       b1v = new Victor(box1.cx - box2.cx, box1.cy - box2.cy)
       b2v = new Victor(box2.cx - box1.cx, box2.cy - box1.cy)
-      fudgeConst = 0.001
-      # b1v.x *= intersectArea * fudgeConst
-      # b1v.y *= intersectArea * fudgeConst
-      # b2v.x *= intersectArea * fudgeConst
-      # b2v.y *= intersectArea * fudgeConst
+      fudgeConst = 1.2
+      b1v.x *= fudgeConst
+      b1v.y *= fudgeConst
+      b2v.x *= fudgeConst
+      b2v.y *= fudgeConst
 
       console.log '---'
       console.log intersectArea
@@ -277,9 +277,8 @@ HTMLWidgets.widget
       #             .attr('fill', 'red')
 
       console.log box1Obj.innerHTML
-      # console.log box1
       console.log box2Obj.innerHTML
-      # console.log box2
+
       # Plot the dot anchor
       unless movedNodes.has box1Obj.innerHTML
         svgContainer.append("circle")
@@ -305,10 +304,6 @@ HTMLWidgets.widget
 
       moveDistanceX2 = box2.cx + b2v.x
       moveDistanceY2 = box2.cy + b2v.y
-      console.log box2.x
-      console.log box2.y
-      console.log "moveDistanceX2 #{moveDistanceX2}"
-      console.log "moveDistanceY2 #{moveDistanceY2}"
       box2Obj.setAttribute 'x', moveDistanceX2
       box2Obj.setAttribute 'y', moveDistanceY2
 
