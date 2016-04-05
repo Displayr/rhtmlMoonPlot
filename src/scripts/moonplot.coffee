@@ -193,7 +193,7 @@ HTMLWidgets.widget
 
       i++
 
-    core_labels = svgContainer.selectAll('.label')
+    lunar_core_labels_svg = svgContainer.selectAll('.label')
                               .data(lunar_core_labels)
                               .enter()
                               .append('text')
@@ -207,7 +207,7 @@ HTMLWidgets.widget
                               .call(drag)
 
     # Size of each labeler
-    for core_label in core_labels[0]
+    for core_label in lunar_core_labels_svg[0]
       i = _.findIndex lunar_core_labels, (e) -> e.name == core_label.innerHTML
       lunar_core_labels[i].width = core_label.getBBox().width
       lunar_core_labels[i].height = core_label.getBBox().height
@@ -243,7 +243,7 @@ HTMLWidgets.widget
       .height(600)
       .start(100)
 
-    core_labels.transition()
+    lunar_core_labels_svg.transition()
         .duration(800)
         .attr('x', (d) -> d.x)
         .attr('y', (d) -> d.y)
