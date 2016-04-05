@@ -132,7 +132,6 @@ HTMLWidgets.widget
     radius = width / 3
 
     mouseDownEvent = ->
-      console.log 'blah'
 
     svgContainer.append('circle')
                 .attr('cx', xCenter)
@@ -234,6 +233,18 @@ HTMLWidgets.widget
                       .attr('cy', anchor.y)
                       .attr('r', anchor.r)
 
+    # Draw the links
+    lunar_core_links_svg = svgContainer.selectAll('.link')
+                        .data(lunar_core_labels)
+                        .enter()
+                        .append('line')
+                        .attr('x1', (d) -> d.x)
+                        .attr('y1', (d) -> d.y)
+                        .attr('x2', (d) -> d.x)
+                        .attr('y2', (d) -> d.y)
+                        .attr('stroke-width', 0.6)
+                        .attr('stroke', 'gray')
+
 
     # Check if labels are overlapping and if need to be repositioned
     labeler = d3.labeler()
@@ -247,6 +258,11 @@ HTMLWidgets.widget
         .duration(800)
         .attr('x', (d) -> d.x)
         .attr('y', (d) -> d.y)
+
+    lunar_core_links_svg.transition()
+        .duration(800)
+        .attr('x2', (d) -> d.x)
+        .attr('y2', (d) -> d.y)
 
 
     # Loop through lunar surface labels
