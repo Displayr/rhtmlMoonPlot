@@ -1,6 +1,9 @@
 (function() {
 
 d3.labeler = function() {
+  // Use Mersenne Twister seeded random number generator
+  var random = new Random(Random.engines.mt19937().seed(1));
+
   var lab = [],
       anc = [],
       w = 1, // box width
@@ -13,7 +16,7 @@ d3.labeler = function() {
       rej = 0;
 
   // weights
-  var w_len = 0.2, // leader line length 
+  var w_len = 0.2, // leader line length
       w_inter = 1.0, // leader line intersection
       w_lab2 = 30.0, // label-label overlap
       w_lab_anc = 30.0; // label-anchor overlap
@@ -23,13 +26,13 @@ d3.labeler = function() {
   var user_energy = false,
       user_schedule = false;
 
-  var user_defined_energy, 
+  var user_defined_energy,
       user_defined_schedule;
 
   energy = function(index) {
   // energy function, tailored for label placement
 
-      var m = lab.length, 
+      var m = lab.length,
           ener = 0,
           dx = lab[index].x - anc[index].x,
           dy = anc[index].y - lab[index].y,
@@ -92,7 +95,7 @@ d3.labeler = function() {
   // Monte Carlo translation move
 
       // select a random label
-      var i = Math.floor(Math.random() * lab.length); 
+      var i = Math.floor(random.real(0,1) * lab.length);
 
       // save old coordinates
       var x_old = lab[i].x;
@@ -104,8 +107,8 @@ d3.labeler = function() {
       else {old_energy = energy(i)}
 
       // random translation
-      lab[i].x += (Math.random() - 0.5) * max_move;
-      lab[i].y += (Math.random() - 0.5) * max_move;
+      lab[i].x += (random.real(0,1) - 0.5) * max_move;
+      lab[i].y += (random.real(0,1) - 0.5) * max_move;
 
       // hard wall boundaries
       if (lab[i].x > w) lab[i].x = x_old;
@@ -121,7 +124,7 @@ d3.labeler = function() {
       // delta E
       var delta_energy = new_energy - old_energy;
 
-      if (Math.random() < Math.exp(-delta_energy / currT)) {
+      if (random.real(0,1) < Math.exp(-delta_energy / currT)) {
         acc += 1;
       } else {
         // move back to old coordinates
@@ -136,7 +139,7 @@ d3.labeler = function() {
   // Monte Carlo rotation move
 
       // select a random label
-      var i = Math.floor(Math.random() * lab.length); 
+      var i = Math.floor(random.real(0,1) * lab.length);
 
       // save old coordinates
       var x_old = lab[i].x;
@@ -148,7 +151,7 @@ d3.labeler = function() {
       else {old_energy = energy(i)}
 
       // random angle
-      var angle = (Math.random() - 0.5) * max_angle;
+      var angle = (random.real(0,1) - 0.5) * max_angle;
 
       var s = Math.sin(angle);
       var c = Math.cos(angle);
@@ -179,7 +182,7 @@ d3.labeler = function() {
       // delta E
       var delta_energy = new_energy - old_energy;
 
-      if (Math.random() < Math.exp(-delta_energy / currT)) {
+      if (random.real(0,1) < Math.exp(-delta_energy / currT)) {
         acc += 1;
       } else {
         // move back to old coordinates
@@ -187,7 +190,7 @@ d3.labeler = function() {
         lab[i].y = y_old;
         rej += 1;
       }
-      
+
   };
 
   intersect = function(x1, x2, x3, x4, y1, y2, y3, y4) {
@@ -222,8 +225,8 @@ d3.labeler = function() {
           initialT = 1.0;
 
       for (var i = 0; i < nsweeps; i++) {
-        for (var j = 0; j < m; j++) { 
-          if (Math.random() < 0.5) { mcmove(currT); }
+        for (var j = 0; j < m; j++) {
+          if (random.real(0,1) < 0.5) { mcmove(currT); }
           else { mcrotate(currT); }
         }
         currT = cooling_schedule(currT, initialT, nsweeps);
@@ -240,7 +243,7 @@ d3.labeler = function() {
   labeler.height = function(x) {
   // users insert graph height
     if (!arguments.length) return h;
-    h = x;    
+    h = x;
     return labeler;
   };
 
@@ -278,4 +281,3 @@ d3.labeler = function() {
 };
 
 })();
-

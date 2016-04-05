@@ -194,7 +194,7 @@ HTMLWidgets.widget
                             .attr('x', x)
                             .attr('y', y)
                             .attr('cursor', 'all-scroll')
-                            .attr('text-anchor', 'start')
+                            .attr('text-anchor', 'middle')
                             .style('font-family', 'Arial')
                             .text xlabels[i]
                             .call(drag)
@@ -225,6 +225,7 @@ HTMLWidgets.widget
                       .attr('r', anchor.r)
 
 
+
     # Check if labels are overlapping and if need to be repositioned
     t = 1
     console.log label_array[t]
@@ -247,6 +248,8 @@ HTMLWidgets.widget
                             .attr('text-anchor', 'start')
                             .style('font-family', 'Arial')
                             .text label.name
+                            .call(drag)
+                            .attr('cursor', 'all-scroll')
 
 
     # Loop through lunar surface labels
