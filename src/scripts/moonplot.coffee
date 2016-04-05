@@ -5,26 +5,7 @@ HTMLWidgets.widget
   type: 'output'
   initialize: (el, width, height) ->
 
-    dragMove = () ->
-      d3.select(this)
-        .attr('x', d3.select(this).x = d3.event.x)
-        .attr('y', d3.select(this).y = d3.event.y)
-        .attr('cursor', 'all-scroll')
 
-    dragStart = ->
-      d3.select(this).style('fill', 'red')
-
-    dragEnd = ->
-      d3.select(this).style('fill', 'black')
-
-    drag = d3.behavior.drag()
-             .origin(() ->
-               t = d3.select(this)
-               {x: t.attr("x"), y: t.attr("y")}
-              )
-             .on('dragstart', dragStart)
-             .on('drag', dragMove)
-             .on('dragend', dragEnd)
 
     xlabels = [
       'Coke'
@@ -131,6 +112,46 @@ HTMLWidgets.widget
     yCenter = xCenter
     radius = width / 3
 
+    # Drag and drop functionality
+    dragMove = () ->
+      d3.select(this)
+        .attr('x', d3.select(this).x = d3.event.x)
+        .attr('y', d3.select(this).y = d3.event.y)
+        .attr('cursor', 'all-scroll')
+
+      draggedInnerText =  this.innerHTML
+      draggedText = _.find lunar_core_labels, (e) -> e.name is draggedInnerText
+      draggedText.x =  d3.event.x
+      draggedText.y =  d3.event.y
+
+
+    dragStart = ->
+      svgContainer.selectAll('line').remove()
+      d3.select(this).style('fill', 'red')
+
+    dragEnd = ->
+      lunar_core_links_svg = svgContainer.selectAll('.link')
+                          .data(lunar_core_labels)
+                          .enter()
+                          .append('line')
+                          .attr('x1', (d) -> d.ox)
+                          .attr('y1', (d) -> d.oy)
+                          .attr('x2', (d) -> d.x)
+                          .attr('y2', (d) -> d.y)
+                          .attr('stroke-width', 0.6)
+                          .attr('stroke', 'gray')
+      drawCross(svgContainer, xCenter, yCenter)
+      d3.select(this).style('fill', 'black')
+
+    drag = d3.behavior.drag()
+             .origin(() ->
+               t = d3.select(this)
+               {x: t.attr("x"), y: t.attr("y")}
+              )
+             .on('dragstart', dragStart)
+             .on('drag', dragMove)
+             .on('dragend', dragEnd)
+
     mouseDownEvent = ->
 
     svgContainer.append('circle')
@@ -144,30 +165,11 @@ HTMLWidgets.widget
 
 
     # Add cross to middle of circle
-    crossSize = 6
-    crossWidth = 1
-    crossLine1 = d3.select('svg')
-                   .append('line')
-                     .attr('x1', xCenter - crossSize)
-                     .attr('y1', yCenter)
-                     .attr('x2', xCenter + crossSize)
-                     .attr('y2', yCenter)
-                     .attr('stroke-width', crossWidth)
-                     .attr('stroke', 'black')
-    crossLine2 = d3.select('svg')
-                   .append('line')
-                     .attr('x1', xCenter)
-                     .attr('y1', yCenter - crossSize)
-                     .attr('x2', xCenter)
-                     .attr('y2', yCenter + crossSize)
-                     .attr('stroke-width', crossWidth)
-                     .attr('stroke', 'black')
-
+    drawCross(svgContainer, xCenter, yCenter)
 
     # Lunar core labels
     i = 0
     anchor_array = []
-    label_array = []
     lunar_core_labels = []
     while i < xlabels.length
       # Block lunar core labels from escaping the moon
@@ -188,6 +190,8 @@ HTMLWidgets.widget
         x: x
         y: y
         name: xlabels[i]
+        ox: x
+        oy: y
         })
 
       i++
@@ -211,13 +215,8 @@ HTMLWidgets.widget
       lunar_core_labels[i].width = core_label.getBBox().width
       lunar_core_labels[i].height = core_label.getBBox().height
 
-    # Build the label and anchor arrays
+    # Build the anchor arrays
     for lunar_core_label in lunar_core_labels
-      label_array.push({
-        x: lunar_core_label.x
-        y: lunar_core_label.y
-        name: lunar_core_label.name
-        })
       anchor_array.push({
         x: lunar_core_label.x
         y: lunar_core_label.y
@@ -234,7 +233,7 @@ HTMLWidgets.widget
                       .attr('r', anchor.r)
 
     # Draw the links
-    lunar_core_links_svg = svgContainer.selectAll('.link')
+    lunar_core_links_svg = svgContainer.append('g').selectAll('.link')
                         .data(lunar_core_labels)
                         .enter()
                         .append('line')
