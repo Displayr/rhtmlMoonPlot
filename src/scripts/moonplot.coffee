@@ -167,11 +167,10 @@ HTMLWidgets.widget
 
     # Lunar core labels
     i = 0
-    coreLabels = []
     anchor_array = []
     label_array = []
+    lunar_core_labels = []
     while i < xlabels.length
-
       # Block lunar core labels from escaping the moon
       threshold = 1
       barrier = 0.8
@@ -186,34 +185,45 @@ HTMLWidgets.widget
       x = xCoords1[i] * radius + xCenter
       y = -xCoords2[i] * radius + yCenter
 
-
-
-      lunarCoreLabel = d3.select('svg')
-                         .append('text')
-                            .style('fill', 'white')
-                            .attr('x', x)
-                            .attr('y', y)
-                            .attr('cursor', 'all-scroll')
-                            .attr('text-anchor', 'middle')
-                            .style('font-family', 'Arial')
-                            .text xlabels[i]
-                            .call(drag)
-      coreLabels.push(lunarCoreLabel)
-
-      # Build the label and anchor arrays
-      label_array.push({
+      lunar_core_labels.push({
         x: x
         y: y
         name: xlabels[i]
-        width: lunarCoreLabel[0][0].getBBox().width
-        height: lunarCoreLabel[0][0].getBBox().height
+        })
+
+      i++
+
+    core_labels = svgContainer.selectAll('.label')
+                              .data(lunar_core_labels)
+                              .enter()
+                              .append('text')
+                              .style('fill', 'black')
+                              .attr('x', (d) -> d.x)
+                              .attr('y', (d) -> d.y)
+                              .attr('cursor', 'all-scroll')
+                              .attr('text-anchor', 'start')
+                              .style('font-family', 'Arial')
+                              .text (d) -> d.name
+                              .call(drag)
+
+    # Size of each labeler
+    for core_label in core_labels[0]
+      i = _.findIndex lunar_core_labels, (e) -> e.name == core_label.innerHTML
+      lunar_core_labels[i].width = core_label.getBBox().width
+      lunar_core_labels[i].height = core_label.getBBox().height
+
+    # Build the label and anchor arrays
+    for lunar_core_label in lunar_core_labels
+      label_array.push({
+        x: lunar_core_label.x
+        y: lunar_core_label.y
+        name: lunar_core_label.name
         })
       anchor_array.push({
-        x: x
-        y: y
+        x: lunar_core_label.x
+        y: lunar_core_label.y
         r: 2
         })
-      i++
 
     # Lay the anchor
     for anchor in anchor_array
@@ -225,31 +235,18 @@ HTMLWidgets.widget
                       .attr('r', anchor.r)
 
 
-
     # Check if labels are overlapping and if need to be repositioned
-    t = 1
-    console.log label_array[t]
     labeler = d3.labeler()
-      .label(label_array)
+      .label(lunar_core_labels)
       .anchor(anchor_array)
       .width(600)
       .height(600)
-      .start(500)
+      .start(100)
 
-    console.log label_array[t]
-
-    for label in label_array
-      lunarCoreLabel = d3.select('svg')
-                         .append('text')
-                            .style('fill', 'black')
-                            .attr('x', label.x)
-                            .attr('y', label.y)
-                            .attr('cursor', 'all-scroll')
-                            .attr('text-anchor', 'start')
-                            .style('font-family', 'Arial')
-                            .text label.name
-                            .call(drag)
-                            .attr('cursor', 'all-scroll')
+    core_labels.transition()
+        .duration(800)
+        .attr('x', (d) -> d.x)
+        .attr('y', (d) -> d.y)
 
 
     # Loop through lunar surface labels
