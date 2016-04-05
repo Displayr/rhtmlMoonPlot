@@ -168,11 +168,13 @@ HTMLWidgets.widget
     # Lunar core labels
     i = 0
     coreLabels = []
-    drags = []
+    anchor_array = []
+    label_array = []
     while i < xlabels.length
+
       # Block lunar core labels from escaping the moon
       threshold = 1
-      barrier = 0.7
+      barrier = 0.8
       if xCoords1[i] < -threshold
         xCoords1[i] = -barrier
       if xCoords1[i] > threshold
@@ -188,140 +190,63 @@ HTMLWidgets.widget
 
       lunarCoreLabel = d3.select('svg')
                          .append('text')
-                            .style('fill', 'black')
+                            .style('fill', 'white')
                             .attr('x', x)
                             .attr('y', y)
                             .attr('cursor', 'all-scroll')
-                            .attr('text-anchor', 'middle')
+                            .attr('text-anchor', 'start')
                             .style('font-family', 'Arial')
                             .text xlabels[i]
                             .call(drag)
       coreLabels.push(lunarCoreLabel)
+
+      # Build the label and anchor arrays
+      label_array.push({
+        x: x
+        y: y
+        name: xlabels[i]
+        width: lunarCoreLabel[0][0].getBBox().width
+        height: lunarCoreLabel[0][0].getBBox().height
+        })
+      anchor_array.push({
+        x: x
+        y: y
+        r: 2
+        })
       i++
+
+    # Lay the anchor
+    for anchor in anchor_array
+      d3.select('svg').append('circle')
+                      .attr('stroke-width', 3)
+                      .attr('fill', 'black')
+                      .attr('cx', anchor.x)
+                      .attr('cy', anchor.y)
+                      .attr('r', anchor.r)
 
 
     # Check if labels are overlapping and if need to be repositioned
-    boundingBoxesOverlap = (box1Obj, box2Obj) ->
-      box1 = box1Obj.getBBox()
-      box2 = box2Obj.getBBox()
-      box1.top = box1.y
-      box1.bottom = box1.y + box1.height
-      box1.left = box1.x
-      box1.right = box1.x + box1.width
-      box2.top = box2.y
-      box2.bottom = box2.y + box2.height
-      box2.left = box2.x
-      box2.right = box2.x + box2.width
+    t = 1
+    console.log label_array[t]
+    labeler = d3.labeler()
+      .label(label_array)
+      .anchor(anchor_array)
+      .width(600)
+      .height(600)
+      .start(500)
 
-      if box1.bottom < box2.top # is box1 on top of box2
-        false
-      else if box1.top > box2.bottom # is box1 underneath box2
-        false
-      else if box1.right < box2.left # box1 is to the left of box2
-        false
-      else if box1.left > box2.right # box1 is to the right of box2
-        false
-      else
-        true
+    console.log label_array[t]
 
-    repositionBoxes = (box1Obj, box2Obj, movedNodes) ->
-      # Get basic params
-      box1 = box1Obj.getBBox()
-      box2 = box2Obj.getBBox()
-      box1.cx = box1.x + box1.width/2
-      box1.cy = box1.y + box1.height/2
-      box2.cx = box2.x + box2.width/2
-      box2.cy = box2.y + box2.height/2
-
-      # Calculate magnitude through area of overlap
-      intersect_left = Math.max(box1.x, box2.x)
-      intersect_right = Math.min(box1.x + box1.width, box2.x + box2.width)
-      intersect_top = Math.max(box1.y + box1.height, box2.y + box2.height)
-      intersect_bottom = Math.min(box1.y, box2.y)
-      intersectArea = (intersect_top - intersect_bottom) * (intersect_right - intersect_left)
-
-      # Calculate vectors for each pair
-      # svgContainer.append('line')
-      #             .attr('x1', box1.cx)
-      #             .attr('y1', box1.cy)
-      #             .attr('x2', box2.cx)
-      #             .attr('y2', box2.cy)
-      #             .attr('stroke-width', '5')
-      #             .attr('stroke', 'blue')
-
-      b1v = new Victor(box1.cx - box2.cx, box1.cy - box2.cy)
-      b2v = new Victor(box2.cx - box1.cx, box2.cy - box1.cy)
-      fudgeConst = 1.2
-      b1v.x *= fudgeConst
-      b1v.y *= fudgeConst
-      b2v.x *= fudgeConst
-      b2v.y *= fudgeConst
-
-      console.log '---'
-      console.log intersectArea
-      console.log b1v
-      console.log b2v
-
-      # svgContainer.append('rect')
-      #             .attr('x', box1.x)
-      #             .attr('y', box1.y)
-      #             .attr('width', box1.width)
-      #             .attr('height', box1.height)
-      #             .attr('fill', 'blue')
-      #
-      # svgContainer.append('rect')
-      #             .attr('x', box2.x)
-      #             .attr('y', box2.y)
-      #             .attr('width', box2.width)
-      #             .attr('height', box2.height)
-      #             .attr('fill', 'red')
-
-      console.log box1Obj.innerHTML
-      console.log box2Obj.innerHTML
-
-      # Plot the dot anchor
-      unless movedNodes.has box1Obj.innerHTML
-        svgContainer.append("circle")
-                    .attr('cx', box1.x + box1.width/2)
-                    .attr('cy', box1.y + box1.height/2)
-                    .attr('fill', 'black')
-                    .attr('r', '3')
-        movedNodes.add box1Obj.innerHTML
-
-      unless movedNodes.has box2Obj.innerHTML
-        svgContainer.append("circle")
-                    .attr('cx', box2.x + box2.width/2)
-                    .attr('cy', box2.y + box2.height/2)
-                    .attr('fill', 'black')
-                    .attr('r', '3')
-        movedNodes.add box2Obj.innerHTML
-
-      # Move the labels
-      moveDistanceX1 = box1.cx + b1v.x
-      moveDistanceY1 = box1.cy + b1v.y
-      box1Obj.setAttribute 'x', moveDistanceX1
-      box1Obj.setAttribute 'y', moveDistanceY1
-
-      moveDistanceX2 = box2.cx + b2v.x
-      moveDistanceY2 = box2.cy + b2v.y
-      box2Obj.setAttribute 'x', moveDistanceX2
-      box2Obj.setAttribute 'y', moveDistanceY2
-
-    checkOverlap = true
-    movedNodes = new Set()
-    while checkOverlap
-      checkOverlap = false
-      i = 0
-      while i < coreLabels.length
-        j = i + 1
-        while j < coreLabels.length
-          if boundingBoxesOverlap(coreLabels[i][0][0], coreLabels[j][0][0])
-            repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0], movedNodes
-            # Since we have repositioned the labels,
-            # need to check again for overlaps
-            # checkOverlap = true
-          j++
-        i++
+    for label in label_array
+      lunarCoreLabel = d3.select('svg')
+                         .append('text')
+                            .style('fill', 'black')
+                            .attr('x', label.x)
+                            .attr('y', label.y)
+                            .attr('cursor', 'all-scroll')
+                            .attr('text-anchor', 'start')
+                            .style('font-family', 'Arial')
+                            .text label.name
 
 
     # Loop through lunar surface labels
