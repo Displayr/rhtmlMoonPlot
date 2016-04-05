@@ -6,6 +6,7 @@ var widgetName = 'moonplot';
 
 var _ = require('lodash');
 var gulp = require('gulp');
+var random = require('random-js');
 var $ = require('gulp-load-plugins')();
 var fs = require('fs-extra');
 var runSequence = require('run-sequence');
@@ -38,6 +39,12 @@ gulp.task('copy', function () {
   ], {
     dot: true
   }).pipe(gulp.dest('dist/browser'));
+
+  gulp.src([
+    'src/scripts/labeler.js'
+  ], {
+    dot: true
+  }).pipe(gulp.dest('dist/browser/scripts'))
 
   gulp.src([
     'bower_components/**/*'
@@ -81,6 +88,10 @@ gulp.task('copy', function () {
     {
       src: 'bower_components/victor/build/victor.min.js',
       dest: 'dist/package/inst/htmlwidgets/lib/victor/'
+    },
+    {
+      src: 'bower_components/random/lib/random.min.js',
+      dest: 'dist/package/inst/htmlwidgets/lib/random/'
     }
   ]
 
@@ -131,6 +142,7 @@ gulp.task('watch', ['connect'], function () {
   ]).on('change', $.livereload.changed);
 
   gulp.watch('src/**/*.html', ['copy']);
+  gulp.watch('src/scripts/**/*.js', ['copy'])
   gulp.watch('src/images/**/*', ['images']);
   gulp.watch('src/styles/**/*.less', ['less']);
   gulp.watch('src/scripts/**/*.coffee', ['compile-coffee']);

@@ -5,26 +5,7 @@ HTMLWidgets.widget
   type: 'output'
   initialize: (el, width, height) ->
 
-    dragMove = () ->
-      d3.select(this)
-        .attr('x', d3.select(this).x = d3.event.x)
-        .attr('y', d3.select(this).y = d3.event.y)
-        .attr('cursor', 'all-scroll')
 
-    dragStart = ->
-      d3.select(this).style('fill', 'red')
-
-    dragEnd = ->
-      d3.select(this).style('fill', 'black')
-
-    drag = d3.behavior.drag()
-             .origin(() ->
-               t = d3.select(this)
-               {x: t.attr("x"), y: t.attr("y")}
-              )
-             .on('dragstart', dragStart)
-             .on('drag', dragMove)
-             .on('dragend', dragEnd)
 
     xlabels = [
       'Coke'
@@ -131,8 +112,47 @@ HTMLWidgets.widget
     yCenter = xCenter
     radius = width / 3
 
+    # Drag and drop functionality
+    dragMove = () ->
+      d3.select(this)
+        .attr('x', d3.select(this).x = d3.event.x)
+        .attr('y', d3.select(this).y = d3.event.y)
+        .attr('cursor', 'all-scroll')
+
+      draggedInnerText =  this.innerHTML
+      draggedText = _.find lunar_core_labels, (e) -> e.name is draggedInnerText
+      draggedText.x =  d3.event.x
+      draggedText.y =  d3.event.y
+
+
+    dragStart = ->
+      svgContainer.selectAll('line').remove()
+      d3.select(this).style('fill', 'red')
+
+    dragEnd = ->
+      lunar_core_links_svg = svgContainer.selectAll('.link')
+                          .data(lunar_core_labels)
+                          .enter()
+                          .append('line')
+                          .attr('x1', (d) -> d.ox)
+                          .attr('y1', (d) -> d.oy)
+                          .attr('x2', (d) -> d.x)
+                          .attr('y2', (d) -> d.y)
+                          .attr('stroke-width', 0.6)
+                          .attr('stroke', 'gray')
+      drawCross(svgContainer, xCenter, yCenter)
+      d3.select(this).style('fill', 'black')
+
+    drag = d3.behavior.drag()
+             .origin(() ->
+               t = d3.select(this)
+               {x: t.attr("x"), y: t.attr("y")}
+              )
+             .on('dragstart', dragStart)
+             .on('drag', dragMove)
+             .on('dragend', dragEnd)
+
     mouseDownEvent = ->
-      console.log 'blah'
 
     svgContainer.append('circle')
                 .attr('cx', xCenter)
@@ -145,34 +165,16 @@ HTMLWidgets.widget
 
 
     # Add cross to middle of circle
-    crossSize = 6
-    crossWidth = 1
-    crossLine1 = d3.select('svg')
-                   .append('line')
-                     .attr('x1', xCenter - crossSize)
-                     .attr('y1', yCenter)
-                     .attr('x2', xCenter + crossSize)
-                     .attr('y2', yCenter)
-                     .attr('stroke-width', crossWidth)
-                     .attr('stroke', 'black')
-    crossLine2 = d3.select('svg')
-                   .append('line')
-                     .attr('x1', xCenter)
-                     .attr('y1', yCenter - crossSize)
-                     .attr('x2', xCenter)
-                     .attr('y2', yCenter + crossSize)
-                     .attr('stroke-width', crossWidth)
-                     .attr('stroke', 'black')
-
+    drawCross(svgContainer, xCenter, yCenter)
 
     # Lunar core labels
     i = 0
-    coreLabels = []
-    drags = []
+    anchor_array = []
+    lunar_core_labels = []
     while i < xlabels.length
       # Block lunar core labels from escaping the moon
       threshold = 1
-      barrier = 0.7
+      barrier = 0.8
       if xCoords1[i] < -threshold
         xCoords1[i] = -barrier
       if xCoords1[i] > threshold
@@ -184,144 +186,82 @@ HTMLWidgets.widget
       x = xCoords1[i] * radius + xCenter
       y = -xCoords2[i] * radius + yCenter
 
+      lunar_core_labels.push({
+        x: x
+        y: y
+        name: xlabels[i]
+        ox: x
+        oy: y
+        })
 
-
-      lunarCoreLabel = d3.select('svg')
-                         .append('text')
-                            .style('fill', 'black')
-                            .attr('x', x)
-                            .attr('y', y)
-                            .attr('cursor', 'all-scroll')
-                            .attr('text-anchor', 'middle')
-                            .style('font-family', 'Arial')
-                            .text xlabels[i]
-                            .call(drag)
-      coreLabels.push(lunarCoreLabel)
       i++
+
+    lunar_core_labels_svg = svgContainer.selectAll('.label')
+                              .data(lunar_core_labels)
+                              .enter()
+                              .append('text')
+                              .style('fill', 'black')
+                              .attr('x', (d) -> d.x)
+                              .attr('y', (d) -> d.y)
+                              .attr('cursor', 'all-scroll')
+                              .attr('text-anchor', 'start')
+                              .style('font-family', 'Arial')
+                              .text (d) -> d.name
+                              .call(drag)
+
+    # Size of each labeler
+    for core_label in lunar_core_labels_svg[0]
+      i = _.findIndex lunar_core_labels, (e) -> e.name == core_label.innerHTML
+      lunar_core_labels[i].width = core_label.getBBox().width
+      lunar_core_labels[i].height = core_label.getBBox().height
+
+    # Build the anchor arrays
+    for lunar_core_label in lunar_core_labels
+      anchor_array.push({
+        x: lunar_core_label.x
+        y: lunar_core_label.y
+        r: 2
+        })
+
+    # Lay the anchor
+    for anchor in anchor_array
+      d3.select('svg').append('circle')
+                      .attr('stroke-width', 3)
+                      .attr('fill', 'black')
+                      .attr('cx', anchor.x)
+                      .attr('cy', anchor.y)
+                      .attr('r', anchor.r)
+
+    # Draw the links
+    lunar_core_links_svg = svgContainer.append('g').selectAll('.link')
+                        .data(lunar_core_labels)
+                        .enter()
+                        .append('line')
+                        .attr('x1', (d) -> d.x)
+                        .attr('y1', (d) -> d.y)
+                        .attr('x2', (d) -> d.x)
+                        .attr('y2', (d) -> d.y)
+                        .attr('stroke-width', 0.6)
+                        .attr('stroke', 'gray')
 
 
     # Check if labels are overlapping and if need to be repositioned
-    boundingBoxesOverlap = (box1Obj, box2Obj) ->
-      box1 = box1Obj.getBBox()
-      box2 = box2Obj.getBBox()
-      box1.top = box1.y
-      box1.bottom = box1.y + box1.height
-      box1.left = box1.x
-      box1.right = box1.x + box1.width
-      box2.top = box2.y
-      box2.bottom = box2.y + box2.height
-      box2.left = box2.x
-      box2.right = box2.x + box2.width
+    labeler = d3.labeler()
+      .label(lunar_core_labels)
+      .anchor(anchor_array)
+      .width(600)
+      .height(600)
+      .start(100)
 
-      if box1.bottom < box2.top # is box1 on top of box2
-        false
-      else if box1.top > box2.bottom # is box1 underneath box2
-        false
-      else if box1.right < box2.left # box1 is to the left of box2
-        false
-      else if box1.left > box2.right # box1 is to the right of box2
-        false
-      else
-        true
+    lunar_core_labels_svg.transition()
+        .duration(800)
+        .attr('x', (d) -> d.x)
+        .attr('y', (d) -> d.y)
 
-    repositionBoxes = (box1Obj, box2Obj, movedNodes) ->
-      # Get basic params
-      box1 = box1Obj.getBBox()
-      box2 = box2Obj.getBBox()
-      box1.cx = box1.x + box1.width/2
-      box1.cy = box1.y + box1.height/2
-      box2.cx = box2.x + box2.width/2
-      box2.cy = box2.y + box2.height/2
-
-      # Calculate magnitude through area of overlap
-      intersect_left = Math.max(box1.x, box2.x)
-      intersect_right = Math.min(box1.x + box1.width, box2.x + box2.width)
-      intersect_top = Math.max(box1.y + box1.height, box2.y + box2.height)
-      intersect_bottom = Math.min(box1.y, box2.y)
-      intersectArea = (intersect_top - intersect_bottom) * (intersect_right - intersect_left)
-
-      # Calculate vectors for each pair
-      # svgContainer.append('line')
-      #             .attr('x1', box1.cx)
-      #             .attr('y1', box1.cy)
-      #             .attr('x2', box2.cx)
-      #             .attr('y2', box2.cy)
-      #             .attr('stroke-width', '5')
-      #             .attr('stroke', 'blue')
-
-      b1v = new Victor(box1.cx - box2.cx, box1.cy - box2.cy)
-      b2v = new Victor(box2.cx - box1.cx, box2.cy - box1.cy)
-      fudgeConst = 1.2
-      b1v.x *= fudgeConst
-      b1v.y *= fudgeConst
-      b2v.x *= fudgeConst
-      b2v.y *= fudgeConst
-
-      console.log '---'
-      console.log intersectArea
-      console.log b1v
-      console.log b2v
-
-      # svgContainer.append('rect')
-      #             .attr('x', box1.x)
-      #             .attr('y', box1.y)
-      #             .attr('width', box1.width)
-      #             .attr('height', box1.height)
-      #             .attr('fill', 'blue')
-      #
-      # svgContainer.append('rect')
-      #             .attr('x', box2.x)
-      #             .attr('y', box2.y)
-      #             .attr('width', box2.width)
-      #             .attr('height', box2.height)
-      #             .attr('fill', 'red')
-
-      console.log box1Obj.innerHTML
-      console.log box2Obj.innerHTML
-
-      # Plot the dot anchor
-      unless movedNodes.has box1Obj.innerHTML
-        svgContainer.append("circle")
-                    .attr('cx', box1.x + box1.width/2)
-                    .attr('cy', box1.y + box1.height/2)
-                    .attr('fill', 'black')
-                    .attr('r', '3')
-        movedNodes.add box1Obj.innerHTML
-
-      unless movedNodes.has box2Obj.innerHTML
-        svgContainer.append("circle")
-                    .attr('cx', box2.x + box2.width/2)
-                    .attr('cy', box2.y + box2.height/2)
-                    .attr('fill', 'black')
-                    .attr('r', '3')
-        movedNodes.add box2Obj.innerHTML
-
-      # Move the labels
-      moveDistanceX1 = box1.cx + b1v.x
-      moveDistanceY1 = box1.cy + b1v.y
-      box1Obj.setAttribute 'x', moveDistanceX1
-      box1Obj.setAttribute 'y', moveDistanceY1
-
-      moveDistanceX2 = box2.cx + b2v.x
-      moveDistanceY2 = box2.cy + b2v.y
-      box2Obj.setAttribute 'x', moveDistanceX2
-      box2Obj.setAttribute 'y', moveDistanceY2
-
-    checkOverlap = true
-    movedNodes = new Set()
-    while checkOverlap
-      checkOverlap = false
-      i = 0
-      while i < coreLabels.length
-        j = i + 1
-        while j < coreLabels.length
-          if boundingBoxesOverlap(coreLabels[i][0][0], coreLabels[j][0][0])
-            repositionBoxes coreLabels[i][0][0], coreLabels[j][0][0], movedNodes
-            # Since we have repositioned the labels,
-            # need to check again for overlaps
-            # checkOverlap = true
-          j++
-        i++
+    lunar_core_links_svg.transition()
+        .duration(800)
+        .attr('x2', (d) -> d.x)
+        .attr('y2', (d) -> d.y)
 
 
     # Loop through lunar surface labels

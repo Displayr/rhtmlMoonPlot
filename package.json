@@ -42,6 +42,7 @@
     "wiredep": "^3.0.0"
   },
   "dependencies": {
-    "lodash": "^4.6.1"
+    "lodash": "^4.6.1",
+    "random-js": "^1.0.8"
   }
 }
