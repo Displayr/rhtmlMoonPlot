@@ -40,6 +40,12 @@ gulp.task('copy', function () {
   }).pipe(gulp.dest('dist/browser'));
 
   gulp.src([
+    'src/scripts/labeler.js'
+  ], {
+    dot: true
+  }).pipe(gulp.dest('dist/browser/scripts'))
+
+  gulp.src([
     'bower_components/**/*'
   ], {
     dot: true
