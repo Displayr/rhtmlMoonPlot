@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .DSStore
+.idea
 bower_components
 node_modules
 dist/browser
