@@ -108,9 +108,9 @@ HTMLWidgets.widget
                      .append('svg')
                      .attr('width', width)
                      .attr('height', height)
-    xCenter = width / 2
-    yCenter = xCenter
-    radius = width / 3
+    xCenter = 400
+    yCenter = 300
+    radius = Math.min(height, width) / 3
 
     # Drag and drop functionality
     dragMove = () ->
@@ -264,14 +264,19 @@ HTMLWidgets.widget
         .attr('y2', (d) -> d.y)
 
 
+    # ----------------------------------------------------------------
+    cart_coords = []
+
     # Loop through lunar surface labels
+    t = null
     i = 0
     while i < ylabels.length
       x = yCoords1[i] * radius * 0.7 + xCenter
       y = -yCoords2[i] * radius * 0.7 + yCenter
 
+
       if yCoords1[i] < 0
-        svgContainer.append('text')
+        t = svgContainer.append('text')
                     .style('fill', 'black')
                     .attr('x', x)
                     .attr('y', y)
@@ -283,10 +288,10 @@ HTMLWidgets.widget
                     .text ylabels[i]
                     .call(drag)
       else
-        svgContainer.append('text')
+        t = svgContainer.append('text')
                     .style('fill', 'black')
-                    .attr('x', x)
                     .attr('y', y)
+                    .attr('x', x)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
                     .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                     .attr('text-anchor', 'start')
@@ -294,10 +299,45 @@ HTMLWidgets.widget
                     .style('font-family', 'Arial')
                     .text ylabels[i]
                     .call(drag)
+      cart_coords.push
+        x: yCoords1[i]
+        y: yCoords2[i]
+        h: t[0][0].getBBox().height
+
       i++
+
+
+    polar_coords = polarCoords cart_coords
+    length_of_line = radius * 2 * Math.PI
+    console.log length_of_line
+
+    for polar_coord in polar_coords
+#      console.log polar_coord.a * 180 / Math.PI
+      console.log polar_coord.h
+#      console.log polar_coord
+#      console.log positionAlongLine polar_coord, length_of_line
+
+      svgContainer.append('circle')
+                  .attr('cx', positionAlongLine polar_coord.a, length_of_line)
+                  .attr('cy', height)
+                  .attr('r', polar_coord.h / 2)
+
+    svgContainer.append('line')
+                .attr('x1', 0)
+                .attr('y1', height)
+                .attr('x2', length_of_line)
+                .attr('y2', height)
+                .attr('stroke-width', 1)
+                .attr('stroke', 'black')
+
+#    console.log polar_coords
+
+
+
+
+
 
     el.id = svgContainer
 
-    return
   resize: (el, width, height, instance) ->
   renderValue: (el, x, instance) ->
