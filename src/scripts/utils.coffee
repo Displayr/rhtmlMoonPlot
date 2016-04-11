@@ -113,3 +113,7 @@ positionAlongLine = (rad, length_of_line) ->
 
 calculateLabelRotation = (angle_rad) ->
   angle_rad / 2 / Math.PI * 360
+
+
+detectSurfaceLabelCollisionWithViewport = (label, viewport_h, viewport_w) ->
+  

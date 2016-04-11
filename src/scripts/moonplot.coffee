@@ -18,15 +18,15 @@ HTMLWidgets.widget
       'Pepsi'
     ]
     ylabels = [
-      'Kids'
-      'Teens'
+      'Kidsasdfsafsadfasdf'
+      'Teensasldjflkas;jflkajf;lajslfjasdfasdfasdfasdfsadfadf'
       'Enjoy life'
       'Picks you up'
       'Refreshes'
       'Cheers you up'
-      'Energy'
+      'Energysadfsadfsafadsfasdfasdfasfas'
       'Up-to-date'
-      'Fun'
+      'Funasdfsafsdfadsfasdfadsf'
       'When tired'
       'Relax'
     ]
@@ -347,8 +347,6 @@ HTMLWidgets.widget
     moveSurfaceCollsions(polar_coords, length_of_line, radius)
     cart_coords = cartesianCoords polar_coords
 
-    # ----------------------------------------------
-    cartesian_coords = cartesianCoords polar_coords
 
     # Plot the surface links
     lunar_surface_links = []
@@ -378,6 +376,9 @@ HTMLWidgets.widget
           y1: y
           x2: x_new
           y2: y_new
+
+    t = null
+    lunar_surface_labels = []
     i = 0
     while i < ylabels.length
       x =  cart_coords[i].x + xCenter
@@ -385,8 +386,9 @@ HTMLWidgets.widget
       rotation = calculateLabelRotation(polarCoord(cart_coords[i]).a)
 
       if cart_coords[i].x < 0
-        svgContainer.append('text')
+        t = svgContainer.append('text')
                     .style('fill', 'black')
+                    .attr('class', 'surface-label')
                     .attr('x', x)
                     .attr('y', y)
                     .attr('ox', x)
@@ -398,9 +400,11 @@ HTMLWidgets.widget
                     .style('font-family', 'Arial')
                     .text ylabels[i]
                     .call(drag)
+
       else
-        svgContainer.append('text')
+        t = svgContainer.append('text')
                     .style('fill', 'black')
+                    .attr('class', 'surface-label')
                     .attr('y', y)
                     .attr('x', x)
                     .attr('ox', x)
@@ -412,7 +416,34 @@ HTMLWidgets.widget
                     .style('font-family', 'Arial')
                     .text ylabels[i]
                     .call(drag)
+
+      lunar_surface_labels.push t[0][0]
       i++
+
+    # Detect collisions of surface labels with viewport and add ellipsis
+    detectViewportCollision = (box, viewport_height, viewport_width) ->
+      bb.right = bb.x + bb.width
+      bb.left = bb.x
+      bb.top = bb.y
+      bb.bottom = bb.y + bb.width
+      bb.left < 0 or bb.bottom > viewport_height or bb.right > viewport_width or bb.top < 0
+
+    collision = false
+    for surface_label in lunar_surface_labels
+      collision = false
+      bb = surface_label.getBBox()
+
+      # Throw away chars one at a time and check if still collides w/viewport
+      label_text = surface_label.innerHTML
+      while detectViewportCollision bb, height, width
+        d3.select(surface_label).text(surface_label.innerHTML.slice(0, -1))
+        bb = surface_label.getBBox()
+        collision = true
+
+      if collision
+        d3.select(surface_label).text(surface_label.innerHTML.slice(0, -3) + '...')
+
+
 
     #-----------------------------------------------
     # Debugging code
