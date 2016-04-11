@@ -327,7 +327,6 @@ HTMLWidgets.widget
       y = -cart_coords[i].y * radius * 0.7 + yCenter
       rotation = calculateLabelRotation(polarCoord(cart_coords[i]).a)
 
-      console.log rotation
       if cart_coords[i].x < 0
         svgContainer.append('text')
                     .style('fill', 'black')

@@ -49,20 +49,35 @@ detectSurfaceCollisions = (polar_coords, length_of_line) ->
 # Move the colliding pairs after collision is detected
 moveSurfaceCollsions = (polar_coords, length_of_line) ->
   move_amount = 0.2 / 360 * 2 * Math.PI # deg to rad
+  altitude_incr = length_of_line / 360 / 500
   collisions = detectSurfaceCollisions(polar_coords, length_of_line)
-  console.log collisions
 
   max_moves = 100
+  console.log altitude_incr
   while collisions.length > 0 and max_moves > 0
     max_moves--
-    console.log 'move'
+    console.log 'Moved surface labels'
     for pc in polar_coords
       if pc.collision_l
+        # Save original coords
+        unless pc.oa and pc.or
+          pc.oa = pc.a
+          pc.or = pc.r
+
         pc.a += move_amount
         pc.collision_l = false
+        pc.r += altitude_incr
+
       else if pc.collision_r
+        # Save original coords
+        unless pc.oa and pc.or
+          pc.oa = pc.a
+          pc.or = pc.r
+
         pc.a -= move_amount
         pc.collision_r = false
+        pc.r += altitude_incr
+
     collisions = detectSurfaceCollisions(polar_coords, length_of_line)
 
 
