@@ -48,38 +48,51 @@ detectSurfaceCollisions = (polar_coords, length_of_line) ->
 
 # Move the colliding pairs after collision is detected
 moveSurfaceCollsions = (polar_coords, length_of_line) ->
-  move_amount = 4 / 360 * 2 * Math.PI # deg to rad
+  move_amount = 0.2 / 360 * 2 * Math.PI # deg to rad
   collisions = detectSurfaceCollisions(polar_coords, length_of_line)
   console.log collisions
 
-
-  for pc in polar_coords
-    if pc.collision_l
-      pc.a -= move_amount
-    else if pc.collision_r
-      pc.a += move_amount
+  max_moves = 100
+  while collisions.length > 0 and max_moves > 0
+    max_moves--
+    console.log 'move'
+    for pc in polar_coords
+      if pc.collision_l
+        pc.a += move_amount
+        pc.collision_l = false
+      else if pc.collision_r
+        pc.a -= move_amount
+        pc.collision_r = false
+    collisions = detectSurfaceCollisions(polar_coords, length_of_line)
 
 
 # Convert Cartesian to polar coordinates
 polarCoords = (cart_coords) ->
   polar_coords = []
   for cart_coord in cart_coords
-    polar_coords.push
-      r: Math.sqrt(Math.pow(cart_coord.x,2) + Math.pow(cart_coord.y,2))
-      a: Math.atan2 cart_coord.y, cart_coord.x
-      h: cart_coord.h
+    polar_coords.push polarCoord cart_coord
   polar_coords
+
+polarCoord = (cart_coord) ->
+  r: Math.sqrt(Math.pow(cart_coord.x,2) + Math.pow(cart_coord.y,2))
+  a: Math.atan2 cart_coord.y, cart_coord.x
+  h: cart_coord.h
 
 # Convert polar to Cartesian coordinates
 cartesianCoords = (polar_coords) ->
   cart_coords = []
   for polar_coord in polar_coords
-    cart_coords.push
-      x: polar_coord.r * Math.cos polar_coord.a
-      y: polar_coord.r * Math.sin polar_coord.a
-      h: polar_coord.h
+    cart_coords.push cartesianCoord polar_coord
   cart_coords
+
+cartesianCoord = (polar_coord) ->
+  x: polar_coord.r * Math.cos polar_coord.a
+  y: polar_coord.r * Math.sin polar_coord.a
+  h: polar_coord.h
 
 # Translate angles to position on line
 positionAlongLine = (rad, length_of_line) ->
   ((rad + Math.PI) / (2*Math.PI)) * length_of_line
+
+calculateLabelRotation = (angle_rad) ->
+  angle_rad / 2 / Math.PI * 360

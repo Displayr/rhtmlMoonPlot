@@ -274,10 +274,10 @@ HTMLWidgets.widget
       x = yCoords1[i] * radius * 0.7 + xCenter
       y = -yCoords2[i] * radius * 0.7 + yCenter
 
-
       if yCoords1[i] < 0
         t = svgContainer.append('text')
-                    .style('fill', 'white')
+                    .style('fill', 'black')
+                    .attr('class', 'surfaceLabel')
                     .attr('x', x)
                     .attr('y', y)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
@@ -289,7 +289,8 @@ HTMLWidgets.widget
                     .call(drag)
       else
         t = svgContainer.append('text')
-                    .style('fill', 'white')
+                    .style('fill', 'black')
+                    .attr('class', 'surfaceLabel')
                     .attr('y', y)
                     .attr('x', x)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
@@ -305,7 +306,7 @@ HTMLWidgets.widget
         h: t[0][0].getBBox().height
       i++
 
-
+    svgContainer.selectAll('.surfaceLabel').remove()
     polar_coords = polarCoords cart_coords
     length_of_line = radius * 2 * Math.PI
 
@@ -324,15 +325,16 @@ HTMLWidgets.widget
     while i < ylabels.length
       x = cart_coords[i].x * radius * 0.7 + xCenter
       y = -cart_coords[i].y * radius * 0.7 + yCenter
+      rotation = calculateLabelRotation(polarCoord(cart_coords[i]).a)
 
-
-      if yCoords1[i] < 0
+      console.log rotation
+      if cart_coords[i].x < 0
         svgContainer.append('text')
-                    .style('fill', 'blue')
+                    .style('fill', 'black')
                     .attr('x', x)
                     .attr('y', y)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
-                    .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
+                    .attr('transform', 'rotate(' + (180 - rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                     .attr('text-anchor', 'end')
                     .attr('cursor', 'all-scroll')
                     .style('font-family', 'Arial')
@@ -340,11 +342,11 @@ HTMLWidgets.widget
                     .call(drag)
       else
         svgContainer.append('text')
-                    .style('fill', 'blue')
+                    .style('fill', 'black')
                     .attr('y', y)
                     .attr('x', x)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
-                    .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
+                    .attr('transform', 'rotate(' + (-rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                     .attr('text-anchor', 'start')
                     .attr('cursor', 'all-scroll')
                     .style('font-family', 'Arial')
@@ -354,11 +356,6 @@ HTMLWidgets.widget
 
 
     #-----------------------------------------------
-
-
-
-
-
     for polar_coord in polar_coords
       svgContainer.append('rect')
                   .attr('x', positionAlongLine polar_coord.a, length_of_line)
