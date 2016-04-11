@@ -421,13 +421,6 @@ HTMLWidgets.widget
       i++
 
     # Detect collisions of surface labels with viewport and add ellipsis
-    detectViewportCollision = (box, viewport_height, viewport_width) ->
-      bb.right = bb.x + bb.width
-      bb.left = bb.x
-      bb.top = bb.y
-      bb.bottom = bb.y + bb.width
-      bb.left < 0 or bb.bottom > viewport_height or bb.right > viewport_width or bb.top < 0
-
     collision = false
     for surface_label in lunar_surface_labels
       collision = false

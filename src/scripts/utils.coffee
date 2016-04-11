@@ -115,5 +115,9 @@ calculateLabelRotation = (angle_rad) ->
   angle_rad / 2 / Math.PI * 360
 
 
-detectSurfaceLabelCollisionWithViewport = (label, viewport_h, viewport_w) ->
-  
+detectViewportCollision = (box, viewport_height, viewport_width) ->
+  box.right = box.x + box.width
+  box.left = box.x
+  box.top = box.y
+  box.bottom = box.y + box.width
+  box.left < 0 or box.bottom > viewport_height or box.right > viewport_width or box.top < 0
