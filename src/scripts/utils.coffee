@@ -60,7 +60,6 @@ moveSurfaceCollsions = (polar_coords, length_of_line, radius) ->
     max_moves--
     console.log 'Moved surface labels'
     for pc in polar_coords
-      console.log pc.r
       if pc.collision_l
         # Save original coords
         unless pc.oa and pc.or

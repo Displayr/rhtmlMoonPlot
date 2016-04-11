@@ -121,12 +121,13 @@ HTMLWidgets.widget
 
       draggedInnerText =  this.innerHTML
       draggedText = _.find lunar_core_labels, (e) -> e.name is draggedInnerText
-      draggedText.x =  d3.event.x
-      draggedText.y =  d3.event.y
-
+      if draggedText
+        draggedText.x =  d3.event.x
+        draggedText.y =  d3.event.y
 
     dragStart = ->
-      svgContainer.selectAll('line').remove()
+      svgContainer.selectAll('.link').remove()
+      svgContainer.selectAll('.surface-link').remove()
       d3.select(this).style('fill', 'red')
 
     dragEnd = ->
@@ -134,13 +135,34 @@ HTMLWidgets.widget
                           .data(lunar_core_labels)
                           .enter()
                           .append('line')
+                          .attr('class', 'link')
                           .attr('x1', (d) -> d.ox)
                           .attr('y1', (d) -> d.oy)
                           .attr('x2', (d) -> d.x)
                           .attr('y2', (d) -> d.y)
                           .attr('stroke-width', 0.6)
                           .attr('stroke', 'gray')
-      drawCross(svgContainer, xCenter, yCenter)
+
+      if d3.select(this).attr('ox')
+        ox = d3.select(this).attr('ox').toString()
+        oy = d3.select(this).attr('oy').toString()
+        for surface_link in lunar_surface_links
+          if surface_link.x2.toString() == ox and surface_link.y2.toString() == oy
+            surface_link.x2 = d3.select(this).attr('x')
+            surface_link.y2 = d3.select(this).attr('y')
+
+      svgContainer.selectAll('.surface-link')
+        .data(lunar_surface_links)
+        .enter()
+        .append('line')
+        .attr('class', 'surface-link')
+        .attr('x1', (d) -> d.x1)
+        .attr('y1', (d) -> d.y1)
+        .attr('x2', (d) -> d.x2)
+        .attr('y2', (d) -> d.y2)
+        .attr('stroke-width', 0.6)
+        .attr('stroke', 'gray')
+
       d3.select(this).style('fill', 'black')
 
     drag = d3.behavior.drag()
@@ -237,6 +259,7 @@ HTMLWidgets.widget
                         .data(lunar_core_labels)
                         .enter()
                         .append('line')
+                        .attr('class', 'link')
                         .attr('x1', (d) -> d.x)
                         .attr('y1', (d) -> d.y)
                         .attr('x2', (d) -> d.x)
@@ -323,6 +346,9 @@ HTMLWidgets.widget
 
     # ----------------------------------------------
     cartesian_coords = cartesianCoords polar_coords
+
+    # Plot the surface links
+    lunar_surface_links = []
     for pc in polar_coords
       if pc.oa
         cc = cartesianCoord {
@@ -336,13 +362,19 @@ HTMLWidgets.widget
         y = -cc.y + yCenter
         x_new =  cc_new.x + xCenter
         y_new = -cc_new.y + yCenter
-        svgContainer.append('line')
+        l = svgContainer.append('line')
+                    .attr('class', 'surface-link')
                     .attr('x1', x)
                     .attr('y1', y)
                     .attr('x2', x_new)
                     .attr('y2', y_new)
                     .attr('stroke', 'gray')
                     .attr('stroke-width', 0.6)
+        lunar_surface_links.push
+          x1: x
+          y1: y
+          x2: x_new
+          y2: y_new
     i = 0
     while i < ylabels.length
       x =  cart_coords[i].x + xCenter
@@ -354,6 +386,8 @@ HTMLWidgets.widget
                     .style('fill', 'black')
                     .attr('x', x)
                     .attr('y', y)
+                    .attr('ox', x)
+                    .attr('oy', y)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
                     .attr('transform', 'rotate(' + (180 - rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                     .attr('text-anchor', 'end')
@@ -366,6 +400,8 @@ HTMLWidgets.widget
                     .style('fill', 'black')
                     .attr('y', y)
                     .attr('x', x)
+                    .attr('ox', x)
+                    .attr('oy', y)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
                     .attr('transform', 'rotate(' + (-rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                     .attr('text-anchor', 'start')
