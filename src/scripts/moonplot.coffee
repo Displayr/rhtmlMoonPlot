@@ -10,7 +10,7 @@ HTMLWidgets.widget
     xlabels = [
       'Coke'
       'V'
-      'Red Bull'
+      'Red Bullasdfdsfasfdsadfsadfasfsadfsa'
       'Lift Plus'
       'Diet Coke'
       'Fanta'
@@ -303,6 +303,10 @@ HTMLWidgets.widget
         .duration(800)
         .attr('x2', (d) -> d.x)
         .attr('y2', (d) -> d.y)
+
+    for core_label in lunar_core_labels_svg
+      console.log core_label
+
 
 
     # ----------------------------------------------------------------
