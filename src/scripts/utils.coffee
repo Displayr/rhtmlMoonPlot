@@ -19,6 +19,36 @@ drawCross = (svg, x, y) ->
 
 
 # Detect if there is intersection between lunar surface labels
+# Return the pairs of collisions
+detectSurfaceCollisions = (polar_coords, length_of_line) ->
+  collisions = []
+  i = 0
+  while i < polar_coords.length
+    p1 = polar_coords[i]
+    i++
+    j = i
+    while j < polar_coords.length
+      p2 = polar_coords[j]
+      j++
+      unless p1 == p2
+        p1l = positionAlongLine p1.a, length_of_line
+        p1r = p1l + p1.h
+        p2l = positionAlongLine p2.a, length_of_line
+        p2r = p2l + p2.h
+
+        if (p1r > p2l and p1l < p2r) or (p2r > p1l and p2l < p1r)
+          collisions.push [p1, p2]
+          console.log p1l
+          console.log p1r
+          console.log p2l
+          console.log p2r
+          console.log '------------'
+
+
+
+  console.log collisions
+  collisions
+
 
 # Convert Cartesian to polar coordinates
 polarCoords = (cart_coords) ->
@@ -42,8 +72,4 @@ cartesianCoords = (polar_coords) ->
 
 # Translate angles to position on line
 positionAlongLine = (rad, length_of_line) ->
-
-  console.log ((rad + Math.PI) / (2*Math.PI))
-  console.log ((rad + Math.PI) / (2*Math.PI))* length_of_line
   ((rad + Math.PI) / (2*Math.PI)) * length_of_line
-

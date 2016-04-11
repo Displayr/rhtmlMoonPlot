@@ -309,18 +309,28 @@ HTMLWidgets.widget
 
     polar_coords = polarCoords cart_coords
     length_of_line = radius * 2 * Math.PI
-    console.log length_of_line
 
     for polar_coord in polar_coords
-#      console.log polar_coord.a * 180 / Math.PI
-      console.log polar_coord.h
-#      console.log polar_coord
-#      console.log positionAlongLine polar_coord, length_of_line
-
-      svgContainer.append('circle')
-                  .attr('cx', positionAlongLine polar_coord.a, length_of_line)
-                  .attr('cy', height)
-                  .attr('r', polar_coord.h / 2)
+      svgContainer.append('rect')
+                  .attr('x', positionAlongLine polar_coord.a, length_of_line)
+                  .attr('y', height-polar_coord.h)
+                  .attr('width', polar_coord.h)
+                  .attr('height', polar_coord.h)
+                  .attr('stroke', 'red')
+    collisions = detectSurfaceCollisions(polar_coords, length_of_line)
+    for collision in collisions
+      svgContainer.append('rect')
+                  .attr('x', positionAlongLine collision[0].a, length_of_line)
+                  .attr('y', height-collision[0].h)
+                  .attr('width', collision[0].h)
+                  .attr('height', collision[0].h)
+                  .attr('fill', 'blue')
+      svgContainer.append('rect')
+                  .attr('x', positionAlongLine collision[1].a, length_of_line)
+                  .attr('y', height-collision[1].h)
+                  .attr('width', collision[1].h)
+                  .attr('height', collision[1].h)
+                  .attr('fill', 'green')
 
     svgContainer.append('line')
                 .attr('x1', 0)
