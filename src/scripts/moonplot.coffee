@@ -19,6 +19,9 @@ HTMLWidgets.widget
     ]
     ylabels = [
       'Kidsasdfsafsadfasdf'
+      'Kidsasdfsafsadfasdf'
+      'Kidsasdfsafsadfasdf'
+      'Kidsasdfsafsadfasdf'
       'Teensasldjflkas;jflkajf;lajslfjasdfasdfasdfasdfsadfadf'
       'Enjoy lifeasdfasfsadfsdfasdfsdfsdfsafsfd'
       'Picks you upasdfsadfsadfsafasdfasdf'
@@ -53,6 +56,9 @@ HTMLWidgets.widget
     ]
     yCoords1 = [
       -1.4490230
+      -1.4490230
+      -1.4490230
+      -1.4490230
       0.2237083
       -0.4205097
       1.4263324
@@ -65,6 +71,9 @@ HTMLWidgets.widget
       -0.7609452
     ]
     yCoords2 = [
+      0.4344938
+      0.4344938
+      0.4344938
       0.4344938
       -1.4961307
       -1.4531428
@@ -79,6 +88,9 @@ HTMLWidgets.widget
     ]
     ySizes = [
       1.5000000
+      1.5000000
+      1.5000000
+      1.5000000
       0.6266882
       0.6970214
       0.9217203
@@ -91,6 +103,9 @@ HTMLWidgets.widget
       0.9335861
     ]
     yRotation = [
+      -16.69151
+      -16.69151
+      -16.69151
       -16.69151
       -81.49588
       73.86064
@@ -230,6 +245,7 @@ HTMLWidgets.widget
                               .attr('cursor', 'all-scroll')
                               .attr('text-anchor', 'start')
                               .style('font-family', 'Arial')
+                              .attr('title', (d) -> d.name)
                               .text (d) -> d.name
                               .call(drag)
 
@@ -398,6 +414,7 @@ HTMLWidgets.widget
                     .attr('text-anchor', 'end')
                     .attr('cursor', 'all-scroll')
                     .style('font-family', 'Arial')
+                    .attr('title', ylabels[i])
                     .text ylabels[i]
                     .call(drag)
 
@@ -414,6 +431,7 @@ HTMLWidgets.widget
                     .attr('text-anchor', 'start')
                     .attr('cursor', 'all-scroll')
                     .style('font-family', 'Arial')
+                    .attr('title', ylabels[i])
                     .text ylabels[i]
                     .call(drag)
 
