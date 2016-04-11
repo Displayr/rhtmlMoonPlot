@@ -47,16 +47,19 @@ detectSurfaceCollisions = (polar_coords, length_of_line) ->
   collisions
 
 # Move the colliding pairs after collision is detected
-moveSurfaceCollsions = (polar_coords, length_of_line) ->
+moveSurfaceCollsions = (polar_coords, length_of_line, radius) ->
+  for pc in polar_coords
+    pc.r = radius
+
   move_amount = 0.2 / 360 * 2 * Math.PI # deg to rad
-  altitude_incr = length_of_line / 360 / 500
+  altitude_incr = 0
   collisions = detectSurfaceCollisions(polar_coords, length_of_line)
 
   max_moves = 100
-  console.log altitude_incr
   while collisions.length > 0 and max_moves > 0
     max_moves--
     console.log 'Moved surface labels'
+    console.log polar_coords
     for pc in polar_coords
       if pc.collision_l
         # Save original coords
@@ -78,7 +81,7 @@ moveSurfaceCollsions = (polar_coords, length_of_line) ->
         pc.collision_r = false
         pc.r += altitude_incr
 
-    collisions = detectSurfaceCollisions(polar_coords, length_of_line)
+      collisions = detectSurfaceCollisions(polar_coords, length_of_line)
 
 
 # Convert Cartesian to polar coordinates
@@ -111,3 +114,20 @@ positionAlongLine = (rad, length_of_line) ->
 
 calculateLabelRotation = (angle_rad) ->
   angle_rad / 2 / Math.PI * 360
+
+maxNum = (arrayOfNums) ->
+  max = arrayOfNums[0]
+  for num in arrayOfNums
+    max = num if num > max
+  max
+
+minNum = (arrayOfNums) ->
+  min = arrayOfNums[0]
+  for num in arrayOfNums
+    min = num if num < min
+  min
+
+addRadius = (cartesian_coords, radius) ->
+  polar_coords = polarCoords cartesian_coords
+  for pc in polar_coords
+    console.log pc.r

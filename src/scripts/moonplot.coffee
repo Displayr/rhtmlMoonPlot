@@ -104,6 +104,18 @@ HTMLWidgets.widget
       59.80021
     ]
 
+    # Normalize lunar surface x, y coords
+    # i = 0
+    # maxSurfaceX = maxNum yCoords1
+    # minSurfaceX = minNum yCoords1
+    # maxSurfaceY = maxNum yCoords2
+    # minSurfaceY = minNum yCoords2
+    #
+    # while i < yCoords1.length
+    #   yCoords1[i] = (yCoords1[i] - minSurfaceX)/ (maxSurfaceX - minSurfaceX) * 2 - 1
+    #   yCoords2[i] = (yCoords2[i] - minSurfaceY)/ (maxSurfaceY - minSurfaceY) * 2 - 1
+    #   i++
+
     svgContainer = d3.select('body')
                      .append('svg')
                      .attr('width', width)
@@ -317,14 +329,30 @@ HTMLWidgets.widget
                   .attr('width', polar_coord.h)
                   .attr('height', polar_coord.h)
                   .attr('stroke', 'red')
-    moveSurfaceCollsions(polar_coords, length_of_line)
+
+    moveSurfaceCollsions(polar_coords, length_of_line, radius)
     cart_coords = cartesianCoords polar_coords
 
     # ----------------------------------------------
+    cartesian_coords = cartesianCoords polar_coords
+    for pc in polar_coords
+      if pc.oa
+        cc = cartesianCoord {
+          a: pc.oa
+          r: pc.or
+          h: pc.h
+        }
+        x =  cc.x + xCenter
+        y = -cc.y + yCenter
+        svgContainer.append('circle')
+                    .attr('cx', x)
+                    .attr('cy', y)
+                    .attr('r', 3)
+                    .attr('fill', 'black')
     i = 0
     while i < ylabels.length
-      x = cart_coords[i].x * radius * 0.7 + xCenter
-      y = -cart_coords[i].y * radius * 0.7 + yCenter
+      x =  cart_coords[i].x + xCenter
+      y = -cart_coords[i].y + yCenter
       rotation = calculateLabelRotation(polarCoord(cart_coords[i]).a)
 
       if cart_coords[i].x < 0
@@ -352,8 +380,6 @@ HTMLWidgets.widget
                     .text ylabels[i]
                     .call(drag)
       i++
-
-
     #-----------------------------------------------
     for polar_coord in polar_coords
       svgContainer.append('rect')
