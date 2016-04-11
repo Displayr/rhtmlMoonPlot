@@ -20,15 +20,15 @@ HTMLWidgets.widget
     ylabels = [
       'Kidsasdfsafsadfasdf'
       'Teensasldjflkas;jflkajf;lajslfjasdfasdfasdfasdfsadfadf'
-      'Enjoy life'
-      'Picks you up'
-      'Refreshes'
-      'Cheers you up'
+      'Enjoy lifeasdfasfsadfsdfasdfsdfsdfsafsfd'
+      'Picks you upasdfsadfsadfsafasdfasdf'
+      'Refreshesasdfsadfasdfsafdsafasdfafsafasdfsadfsadf'
+      'Cheers you upasdfsadfsafasdfsadfwewerwerwfewfwefwefe'
       'Energysadfsadfsafadsfasdfasdfasfas'
-      'Up-to-date'
+      'Up-to-dateasdfsadfsdafsadfasdfaefweferrqrwrweqwewqew'
       'Funasdfsafsdfadsfasdfadsf'
-      'When tired'
-      'Relax'
+      'When tiredasdfsadfweffewfdfvvdsfsdfewtqtqerqwerqwerwe'
+      'RelaxerqfewfwefwefSDfsgf sdfsdfaewarewf'
     ]
     xCoords1 = [
       -0.24883943
