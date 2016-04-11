@@ -277,7 +277,7 @@ HTMLWidgets.widget
 
       if yCoords1[i] < 0
         t = svgContainer.append('text')
-                    .style('fill', 'black')
+                    .style('fill', 'white')
                     .attr('x', x)
                     .attr('y', y)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
@@ -289,7 +289,7 @@ HTMLWidgets.widget
                     .call(drag)
       else
         t = svgContainer.append('text')
-                    .style('fill', 'black')
+                    .style('fill', 'white')
                     .attr('y', y)
                     .attr('x', x)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
@@ -303,7 +303,6 @@ HTMLWidgets.widget
         x: yCoords1[i]
         y: yCoords2[i]
         h: t[0][0].getBBox().height
-
       i++
 
 
@@ -317,7 +316,68 @@ HTMLWidgets.widget
                   .attr('width', polar_coord.h)
                   .attr('height', polar_coord.h)
                   .attr('stroke', 'red')
+    moveSurfaceCollsions(polar_coords, length_of_line)
+    cart_coords = cartesianCoords polar_coords
+
+    # ----------------------------------------------
+    i = 0
+    while i < ylabels.length
+      x = cart_coords[i].x * radius * 0.7 + xCenter
+      y = -cart_coords[i].y * radius * 0.7 + yCenter
+
+
+      if yCoords1[i] < 0
+        svgContainer.append('text')
+                    .style('fill', 'blue')
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('font-size', (ySizes[i] * 20).toString() + 'px')
+                    .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
+                    .attr('text-anchor', 'end')
+                    .attr('cursor', 'all-scroll')
+                    .style('font-family', 'Arial')
+                    .text ylabels[i]
+                    .call(drag)
+      else
+        svgContainer.append('text')
+                    .style('fill', 'blue')
+                    .attr('y', y)
+                    .attr('x', x)
+                    .attr('font-size', (ySizes[i] * 20).toString() + 'px')
+                    .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
+                    .attr('text-anchor', 'start')
+                    .attr('cursor', 'all-scroll')
+                    .style('font-family', 'Arial')
+                    .text ylabels[i]
+                    .call(drag)
+      i++
+
+
+    #-----------------------------------------------
+
+
+
+
+
+    for polar_coord in polar_coords
+      svgContainer.append('rect')
+                  .attr('x', positionAlongLine polar_coord.a, length_of_line)
+                  .attr('y', height-polar_coord.h)
+                  .attr('width', polar_coord.h)
+                  .attr('height', polar_coord.h)
+                  .attr('fill', 'blue')
+
+
+
+    svgContainer.append('line')
+                .attr('x1', 0)
+                .attr('y1', height)
+                .attr('x2', length_of_line)
+                .attr('y2', height)
+                .attr('stroke-width', 1)
+                .attr('stroke', 'black')
     collisions = detectSurfaceCollisions(polar_coords, length_of_line)
+
     for collision in collisions
       svgContainer.append('rect')
                   .attr('x', positionAlongLine collision[0].a, length_of_line)
@@ -332,13 +392,7 @@ HTMLWidgets.widget
                   .attr('height', collision[1].h)
                   .attr('fill', 'green')
 
-    svgContainer.append('line')
-                .attr('x1', 0)
-                .attr('y1', height)
-                .attr('x2', length_of_line)
-                .attr('y2', height)
-                .attr('stroke-width', 1)
-                .attr('stroke', 'black')
+
 
 #    console.log polar_coords
 

@@ -21,6 +21,7 @@ drawCross = (svg, x, y) ->
 # Detect if there is intersection between lunar surface labels
 # Return the pairs of collisions
 detectSurfaceCollisions = (polar_coords, length_of_line) ->
+  error_allowed = 10
   collisions = []
   i = 0
   while i < polar_coords.length
@@ -31,23 +32,32 @@ detectSurfaceCollisions = (polar_coords, length_of_line) ->
       p2 = polar_coords[j]
       j++
       unless p1 == p2
-        p1l = positionAlongLine p1.a, length_of_line
-        p1r = p1l + p1.h
-        p2l = positionAlongLine p2.a, length_of_line
-        p2r = p2l + p2.h
-
-        if (p1r > p2l and p1l < p2r) or (p2r > p1l and p2l < p1r)
+        p1l = positionAlongLine(p1.a, length_of_line) + error_allowed
+        p1r = p1l + p1.h - error_allowed
+        p2l = positionAlongLine(p2.a, length_of_line) + error_allowed
+        p2r = p2l + p2.h - error_allowed
+        if p1r > p2l and p1l < p2r
+          p1.collision_r = true
+          p2.collision_l = true
           collisions.push [p1, p2]
-          console.log p1l
-          console.log p1r
-          console.log p2l
-          console.log p2r
-          console.log '------------'
-
-
-
-  console.log collisions
+        else if p2r > p1l and p2l < p1r
+          p1.collision_l = true
+          p2.collision_r = true
+          collisions.push [p1, p2]
   collisions
+
+# Move the colliding pairs after collision is detected
+moveSurfaceCollsions = (polar_coords, length_of_line) ->
+  move_amount = 4 / 360 * 2 * Math.PI # deg to rad
+  collisions = detectSurfaceCollisions(polar_coords, length_of_line)
+  console.log collisions
+
+
+  for pc in polar_coords
+    if pc.collision_l
+      pc.a -= move_amount
+    else if pc.collision_r
+      pc.a += move_amount
 
 
 # Convert Cartesian to polar coordinates
