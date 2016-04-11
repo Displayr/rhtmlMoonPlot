@@ -335,13 +335,14 @@ HTMLWidgets.widget
     polar_coords = polarCoords cart_coords
     length_of_line = radius * 2 * Math.PI
 
-    for polar_coord in polar_coords
-      svgContainer.append('rect')
-                  .attr('x', positionAlongLine polar_coord.a, length_of_line)
-                  .attr('y', height-polar_coord.h)
-                  .attr('width', polar_coord.h)
-                  .attr('height', polar_coord.h)
-                  .attr('stroke', 'red')
+    #  Debugging code
+    # for polar_coord in polar_coords
+    #   svgContainer.append('rect')
+    #               .attr('x', positionAlongLine polar_coord.a, length_of_line)
+    #               .attr('y', height-polar_coord.h)
+    #               .attr('width', polar_coord.h)
+    #               .attr('height', polar_coord.h)
+    #               .attr('stroke', 'red')
 
     moveSurfaceCollsions(polar_coords, length_of_line, radius)
     cart_coords = cartesianCoords polar_coords
@@ -412,42 +413,39 @@ HTMLWidgets.widget
                     .text ylabels[i]
                     .call(drag)
       i++
+
     #-----------------------------------------------
-    for polar_coord in polar_coords
-      svgContainer.append('rect')
-                  .attr('x', positionAlongLine polar_coord.a, length_of_line)
-                  .attr('y', height-polar_coord.h)
-                  .attr('width', polar_coord.h)
-                  .attr('height', polar_coord.h)
-                  .attr('fill', 'blue')
-
-
-
-    svgContainer.append('line')
-                .attr('x1', 0)
-                .attr('y1', height)
-                .attr('x2', length_of_line)
-                .attr('y2', height)
-                .attr('stroke-width', 1)
-                .attr('stroke', 'black')
-    collisions = detectSurfaceCollisions(polar_coords, length_of_line)
-
-    for collision in collisions
-      svgContainer.append('rect')
-                  .attr('x', positionAlongLine collision[0].a, length_of_line)
-                  .attr('y', height-collision[0].h)
-                  .attr('width', collision[0].h)
-                  .attr('height', collision[0].h)
-                  .attr('fill', 'blue')
-      svgContainer.append('rect')
-                  .attr('x', positionAlongLine collision[1].a, length_of_line)
-                  .attr('y', height-collision[1].h)
-                  .attr('width', collision[1].h)
-                  .attr('height', collision[1].h)
-                  .attr('fill', 'green')
-
-
-
+    # Debugging code
+    # for polar_coord in polar_coords
+    #   svgContainer.append('rect')
+    #               .attr('x', positionAlongLine polar_coord.a, length_of_line)
+    #               .attr('y', height-polar_coord.h)
+    #               .attr('width', polar_coord.h)
+    #               .attr('height', polar_coord.h)
+    #               .attr('fill', 'blue')
+    #
+    # svgContainer.append('line')
+    #             .attr('x1', 0)
+    #             .attr('y1', height)
+    #             .attr('x2', length_of_line)
+    #             .attr('y2', height)
+    #             .attr('stroke-width', 1)
+    #             .attr('stroke', 'black')
+    # collisions = detectSurfaceCollisions(polar_coords, length_of_line)
+    #
+    # for collision in collisions
+    #   svgContainer.append('rect')
+    #               .attr('x', positionAlongLine collision[0].a, length_of_line)
+    #               .attr('y', height-collision[0].h)
+    #               .attr('width', collision[0].h)
+    #               .attr('height', collision[0].h)
+    #               .attr('fill', 'blue')
+    #   svgContainer.append('rect')
+    #               .attr('x', positionAlongLine collision[1].a, length_of_line)
+    #               .attr('y', height-collision[1].h)
+    #               .attr('width', collision[1].h)
+    #               .attr('height', collision[1].h)
+    #               .attr('fill', 'green')
 
 
     el.id = svgContainer
