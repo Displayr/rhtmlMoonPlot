@@ -104,18 +104,6 @@ HTMLWidgets.widget
       59.80021
     ]
 
-    # Normalize lunar surface x, y coords
-    # i = 0
-    # maxSurfaceX = maxNum yCoords1
-    # minSurfaceX = minNum yCoords1
-    # maxSurfaceY = maxNum yCoords2
-    # minSurfaceY = minNum yCoords2
-    #
-    # while i < yCoords1.length
-    #   yCoords1[i] = (yCoords1[i] - minSurfaceX)/ (maxSurfaceX - minSurfaceX) * 2 - 1
-    #   yCoords2[i] = (yCoords2[i] - minSurfaceY)/ (maxSurfaceY - minSurfaceY) * 2 - 1
-    #   i++
-
     svgContainer = d3.select('body')
                      .append('svg')
                      .attr('width', width)
@@ -342,13 +330,19 @@ HTMLWidgets.widget
           r: pc.or
           h: pc.h
         }
+        cc_new = cartesianCoord pc
+
         x =  cc.x + xCenter
         y = -cc.y + yCenter
-        svgContainer.append('circle')
-                    .attr('cx', x)
-                    .attr('cy', y)
-                    .attr('r', 3)
-                    .attr('fill', 'black')
+        x_new =  cc_new.x + xCenter
+        y_new = -cc_new.y + yCenter
+        svgContainer.append('line')
+                    .attr('x1', x)
+                    .attr('y1', y)
+                    .attr('x2', x_new)
+                    .attr('y2', y_new)
+                    .attr('stroke', 'gray')
+                    .attr('stroke-width', 0.6)
     i = 0
     while i < ylabels.length
       x =  cart_coords[i].x + xCenter
@@ -413,11 +407,6 @@ HTMLWidgets.widget
                   .attr('width', collision[1].h)
                   .attr('height', collision[1].h)
                   .attr('fill', 'green')
-
-
-
-#    console.log polar_coords
-
 
 
 
