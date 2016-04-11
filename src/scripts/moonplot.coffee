@@ -304,8 +304,8 @@ HTMLWidgets.widget
         .attr('x2', (d) -> d.x)
         .attr('y2', (d) -> d.y)
 
-    for core_label in lunar_core_labels_svg
-      console.log core_label
+    # for core_label in lunar_core_labels_svg
+      # console.log core_label
 
 
 
