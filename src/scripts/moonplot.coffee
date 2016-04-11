@@ -150,6 +150,8 @@ HTMLWidgets.widget
           if surface_link.x2.toString() == ox and surface_link.y2.toString() == oy
             surface_link.x2 = d3.select(this).attr('x')
             surface_link.y2 = d3.select(this).attr('y')
+            d3.select(this).attr('ox', surface_link.x2)
+                           .attr('oy', surface_link.y2)
 
       svgContainer.selectAll('.surface-link')
         .data(lunar_surface_links)
