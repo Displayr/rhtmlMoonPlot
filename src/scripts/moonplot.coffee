@@ -99,22 +99,6 @@ HTMLWidgets.widget
       0.8850954
       0.9335861
     ]
-    yRotation = [
-      -16.69151
-      -16.69151
-      -16.69151
-      -16.69151
-      -81.49588
-      73.86064
-      19.46150
-      56.89981
-      12.63329
-      24.87320
-      13.30160
-      -14.05532
-      15.94379
-      59.80021
-    ]
     lunar_surface_links = []
     lunar_core_labels_svg = []
     lunar_core_labels = []
@@ -142,8 +126,6 @@ HTMLWidgets.widget
 
     # Add cross to middle of circle
     drawCross(svgContainer, xCenter, yCenter)
-
-
 
 
     # Lunar core labels
@@ -274,7 +256,6 @@ HTMLWidgets.widget
                     .attr('x', x)
                     .attr('y', y)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
-                    .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                     .attr('text-anchor', 'end')
                     .attr('cursor', 'all-scroll')
                     .style('font-family', 'Arial')
@@ -287,7 +268,6 @@ HTMLWidgets.widget
                     .attr('y', y)
                     .attr('x', x)
                     .attr('font-size', (ySizes[i] * 20).toString() + 'px')
-                    .attr('transform', 'rotate(' + (-yRotation[i]).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                     .attr('text-anchor', 'start')
                     .attr('cursor', 'all-scroll')
                     .style('font-family', 'Arial')
