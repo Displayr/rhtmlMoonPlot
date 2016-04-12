@@ -131,7 +131,7 @@ condenseSurfaceLabel = (surface_label, viewport_height, viewport_width) ->
 adjustSurfaceLabelLength = (surface_labels, view_height, view_width) ->
   for surface_label in surface_labels
     if detectViewportCollision surface_label, view_height, view_width
-      condenseSurfaceLabel surface_label, view_height, view_width  
+      condenseSurfaceLabel surface_label, view_height, view_width
 
 # Detect collisions with lunar core labels and moon surface
 detectCoreLabelBoundaryCollision = (core_label, radius, cx, cy) ->

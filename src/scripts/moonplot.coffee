@@ -4,9 +4,6 @@ HTMLWidgets.widget
   name: 'moonplot'
   type: 'output'
   initialize: (el, width, height) ->
-
-
-
     xlabels = [
       'Cokeasdfsafasfwefwefwefweqwerqwr wr qwrqwerwqerqwrq'
       'Vasdfsafasfasdfadf'
@@ -118,6 +115,10 @@ HTMLWidgets.widget
       15.94379
       59.80021
     ]
+    lunar_surface_links = []
+    lunar_core_labels_svg = []
+    lunar_core_labels = []
+    drag = null
 
     svgContainer = d3.select('body')
                      .append('svg')
@@ -126,73 +127,6 @@ HTMLWidgets.widget
     xCenter = 400
     yCenter = 300
     radius = Math.min(height, width) / 3
-
-    # Drag and drop functionality
-    dragMove = () ->
-      d3.select(this)
-        .attr('x', d3.select(this).x = d3.event.x)
-        .attr('y', d3.select(this).y = d3.event.y)
-        .attr('cursor', 'all-scroll')
-
-      # Save the new location of text so links can be redrawn
-      for core_label in lunar_core_labels
-        if d3.select(this).attr('title') == core_label.id
-          core_label.x = d3.event.x
-          core_label.y = d3.event.y
-
-    dragStart = ->
-      svgContainer.selectAll('.core-link').remove()
-      svgContainer.selectAll('.surface-link').remove()
-      d3.select(this).style('fill', 'red')
-
-    dragEnd = ->
-      # console.log lunar_core_labels
-      lunar_core_links_svg = svgContainer.selectAll('.core-link')
-                          .data(lunar_core_labels)
-                          .enter()
-                          .append('line')
-                          .attr('class', 'core-link')
-                          .attr('x1', (d) -> d.ox)
-                          .attr('y1', (d) -> d.oy)
-                          .attr('x2', (d) -> d.x)
-                          .attr('y2', (d) -> d.y)
-                          .attr('stroke-width', 0.6)
-                          .attr('stroke', 'gray')
-
-      if d3.select(this).attr('ox')
-        ox = d3.select(this).attr('ox').toString()
-        oy = d3.select(this).attr('oy').toString()
-        for surface_link in lunar_surface_links
-          if surface_link.x2.toString() == ox and surface_link.y2.toString() == oy
-            surface_link.x2 = d3.select(this).attr('x')
-            surface_link.y2 = d3.select(this).attr('y')
-            d3.select(this).attr('ox', surface_link.x2)
-                           .attr('oy', surface_link.y2)
-
-      svgContainer.selectAll('.surface-link')
-        .data(lunar_surface_links)
-        .enter()
-        .append('line')
-        .attr('class', 'surface-link')
-        .attr('x1', (d) -> d.x1)
-        .attr('y1', (d) -> d.y1)
-        .attr('x2', (d) -> d.x2)
-        .attr('y2', (d) -> d.y2)
-        .attr('stroke-width', 0.6)
-        .attr('stroke', 'gray')
-
-      d3.select(this).style('fill', 'black')
-      adjustCoreLabelLength(lunar_core_labels_svg[0], radius, xCenter, yCenter)
-
-
-    drag = d3.behavior.drag()
-             .origin(() ->
-               t = d3.select(this)
-               {x: t.attr("x"), y: t.attr("y")}
-              )
-             .on('dragstart', dragStart)
-             .on('drag', dragMove)
-             .on('dragend', dragEnd)
 
     mouseDownEvent = ->
 
@@ -209,10 +143,12 @@ HTMLWidgets.widget
     # Add cross to middle of circle
     drawCross(svgContainer, xCenter, yCenter)
 
+
+
+
     # Lunar core labels
     i = 0
     anchor_array = []
-    lunar_core_labels = []
     while i < xlabels.length
       # Block lunar core labels from escaping the moon
       threshold = 1
@@ -239,6 +175,14 @@ HTMLWidgets.widget
 
       i++
 
+
+    drag = setupDragAndDrop(svgContainer,
+                            lunar_core_labels,
+                            lunar_surface_links,
+                            radius,
+                            xCenter,
+                            yCenter)
+
     lunar_core_labels_svg = svgContainer.selectAll('.core-label')
                               .data(lunar_core_labels)
                               .enter()
@@ -255,6 +199,7 @@ HTMLWidgets.widget
                               .attr('title', (d) -> d.name)
                               .text (d) -> d.name
                               .call(drag)
+
 
     # Size of each labeler
     for core_label in lunar_core_labels_svg[0]
@@ -312,7 +257,6 @@ HTMLWidgets.widget
         .attr('y2', (d) -> d.y)
 
     adjustCoreLabelLength(lunar_core_labels_svg[0], radius, xCenter, yCenter)
-
     # ----------------------------------------------------------------
 
     # Loop through lunar surface labels
@@ -373,7 +317,6 @@ HTMLWidgets.widget
 
 
     # Plot the surface links
-    lunar_surface_links = []
     for pc in polar_coords
       if pc.oa
         cc = cartesianCoord {
@@ -447,6 +390,7 @@ HTMLWidgets.widget
       i++
 
     adjustSurfaceLabelLength lunar_surface_labels, height, width
+
 
     #-----------------------------------------------
     # Debugging code
