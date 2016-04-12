@@ -6,6 +6,7 @@ setupDragAndDrop = (svg,
                     xCenter,
                     yCenter) ->
 
+
   dragStart = () ->
     svg.selectAll('.core-link').remove()
     svg.selectAll('.surface-link').remove()

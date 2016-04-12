@@ -112,21 +112,8 @@ HTMLWidgets.widget
     yCenter = 300
     radius = Math.min(height, width) / 3
 
-    mouseDownEvent = ->
-
-    svgContainer.append('circle')
-                .attr('cx', xCenter)
-                .attr('cy', yCenter)
-                .attr('r', radius)
-                .style('fill', 'none')
-                .style('stroke', 'black')
-                .style 'fill-opacity', 0.2
-                .on('mousedown', mouseDownEvent)
-
-
-    # Add cross to middle of circle
+    drawCircle(svgContainer, xCenter, yCenter, radius)
     drawCross(svgContainer, xCenter, yCenter)
-
 
     # Lunar core labels
     i = 0
