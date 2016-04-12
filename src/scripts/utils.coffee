@@ -151,3 +151,13 @@ condenseCoreLabel = (core_label, radius, cx, cy) ->
   while failsCoreLabelBoundaryRules(core_label, radius, cx, cy)
     d3.select(core_label).text(core_label.innerHTML.slice(0, -1))
   d3.select(core_label).text(core_label.innerHTML.slice(0, -3) + '...')
+
+extendFullLabelName = (labels) ->
+  for label in labels
+    d3.select(label).text(d3.select(label).attr('title'))
+
+adjustCoreLabelLength = (core_labels, radius, cx, cy) ->
+  extendFullLabelName(core_labels)
+  for core_label in core_labels
+    if failsCoreLabelBoundaryRules(core_label, radius, cx, cy)
+      condenseCoreLabel core_label, radius, cx, cy

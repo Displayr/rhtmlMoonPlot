@@ -14,7 +14,7 @@ HTMLWidgets.widget
       'Lift Plusasfasfsadfsadf'
       'Diet Cokerwqrwerq wrwqrwqrwffq qefwewqrwer sdf'
       'Fantaasdfsadfsafew wcwefwfawfwefwa dsfadsf'
-      'Lift'
+      'Lift51523423c4214c234124c234 4c124c4c234 34c2423'
       'Pepsi'
     ]
     ylabels = [
@@ -182,6 +182,8 @@ HTMLWidgets.widget
         .attr('stroke', 'gray')
 
       d3.select(this).style('fill', 'black')
+      adjustCoreLabelLength(lunar_core_labels_svg[0], radius, xCenter, yCenter)
+
 
     drag = d3.behavior.drag()
              .origin(() ->
@@ -309,16 +311,12 @@ HTMLWidgets.widget
         .attr('x2', (d) -> d.x)
         .attr('y2', (d) -> d.y)
 
-    for core_label in lunar_core_labels_svg[0]
-      if failsCoreLabelBoundaryRules(core_label, radius, xCenter, yCenter)
-        condenseCoreLabel core_label, radius, xCenter, yCenter
-
-
+    adjustCoreLabelLength(lunar_core_labels_svg[0], radius, xCenter, yCenter)
 
     # ----------------------------------------------------------------
-    cart_coords = []
 
     # Loop through lunar surface labels
+    cart_coords = []
     t = null
     i = 0
     while i < ylabels.length
