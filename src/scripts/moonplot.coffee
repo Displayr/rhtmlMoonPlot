@@ -8,12 +8,12 @@ HTMLWidgets.widget
 
 
     xlabels = [
-      'Coke'
-      'V'
+      'Cokeasdfsafasfwefwefwefweqwerqwr wr qwrqwerwqerqwrq'
+      'Vasdfsafasfasdfadf'
       'Red Bullasdfdsfasfdsadfsadfasfsadfsa'
-      'Lift Plus'
-      'Diet Coke'
-      'Fanta'
+      'Lift Plusasfasfsadfsadf'
+      'Diet Cokerwqrwerq wrwqrwqrwffq qefwewqrwer sdf'
+      'Fantaasdfsadfsafew wcwefwfawfwefwa dsfadsf'
       'Lift'
       'Pepsi'
     ]
@@ -304,8 +304,9 @@ HTMLWidgets.widget
         .attr('x2', (d) -> d.x)
         .attr('y2', (d) -> d.y)
 
-    for core_label in lunar_core_labels_svg
-      console.log core_label
+    for core_label in lunar_core_labels_svg[0]
+      if failsCoreLabelBoundaryRules(core_label, radius, xCenter, yCenter)
+        condenseCoreLabel core_label, radius, xCenter, yCenter
 
 
 

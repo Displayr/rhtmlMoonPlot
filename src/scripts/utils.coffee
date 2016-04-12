@@ -55,7 +55,7 @@ moveSurfaceCollsions = (polar_coords, length_of_line, radius) ->
   altitude_incr = 0.05 * length_of_line / 360
   collisions = detectSurfaceCollisions(polar_coords, length_of_line)
 
-  max_moves = 100
+  max_moves = 500
   while collisions.length > 0 and max_moves > 0
     max_moves--
     console.log 'Moved surface labels'
@@ -121,3 +121,27 @@ detectViewportCollision = (box, viewport_height, viewport_width) ->
   box.top = box.y
   box.bottom = box.y + box.width
   box.left < 0 or box.bottom > viewport_height or box.right > viewport_width or box.top < 0
+
+# Detect collisions with lunar core labels and moon surface
+detectCoreLabelBoundaryCollision = (core_label, radius, cx, cy) ->
+  core_label_bb = core_label.getBBox()
+  y_right = core_label_bb.y
+  x_right = core_label_bb.x + core_label_bb.width
+
+  # Calculate circle boundary using parametric eq for circle
+  angle = Math.asin((y_right - cy)/radius)
+  circle_boundary_right = cx + radius*Math.cos(angle)
+
+  circle_boundary_right < x_right
+
+coreLabelTooLong = (core_label, radius) ->
+  core_label.getBBox().width > radius
+
+failsCoreLabelBoundaryRules = (core_label, radius, cx, cy) ->
+  detectCoreLabelBoundaryCollision(core_label, radius, cx, cy) or
+    coreLabelTooLong(core_label, radius)
+
+condenseCoreLabel = (core_label, radius, cx, cy) ->
+  while failsCoreLabelBoundaryRules(core_label, radius, cx, cy)
+    d3.select(core_label).text(core_label.innerHTML.slice(0, -1))
+  d3.select(core_label).text(core_label.innerHTML.slice(0, -3) + '...')
