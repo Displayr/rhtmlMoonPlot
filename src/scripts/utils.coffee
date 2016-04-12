@@ -114,13 +114,19 @@ positionAlongLine = (rad, length_of_line) ->
 calculateLabelRotation = (angle_rad) ->
   angle_rad / 2 / Math.PI * 360
 
-
-detectViewportCollision = (box, viewport_height, viewport_width) ->
+detectViewportCollision = (surface_label, viewport_height, viewport_width) ->
+  box = surface_label.getBBox()
   box.right = box.x + box.width
   box.left = box.x
   box.top = box.y
   box.bottom = box.y + box.width
   box.left < 0 or box.bottom > viewport_height or box.right > viewport_width or box.top < 0
+
+condenseSurfaceLabel = (surface_label, viewport_height, viewport_width) ->
+  # Throw away chars one at a time and check if still collides w/viewport
+  while detectViewportCollision surface_label, viewport_height, viewport_width
+    d3.select(surface_label).text(surface_label.innerHTML.slice(0, -1))
+  d3.select(surface_label).text(surface_label.innerHTML.slice(0, -3) + '...')
 
 # Detect collisions with lunar core labels and moon surface
 detectCoreLabelBoundaryCollision = (core_label, radius, cx, cy) ->

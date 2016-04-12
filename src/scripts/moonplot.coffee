@@ -444,22 +444,9 @@ HTMLWidgets.widget
       i++
 
     # Detect collisions of surface labels with viewport and add ellipsis
-    collision = false
     for surface_label in lunar_surface_labels
-      collision = false
-      bb = surface_label.getBBox()
-
-      # Throw away chars one at a time and check if still collides w/viewport
-      label_text = surface_label.innerHTML
-      while detectViewportCollision bb, height, width
-        d3.select(surface_label).text(surface_label.innerHTML.slice(0, -1))
-        bb = surface_label.getBBox()
-        collision = true
-
-      if collision
-        d3.select(surface_label).text(surface_label.innerHTML.slice(0, -3) + '...')
-
-
+      if detectViewportCollision surface_label, height, width
+        condenseSurfaceLabel surface_label, height, width
 
     #-----------------------------------------------
     # Debugging code
