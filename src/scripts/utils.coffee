@@ -128,6 +128,11 @@ condenseSurfaceLabel = (surface_label, viewport_height, viewport_width) ->
     d3.select(surface_label).text(surface_label.innerHTML.slice(0, -1))
   d3.select(surface_label).text(surface_label.innerHTML.slice(0, -3) + '...')
 
+adjustSurfaceLabelLength = (surface_labels, view_height, view_width) ->
+  for surface_label in surface_labels
+    if detectViewportCollision surface_label, view_height, view_width
+      condenseSurfaceLabel surface_label, view_height, view_width  
+
 # Detect collisions with lunar core labels and moon surface
 detectCoreLabelBoundaryCollision = (core_label, radius, cx, cy) ->
   core_label_bb = core_label.getBBox()

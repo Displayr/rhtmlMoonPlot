@@ -446,10 +446,7 @@ HTMLWidgets.widget
       lunar_surface_labels.push t[0][0]
       i++
 
-    # Detect collisions of surface labels with viewport and add ellipsis
-    for surface_label in lunar_surface_labels
-      if detectViewportCollision surface_label, height, width
-        condenseSurfaceLabel surface_label, height, width
+    adjustSurfaceLabelLength lunar_surface_labels, height, width
 
     #-----------------------------------------------
     # Debugging code
