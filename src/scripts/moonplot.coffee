@@ -134,6 +134,7 @@ HTMLWidgets.widget
         .attr('y', d3.select(this).y = d3.event.y)
         .attr('cursor', 'all-scroll')
 
+      # Save the new location of text so links can be redrawn
       for core_label in lunar_core_labels
         if d3.select(this).attr('title') == core_label.id
           core_label.x = d3.event.x
