@@ -134,23 +134,23 @@ HTMLWidgets.widget
         .attr('y', d3.select(this).y = d3.event.y)
         .attr('cursor', 'all-scroll')
 
-      draggedInnerText =  this.innerHTML
-      draggedText = _.find lunar_core_labels, (e) -> e.name is draggedInnerText
-      if draggedText
-        draggedText.x =  d3.event.x
-        draggedText.y =  d3.event.y
+      for core_label in lunar_core_labels
+        if d3.select(this).attr('title') == core_label.id
+          core_label.x = d3.event.x
+          core_label.y = d3.event.y
 
     dragStart = ->
-      svgContainer.selectAll('.link').remove()
+      svgContainer.selectAll('.core-link').remove()
       svgContainer.selectAll('.surface-link').remove()
       d3.select(this).style('fill', 'red')
 
     dragEnd = ->
-      lunar_core_links_svg = svgContainer.selectAll('.link')
+      # console.log lunar_core_labels
+      lunar_core_links_svg = svgContainer.selectAll('.core-link')
                           .data(lunar_core_labels)
                           .enter()
                           .append('line')
-                          .attr('class', 'link')
+                          .attr('class', 'core-link')
                           .attr('x1', (d) -> d.ox)
                           .attr('y1', (d) -> d.oy)
                           .attr('x2', (d) -> d.x)
@@ -229,19 +229,23 @@ HTMLWidgets.widget
         x: x
         y: y
         name: xlabels[i]
+        id: xlabels[i]
         ox: x
         oy: y
         })
 
       i++
 
-    lunar_core_labels_svg = svgContainer.selectAll('.label')
+    lunar_core_labels_svg = svgContainer.selectAll('.core-label')
                               .data(lunar_core_labels)
                               .enter()
                               .append('text')
                               .style('fill', 'black')
+                              .attr('class', 'core-label')
                               .attr('x', (d) -> d.x)
                               .attr('y', (d) -> d.y)
+                              .attr('ox', (d) -> d.x)
+                              .attr('oy', (d) -> d.y)
                               .attr('cursor', 'all-scroll')
                               .attr('text-anchor', 'start')
                               .style('font-family', 'Arial')
@@ -273,11 +277,11 @@ HTMLWidgets.widget
                       .attr('r', anchor.r)
 
     # Draw the links
-    lunar_core_links_svg = svgContainer.append('g').selectAll('.link')
+    lunar_core_links_svg = svgContainer.append('g').selectAll('.core-link')
                         .data(lunar_core_labels)
                         .enter()
                         .append('line')
-                        .attr('class', 'link')
+                        .attr('class', 'core-link')
                         .attr('x1', (d) -> d.x)
                         .attr('y1', (d) -> d.y)
                         .attr('x2', (d) -> d.x)
