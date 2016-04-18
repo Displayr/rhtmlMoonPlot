@@ -11,8 +11,7 @@ HTMLWidgets.widget
                      .attr('height', height)
     xCenter = width /2
     yCenter = height /2
-    # radius = Math.min(height, width) / 3
-    radius = 160
+    radius = Math.min(height, width) / 3
 
     drawCircle(svg, xCenter, yCenter, radius, height, width)
 

@@ -103,10 +103,12 @@ detectViewportCollision = (surface_label, viewport_height, viewport_width) ->
   box.left < 0 or box.bottom > viewport_height or box.right > viewport_width or box.top < 0
 
 condenseSurfaceLabel = (surface_label, viewport_height, viewport_width) ->
+  innerHTML = d3.select(surface_label)[0][0].textContent
   # Throw away chars one at a time and check if still collides w/viewport
   while detectViewportCollision surface_label, viewport_height, viewport_width
-    d3.select(surface_label).text(surface_label.innerHTML.slice(0, -1))
-  d3.select(surface_label).text(surface_label.innerHTML.slice(0, -3) + '...')
+    innerHTML = d3.select(surface_label)[0][0].textContent
+    d3.select(surface_label).text(innerHTML.slice(0, -1))
+  d3.select(surface_label).text(innerHTML.slice(0, -3) + '...')
 
 adjustSurfaceLabelLength = (surface_labels, view_height, view_width) ->
   for surface_label in surface_labels
@@ -133,9 +135,11 @@ failsCoreLabelBoundaryRules = (core_label, radius, cx, cy) ->
     coreLabelTooLong(core_label, radius)
 
 condenseCoreLabel = (core_label, radius, cx, cy) ->
+  innerHTML = d3.select(core_label)[0][0].textContent
   while failsCoreLabelBoundaryRules(core_label, radius, cx, cy)
-    d3.select(core_label).text(core_label.innerHTML.slice(0, -1))
-  d3.select(core_label).text(core_label.innerHTML.slice(0, -3) + '...')
+    innerHTML = d3.select(core_label)[0][0].textContent
+    d3.select(core_label).text(innerHTML.slice(0, -1))
+  d3.select(core_label).text(innerHTML.slice(0, -3) + '...')
 
 extendFullLabelName = (labels) ->
   for label in labels

@@ -11,3 +11,40 @@ dependencies:
     version: 1.1.0
     src: htmlwidgets/lib/victor
     script: victor.min.js
+  - name: lodash
+    version: 2.4.2
+    src: htmlwidgets/lib/lodash-2.4.2
+    script: lodash.min.js
+  - name: random
+    version: 1.0.8
+    src: htmlwidgets/lib/random
+    script: random.min.js
+
+  - name: d3-labeler
+    version: 1.0.0
+    src: htmlwidgets/lib/rhtmlMoonPlot
+    script: labeler.js
+  - name: moonplot-circle
+    version: 1.0.0
+    src: htmlwidgets/lib/rhtmlMoonPlot
+    script: circle.js
+  - name: moonplot-drag
+    version: 1.0.0
+    src: htmlwidgets/lib/rhtmlMoonPlot
+    script: drag.js
+  - name: moonplot-lunarCore
+    version: 1.0.0
+    src: htmlwidgets/lib/rhtmlMoonPlot
+    script: lunarCore.js
+  - name: moonplot-lunarSurface
+    version: 1.0.0
+    src: htmlwidgets/lib/rhtmlMoonPlot
+    script: lunarSurface.js
+  - name: moonplot-testData
+    version: 1.0.0
+    src: htmlwidgets/lib/rhtmlMoonPlot
+    script: testData.js
+  - name: moonplot-utils
+    version: 1.0.0
+    src: htmlwidgets/lib/rhtmlMoonPlot
+    script: utils.js

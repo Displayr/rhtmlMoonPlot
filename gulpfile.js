@@ -27,10 +27,15 @@ gulp.task('less', function () {
 gulp.task('compile-coffee', function () {
   var gulp_coffee = require("gulp-coffee");
 
-  gulp.src('src/scripts/**/*.coffee')
+  gulp.src('src/scripts/moonplot.coffee')
     .pipe(gulp_coffee({ bare: true }))
     .pipe(gulp.dest('dist/browser/scripts'))
     .pipe(gulp.dest('dist/package/inst/htmlwidgets/'));
+
+  gulp.src('src/scripts/lib/*.coffee')
+    .pipe(gulp_coffee({ bare: true }))
+    .pipe(gulp.dest('dist/browser/scripts'))
+    .pipe(gulp.dest('dist/package/inst/htmlwidgets/lib/rhtmlMoonPlot/'));
 });
 
 gulp.task('copy', function () {
@@ -41,10 +46,11 @@ gulp.task('copy', function () {
   }).pipe(gulp.dest('dist/browser'));
 
   gulp.src([
-    'src/scripts/labeler.js'
+    'src/scripts/lib/labeler.js'
   ], {
     dot: true
   }).pipe(gulp.dest('dist/browser/scripts'))
+  .pipe(gulp.dest('dist/package/inst/htmlwidgets/lib/rhtmlMoonPlot'));
 
   gulp.src([
     'bower_components/**/*'
