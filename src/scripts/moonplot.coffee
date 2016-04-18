@@ -113,7 +113,6 @@ HTMLWidgets.widget
     radius = Math.min(height, width) / 3
 
     drawCircle(svgContainer, xCenter, yCenter, radius)
-    drawCross(svgContainer, xCenter, yCenter)
 
     # Lunar core labels
     i = 0
