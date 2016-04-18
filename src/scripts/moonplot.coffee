@@ -5,15 +5,14 @@ HTMLWidgets.widget
   name: 'moonplot'
   type: 'output'
   initialize: (el, width, height) ->
-    lunar_surface_links = []
-
     svg = d3.select('body')
                      .append('svg')
                      .attr('width', width)
                      .attr('height', height)
     xCenter = width /2
     yCenter = height /2
-    radius = Math.min(height, width) / 3
+    # radius = Math.min(height, width) / 3
+    radius = 160
 
     drawCircle(svg, xCenter, yCenter, radius, height, width)
 

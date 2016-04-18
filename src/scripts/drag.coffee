@@ -118,6 +118,7 @@ setupMoonResize = (svg, cx, cy, height, width, radius) ->
     svg.selectAll('.surface-label').remove()
 
   dragEnd = () ->
+    console.log "Moon resized to r=#{radius}"
     drawLunarCoreLabels(svg,
                         cx,
                         cy,

@@ -7,10 +7,10 @@ drawLunarSurfaceLabels = (svg,
 
   lunar_surface_links = []
   drag = setupLunarSurfaceDragAndDrop(svg,
-                          lunar_surface_links,
-                          radius,
-                          cx,
-                          cy)
+                                      lunar_surface_links,
+                                      radius,
+                                      cx,
+                                      cy)
   cart_coords = []
   t = null
   for label in lunarSurfaceLabels
@@ -19,34 +19,28 @@ drawLunarSurfaceLabels = (svg,
 
     if label.x < 0
       t = svg.append('text')
-                  .style('fill', 'black')
-                  .attr('class', 'surfaceLabel')
+                  .attr('class', 'surface-label')
                   .attr('x', x)
                   .attr('y', y)
                   .attr('font-size', (label.size * 20).toString() + 'px')
                   .attr('text-anchor', 'end')
-                  .attr('cursor', 'all-scroll')
                   .style('font-family', 'Arial')
                   .text label.name
-                  .call(drag)
     else
       t = svg.append('text')
-                  .style('fill', 'black')
-                  .attr('class', 'surfaceLabel')
-                  .attr('y', y)
+                  .attr('class', 'surface-label')
                   .attr('x', x)
+                  .attr('y', y)
                   .attr('font-size', (label.size * 20).toString() + 'px')
                   .attr('text-anchor', 'start')
-                  .attr('cursor', 'all-scroll')
                   .style('font-family', 'Arial')
                   .text label.name
-                  .call(drag)
     cart_coords.push
       x: label.x
       y: label.y
       h: t[0][0].getBBox().height
 
-  svg.selectAll('.surfaceLabel').remove()
+  svg.selectAll('.surface-label').remove()
   polar_coords = polarCoords cart_coords
   length_of_line = radius * 2 * Math.PI
 
@@ -54,8 +48,8 @@ drawLunarSurfaceLabels = (svg,
   cart_coords = cartesianCoords polar_coords
   for label in lunarSurfaceLabels
     index = _.findIndex(lunarSurfaceLabels, (e) -> e.name is label.name)
-    label.x = cart_coords[index].x
-    label.y = cart_coords[index].y
+    label.newX = cart_coords[index].x
+    label.newY = cart_coords[index].y
     label.rotation = calculateLabelRotation(polarCoord(cart_coords[index]).a)
 
 
@@ -90,10 +84,10 @@ drawLunarSurfaceLabels = (svg,
   t = null
   lunar_surface_labels = []
   for label in lunarSurfaceLabels
-    x =  label.x + cx
-    y = -label.y + cy
+    x =  label.newX + cx
+    y = -label.newY + cy
 
-    if label.x < 0
+    if label.newX < 0
       t = svg.append('text')
                   .style('fill', 'black')
                   .attr('class', 'surface-label')
