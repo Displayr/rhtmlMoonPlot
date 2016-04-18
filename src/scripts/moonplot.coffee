@@ -1,7 +1,6 @@
 'use strict'
 
 
-
 HTMLWidgets.widget
   name: 'moonplot'
   type: 'output'
@@ -20,26 +19,18 @@ HTMLWidgets.widget
 
     drawCircle(svgContainer, xCenter, yCenter, radius)
 
-    drag = setupDragAndDrop(svgContainer,
-                            lunar_core_labels,
-                            lunar_surface_links,
-                            radius,
-                            xCenter,
-                            yCenter)
     drawLunarCoreLabels(svgContainer,
                         xCenter,
                         yCenter,
                         radius,
                         lunar_core_labels_svg,
-                        lunar_core_labels,
-                        drag)
+                        lunar_core_labels)
 
     drawLunarSurfaceLabels(svgContainer,
                            xCenter,
                            yCenter,
                            radius,
                            lunar_surface_links,
-                           drag,
                            height,
                            width)
     el.id = svgContainer

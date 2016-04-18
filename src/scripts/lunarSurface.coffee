@@ -3,9 +3,14 @@ drawLunarSurfaceLabels = (svg,
                           cy,
                           radius,
                           lunar_surface_links,
-                          drag,
                           height,
                           width) ->
+
+  drag = setupLunarSurfaceDragAndDrop(svg,
+                          lunar_surface_links,
+                          radius,
+                          cx,
+                          cy)
   cart_coords = []
   t = null
   for label in lunarSurfaceLabels

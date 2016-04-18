@@ -3,9 +3,14 @@ drawLunarCoreLabels = (svg,
                        cy,
                        radius,
                        lunar_core_labels_svg,
-                       lunar_core_labels,
-                       drag) ->
+                       lunar_core_labels) ->
 
+
+  drag = setupLunarCoreDragAndDrop(svg,
+                          lunar_core_labels,
+                          radius,
+                          cx,
+                          cy)
   # prevent labels from escaping moon surface
   for label in lunarCoreLabels
     threshold = 1

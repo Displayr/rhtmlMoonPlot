@@ -1,15 +1,10 @@
-# Drag and drop functionality
-setupDragAndDrop = (svg,
+setupLunarCoreDragAndDrop = (svg,
                     lunar_core_labels,
-                    lunar_surface_links,
                     radius,
                     xCenter,
                     yCenter) ->
-
-
   dragStart = () ->
     svg.selectAll('.core-link').remove()
-    svg.selectAll('.surface-link').remove()
     d3.select(this).style('fill', 'red')
 
   dragMove = () ->
@@ -37,7 +32,38 @@ setupDragAndDrop = (svg,
                         .attr('stroke-width', 0.6)
                         .attr('stroke', 'gray')
 
+    d3.select(this).style('fill', 'black')
+    adjustCoreLabelLength(d3.selectAll('.core-label')[0], radius, xCenter, yCenter)
 
+  d3.behavior.drag()
+           .origin(() ->
+             {
+               x: d3.select(this).attr("x")
+               y: d3.select(this).attr("y")
+             }
+            )
+           .on('dragstart', dragStart)
+           .on('drag', dragMove)
+           .on('dragend', dragEnd)
+
+
+
+setupLunarSurfaceDragAndDrop = (svg,
+                    lunar_surface_links,
+                    radius,
+                    xCenter,
+                    yCenter) ->
+  dragStart = () ->
+    svg.selectAll('.surface-link').remove()
+    d3.select(this).style('fill', 'red')
+
+  dragMove = () ->
+    d3.select(this)
+    .attr('x', d3.select(this).x = d3.event.x)
+    .attr('y', d3.select(this).y = d3.event.y)
+    .attr('cursor', 'all-scroll')
+
+  dragEnd = ->
     if d3.select(this).attr('ox')
       ox = d3.select(this).attr('ox').toString()
       oy = d3.select(this).attr('oy').toString()
@@ -61,7 +87,6 @@ setupDragAndDrop = (svg,
       .attr('stroke', 'gray')
 
     d3.select(this).style('fill', 'black')
-    adjustCoreLabelLength(d3.selectAll('.core-label')[0], radius, xCenter, yCenter)
 
   d3.behavior.drag()
            .origin(() ->
