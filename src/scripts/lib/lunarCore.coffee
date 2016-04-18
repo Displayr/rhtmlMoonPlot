@@ -56,11 +56,6 @@ drawLunarCoreLabels = (svg,
   # Size of each labeler
   i = 0
   while i < lunar_core_labels.length
-  # for core_label in lunar_core_labels_svg[0]
-    # console.log core_label
-    # console.log lunar_core_labels[0]
-    # i = _.findIndex lunar_core_labels, (e) -> e.name == core_label.innerHTML
-    # console.log i
     lunar_core_labels[i].width = lunar_core_labels_svg[0][i].getBBox().width
     lunar_core_labels[i].height = lunar_core_labels_svg[0][i].getBBox().height
     i++
