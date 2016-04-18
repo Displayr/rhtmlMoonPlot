@@ -5,11 +5,9 @@ HTMLWidgets.widget
   name: 'moonplot'
   type: 'output'
   initialize: (el, width, height) ->
-    lunar_core_labels_svg = []
-    lunar_core_labels = []
     lunar_surface_links = []
 
-    svgContainer = d3.select('body')
+    svg = d3.select('body')
                      .append('svg')
                      .attr('width', width)
                      .attr('height', height)
@@ -17,23 +15,20 @@ HTMLWidgets.widget
     yCenter = height /2
     radius = Math.min(height, width) / 3
 
-    drawCircle(svgContainer, xCenter, yCenter, radius)
+    drawCircle(svg, xCenter, yCenter, radius, height, width)
 
-    drawLunarCoreLabels(svgContainer,
+    drawLunarCoreLabels(svg,
                         xCenter,
                         yCenter,
-                        radius,
-                        lunar_core_labels_svg,
-                        lunar_core_labels)
+                        radius)
 
-    drawLunarSurfaceLabels(svgContainer,
+    drawLunarSurfaceLabels(svg,
                            xCenter,
                            yCenter,
                            radius,
-                           lunar_surface_links,
                            height,
                            width)
-    el.id = svgContainer
+    el.id = svg
 
   resize: (el, width, height, instance) ->
   renderValue: (el, x, instance) ->

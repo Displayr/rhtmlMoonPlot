@@ -1,11 +1,9 @@
 drawLunarCoreLabels = (svg,
                        cx,
                        cy,
-                       radius,
-                       lunar_core_labels_svg,
-                       lunar_core_labels) ->
-
-
+                       radius) ->
+  lunar_core_labels_svg = []
+  lunar_core_labels = []
   drag = setupLunarCoreDragAndDrop(svg,
                           lunar_core_labels,
                           radius,
@@ -74,6 +72,7 @@ drawLunarCoreLabels = (svg,
   for anchor in anchor_array
     d3.select('svg').append('circle')
                     .attr('stroke-width', 3)
+                    .attr('class', 'core-anchor')
                     .attr('fill', 'black')
                     .attr('cx', anchor.x)
                     .attr('cy', anchor.y)

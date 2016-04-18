@@ -2,10 +2,10 @@ drawLunarSurfaceLabels = (svg,
                           cx,
                           cy,
                           radius,
-                          lunar_surface_links,
                           height,
                           width) ->
 
+  lunar_surface_links = []
   drag = setupLunarSurfaceDragAndDrop(svg,
                           lunar_surface_links,
                           radius,

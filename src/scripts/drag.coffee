@@ -98,3 +98,44 @@ setupLunarSurfaceDragAndDrop = (svg,
            .on('dragstart', dragStart)
            .on('drag', dragMove)
            .on('dragend', dragEnd)
+
+setupMoonResize = (svg, cx, cy, height, width, radius) ->
+  drag = () ->
+
+    findDistance = (cx, cy, x, y) ->
+      Math.sqrt(Math.pow((x - cx), 2) + Math.pow((y - cy), 2))
+    mouseX = d3.mouse(this)[0]
+    mouseY = d3.mouse(this)[1]
+    newRadius = findDistance(cx, cy, mouseX, mouseY)
+    radius = newRadius
+    d3.select(this).attr('r', newRadius)
+
+  dragStart = () ->
+    svg.selectAll('.core-link').remove()
+    svg.selectAll('.core-label').remove()
+    svg.selectAll('.core-anchor').remove()
+    svg.selectAll('.surface-link').remove()
+    svg.selectAll('.surface-label').remove()
+
+  dragEnd = () ->
+    drawLunarCoreLabels(svg,
+                        cx,
+                        cy,
+                        radius)
+
+    drawLunarSurfaceLabels(svg,
+                           cx,
+                           cy,
+                           radius,
+                           height,
+                           width)
+
+  d3.behavior.drag()
+            .origin(() ->
+              {
+                x: d3.select(this).attr("cy")
+                y: d3.select(this).attr("cy")
+              })
+            .on('dragstart', dragStart)
+            .on('drag', drag)
+            .on('dragend', dragEnd)
