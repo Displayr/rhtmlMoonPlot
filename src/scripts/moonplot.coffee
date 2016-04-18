@@ -4,6 +4,13 @@
 HTMLWidgets.widget
   name: 'moonplot'
   type: 'output'
+  # factory: (el, width, height) ->
+  #   {
+  #     renderValue: (el, x, instance) ->
+  #       console.log 'Render value'
+  #       console.log "instance #{instance}"
+  #       console.log "x #{x}"
+  #   }
   initialize: (el, width, height) ->
     svg = d3.select('body')
                      .append('svg')
@@ -39,3 +46,6 @@ HTMLWidgets.widget
     el.id = svg
 
   renderValue: (el, x, instance) ->
+    console.log 'Render value'
+    console.log "instance #{instance}"
+    console.log "x #{x}"

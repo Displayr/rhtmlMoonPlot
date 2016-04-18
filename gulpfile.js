@@ -147,6 +147,7 @@ gulp.task('watch', ['connect'], function () {
     'dist/browser/**/*',
   ]).on('change', $.livereload.changed);
 
+  gulp.watch('src/R/moonplot.R', ['copy'])
   gulp.watch('src/**/*.html', ['copy']);
   gulp.watch('src/scripts/**/*.js', ['copy'])
   gulp.watch('src/images/**/*', ['images']);

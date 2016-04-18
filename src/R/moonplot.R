@@ -6,14 +6,16 @@
 #'
 #' @export
 moonplot <- function(
-  data, 
-  width = NULL, 
+  data,
+  width = NULL,
   height = NULL) {
 
   # forward options using x
   x = list(
     data = data
   )
+
+  print("testing..why doesnt this print")
 
   # create widget
   htmlwidgets::createWidget(
