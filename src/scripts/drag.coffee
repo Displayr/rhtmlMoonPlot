@@ -59,8 +59,8 @@ setupLunarSurfaceDragAndDrop = (svg,
 
   dragMove = () ->
     d3.select(this)
-    .attr('x', d3.select(this).x = d3.event.x)
-    .attr('y', d3.select(this).y = d3.event.y)
+    .attr('x', d3.select(this).x = d3.mouse(this)[0])
+    .attr('y', d3.select(this).y = d3.mouse(this)[1])
     .attr('cursor', 'all-scroll')
 
   dragEnd = ->
