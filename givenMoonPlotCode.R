@@ -21,7 +21,7 @@ space <- function(x,gap=0.05)
   x.order <- order(x,1:n)
   gap <- gap*diff(range(x))
   b <- x.sort[-1]-x.sort[-n]
-  if(sum(b<gap)>0) 
+  if(sum(b<gap)>0)
     b[b<gap] <- gap
   b <- c(x.sort[1],b)
   new.val <- function(b,x.sort)
@@ -58,43 +58,43 @@ space.degrees <- function(x,gap=0.05)
 }
 
 
-moonplot.symmetric <- function (x, y, var.axes = TRUE, col, cex = rep(par("cex"), 2), 
+moonplot.symmetric <- function (x, y, var.axes = TRUE, col, cex = rep(par("cex"), 2),
                                 xlabs = NULL, ylabs = NULL, expand = 1, xlab.offsets=NULL,xlab.pos=1,
                                 xlab.mult = 1.1,ylab.mult=1.1,offsets=c(0,0),space.gap=0,
-                                arrow.len = 0.1,y.cex=1.5,y.cex.scale=0.5,circle.scaler=1.1, ...) 
+                                arrow.len = 0.1,y.cex=1.5,y.cex.scale=0.5,circle.scaler=1.1, ...)
   #y.cex.scale = values below 1 reduce font size differences
   # xlab.offsets = array of number of rows of x with two columns, showing how much the points representing the brands should be moved (for use to avoid overlapping brands)
-{ 
+{
   n <- nrow(x)
   p <- nrow(y)
   if (missing(xlabs)) {
     xlabs <- dimnames(x)[[1]]
-    if (is.null(xlabs)) 
+    if (is.null(xlabs))
       xlabs <- 1:n
   }
   xlabs <- as.character(xlabs)
   dimnames(x) <- list(xlabs, dimnames(x)[[2]])
   if (missing(ylabs)) {
     ylabs <- dimnames(y)[[1]]
-    if (is.null(ylabs)) 
+    if (is.null(ylabs))
       ylabs <- paste("Var", 1:p)
   }
   ylabs <- as.character(ylabs)
   dimnames(y) <- list(ylabs, dimnames(y)[[2]])
-  if (length(cex) == 1) 
+  if (length(cex) == 1)
     cex <- c(cex, cex)
   if (missing(col)) {
     col <- par("col")
-    if (!is.numeric(col)) 
+    if (!is.numeric(col))
       col <- match(col, palette())
     col <- c(col, col + 1)
   }
-  else if (length(col) == 1) 
+  else if (length(col) == 1)
     col <- c(col, col)
   max.x <- c(max(x)*xlab.mult,min(x)*xlab.mult,max(y),min(y))
   max.x <- max(abs(max.x))
   xlim <- ylab.mult*max.x*c(-1,1)+offsets
-  ylim <- xlim    
+  ylim <- xlim
   ratio <- 1#max(rangy1/rangx1, rangy2/rangx2)/expand
   on.exit(par(oldpar))
   oldpar <- par(pty = "s")
@@ -109,7 +109,7 @@ moonplot.symmetric <- function (x, y, var.axes = TRUE, col, cex = rep(par("cex")
   y.moved[,1] <- sin(y.srt/180*pi)*max.x
   y.moved[,2] <- (max.x^2-y.moved[,1]^2)^.5
   y.moved <- abs(y.moved)*sign(y)
-  z <- y.moved[,2]>0 
+  z <- y.moved[,2]>0
   y.moved[z,1:2] <- y.moved[z,2:1]
   y.moved <- abs(y.moved)*sign(y)
   y.srt[y[,1]<0] <- y.srt[y[,1]<0]-180
@@ -128,8 +128,8 @@ moonplot.symmetric <- function (x, y, var.axes = TRUE, col, cex = rep(par("cex")
   {x.offset <- !(xlab.offsets[,1]==0 & xlab.offsets[,2]==0)
   points(x[x.offset,],pch=19)
   if (sum(x.offset) != length(x.offset))
-    text(x[!x.offset,], xlabs[!x.offset], cex = cex[1], col = col[1], ...) 
-  text(x[x.offset,]+xlab.offsets[x.offset,], xlabs[x.offset],pos=xlab.pos, cex = cex[1], col = col[1], ...) 
+    text(x[!x.offset,], xlabs[!x.offset], cex = cex[1], col = col[1], ...)
+  text(x[x.offset,]+xlab.offsets[x.offset,], xlabs[x.offset],pos=xlab.pos, cex = cex[1], col = col[1], ...)
   for (i in 1:n)
     if (x.offset[i])
       lines(c(x[i,1],x[i,1]+xlab.offsets[i,1]),c(x[i,2],x[i,2]+xlab.offsets[i,2]))
@@ -142,7 +142,7 @@ moonplot.symmetric <- function (x, y, var.axes = TRUE, col, cex = rep(par("cex")
   xCoords <<- x
   sizeOfYLabels <<- c()
   temp <<- y.srt
-  for (i in 1:p)  
+  for (i in 1:p)
     sizeOfYLabels <<- c(sizeOfYLabels, c(cex[2]*y.cex*(y.dist[i]/y.max.dist)^y.cex.scale))
   for (i in 1:p)
     text(y.moved[i,1],y.moved[i,2], labels = ylabs[i], cex = cex[2]*y.cex*(y.dist[i]/y.max.dist)^y.cex.scale, col = col[2],pos=y.pos[i],offset=0,srt=y.srt[i],...)
@@ -156,14 +156,14 @@ moonplot <- function (x, brands.row=T, type = c("symmetric", "rows", "columns"),
   if (!brands.row)
     x <- t(x)
   n <- nrow(x)
-  obj <- MASS::corresp(x,2)    
+  obj <- MASS::corresp(x,2)
   type <- match.arg(type)
   X <- obj$rscore[, 1:2]
-  if (type != "columns") 
+  if (type != "columns")
     X <- X %*% diag(obj$cor[1:2])
   colnames(X) <- rep("", 2)
   Y <- obj$cscore[, 1:2]
-  if (type != "rows") 
+  if (type != "rows")
     Y <- Y %*% diag(obj$cor[1:2])
   colnames(Y) <- rep("", 2)
   #  Checking offets for x labels
@@ -173,13 +173,13 @@ moonplot <- function (x, brands.row=T, type = c("symmetric", "rows", "columns"),
     xlab.offsets=NULL}
     if(sum(dim(xlab.offsets)==c(n,2))!=2)
       stop("xlab.offsets must be an array with two columns and the same number of rows as x")}
-  #   Traditional correspondence analysis  
+  #   Traditional correspondence analysis
   if(trad.ca)
-  {   
+  {
     old.par <- par(no.readonly = TRUE) # all par settings which
     # could be changed.
     on.exit(par(old.par))
-    par("plt"=c(.01,.99,.01,.99)) 
+    par("plt"=c(.01,.99,.01,.99))
     plot(X,type="n",asp=1,axes=F,xlim=trad.ca.xlim,...)
     text(Y,dimnames(Y)[[1]],font=3)
     points(0,0,pch=3,cex=3)
@@ -192,8 +192,8 @@ moonplot <- function (x, brands.row=T, type = c("symmetric", "rows", "columns"),
     {
       x.offset <- !(xlab.offsets[,1]==0 & xlab.offsets[,2]==0)
       points(X[x.offset,],pch=19)
-      text(X[!x.offset,], xlabs[!x.offset], ...) 
-      text(X[x.offset,]+xlab.offsets[x.offset,], xlabs[x.offset],pos=xlab.pos, ...) 
+      text(X[!x.offset,], xlabs[!x.offset], ...)
+      text(X[x.offset,]+xlab.offsets[x.offset,], xlabs[x.offset],pos=xlab.pos, ...)
       for (i in 1:n)
         if (x.offset[i])
           lines(c(X[i,1],X[i,1]+xlab.offsets[i,1]),c(X[i,2],X[i,2]+xlab.offsets[i,2]))
@@ -201,7 +201,7 @@ moonplot <- function (x, brands.row=T, type = c("symmetric", "rows", "columns"),
   }
   else
   {#offsets
-    
+
     switch(type, symmetric = moonplot.symmetric(X, Y, var.axes = FALSE,xlab.offsets=xlab.offsets,xlab.pos=xlab.pos,...),
            rows = biplot.bdr(X, Y, ...), columns = biplot.bdr(Y, X, ...))
     points(0, 0, pch = 3, cex = 3)
@@ -222,4 +222,14 @@ CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.191
                          dimnames=list(Brand=c('Coke','V',"Red\nBull","Lift\nPlus",'Diet.Coke','Fanta','Lift','Pepsi'),
                                        Attribute=c('Kids', 'Teens',    "Enjoy life",   'Picks you up', 'Refreshes',    'Cheers you up',    'Energy',   'Up-to-date',   'Fun',  'When tired',   'Relax')))
 
-moonplot(round(100*CSDperceptions),xlab.mult=1.2,y.cex.scale=0.5,space.gap=.012,xlab.offsets=matrix(c(0,0,-.2,-.2,0,-.38,.25,-.2,rep(0,8)),byrow=T,ncol=2),xlab.pos=1,col=1) 
+moonplot(round(100*CSDperceptions),xlab.mult=1.2,y.cex.scale=0.5,space.gap=.012,xlab.offsets=matrix(c(0,0,-.2,-.2,0,-.38,.25,-.2,rep(0,8)),byrow=T,ncol=2),xlab.pos=1,col=1)
+
+
+# obj <- MASS::corresp(CSDperceptions,2)    
+# X <- obj$rscore[, 1:2]
+# Y <- obj$cscore[, 1:2]
+# X
+# Y
+#
+# rownames(X)
+# colnames(X)

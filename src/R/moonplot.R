@@ -121,37 +121,15 @@ moonplot.symmetric <- function (x, y, var.axes = TRUE, col, cex = rep(par("cex")
   if ( sum(offsets!=0))
   {x <- sweep(x,2,offsets,"+")
   y <- sweep(y,2,offsets,"+")}
-  # plot(x, axes=F,type = "n", xlim = xlim, ylim = ylim, col = col[1],asp=T,...)
-  # if (is.null(xlab.offsets))
-  #   text(x, xlabs, cex = cex[1], col = col[1], ...)
-  # else
-  # {x.offset <- !(xlab.offsets[,1]==0 & xlab.offsets[,2]==0)
-  # points(x[x.offset,],pch=19)
-  # if (sum(x.offset) != length(x.offset))
-  #   text(x[!x.offset,], xlabs[!x.offset], cex = cex[1], col = col[1], ...)
-  # text(x[x.offset,]+xlab.offsets[x.offset,], xlabs[x.offset],pos=xlab.pos, cex = cex[1], col = col[1], ...)
-  # for (i in 1:n)
-  #   if (x.offset[i])
-  #     lines(c(x[i,1],x[i,1]+xlab.offsets[i,1]),c(x[i,2],x[i,2]+xlab.offsets[i,2]))
-  # }
-  # par(new = TRUE)
-  # plot(y, axes = FALSE, type = "n", xlim = xlim * ratio, ylim = ylim *
-  #        ratio, xlab = "", ylab = "", col = col[1],asp=T, ...)
   yCoords <<- y.moved
-  # temp2 <<- xlabs
   xCoords <<- x
   sizeOfYLabels <<- c()
-  # temp <<- y.srt
   for (i in 1:p)
     sizeOfYLabels <<- c(sizeOfYLabels, c(cex[2]*y.cex*(y.dist[i]/y.max.dist)^y.cex.scale))
-  # for (i in 1:p)
-  #   text(y.moved[i,1],y.moved[i,2], labels = ylabs[i], cex = cex[2]*y.cex*(y.dist[i]/y.max.dist)^y.cex.scale, col = col[2],pos=y.pos[i],offset=0,srt=y.srt[i],...)
-  # symbols(offsets[1],offsets[2],sqrt(min(apply((y.moved^2),1,sum)))*.98,inches=F,add=TRUE)
-  #    symbols(offsets[1],offsets[2],max.x/ylab.mult*circle.scaler,inches=F,add=TRUE)
-  # invisible()
-  print(xCoords)
-  print(yCoords)
-  print(sizeOfYLabels)
+  # print(xCoords)
+  # print(yCoords)
+  # print(sizeOfYLabels)
+  return(list(xCoords, yCoords, sizeOfYLabels))
 }
 
 moonplotFunc <- function (x, brands.row=T, type = c("symmetric", "rows", "columns"),trad.ca=F,xlab.offsets=NULL,xlab.pos=1,trad.ca.xlim=NULL, ...)
@@ -176,40 +154,9 @@ moonplotFunc <- function (x, brands.row=T, type = c("symmetric", "rows", "column
     xlab.offsets=NULL}
     if(sum(dim(xlab.offsets)==c(n,2))!=2)
       stop("xlab.offsets must be an array with two columns and the same number of rows as x")}
-  #   Traditional correspondence analysis
-  # if(trad.ca)
-  # {
-  #   old.par <- par(no.readonly = TRUE) # all par settings which
-  #   # could be changed.
-  #   on.exit(par(old.par))
-  #   par("plt"=c(.01,.99,.01,.99))
-  #   plot(X,type="n",asp=1,axes=F,xlim=trad.ca.xlim,...)
-  #   text(Y,dimnames(Y)[[1]],font=3)
-  #   points(0,0,pch=3,cex=3)
-  #   box()
-  #   xlabs <- dimnames(X)[[1]]
-  #   if (is.null(xlab.offsets)) {
-  #     text(X,xlabs)
-  #   }
-  #   else
-  #   {
-  #     x.offset <- !(xlab.offsets[,1]==0 & xlab.offsets[,2]==0)
-  #     points(X[x.offset,],pch=19)
-  #     text(X[!x.offset,], xlabs[!x.offset], ...)
-  #     text(X[x.offset,]+xlab.offsets[x.offset,], xlabs[x.offset],pos=xlab.pos, ...)
-  #     for (i in 1:n)
-  #       if (x.offset[i])
-  #         lines(c(X[i,1],X[i,1]+xlab.offsets[i,1]),c(X[i,2],X[i,2]+xlab.offsets[i,2]))
-  #   }
-  # }
-  # else
-  # {#offsets
-
-    switch(type, symmetric = moonplot.symmetric(X, Y, var.axes = FALSE,xlab.offsets=xlab.offsets,xlab.pos=xlab.pos,...),
-           rows = biplot.bdr(X, Y, ...), columns = biplot.bdr(Y, X, ...))
-    # points(0, 0, pch = 3, cex = 3)
-  # }
-  # invisible()
+    return(moonplot.symmetric(X, Y, var.axes = FALSE,xlab.offsets=xlab.offsets,xlab.pos=xlab.pos,...))
+    # switch(type, symmetric = moonplot.symmetric(X, Y, var.axes = FALSE,xlab.offsets=xlab.offsets,xlab.pos=xlab.pos,...),
+    #        rows = biplot.bdr(X, Y, ...), columns = biplot.bdr(Y, X, ...))
 }
 
 
@@ -225,37 +172,28 @@ moonplot <- function(
   width = NULL,
   height = NULL) {
 
+  result <- moonplotFunc(round(100*data),xlab.mult=1.2,y.cex.scale=0.5,space.gap=.012,xlab.offsets=matrix(c(0,0,-.2,-.2,0,-.38,.25,-.2,rep(0,8)),byrow=T,ncol=2),xlab.pos=1,col=1)
+
+  data.lunarCoreNodes <- toJSON(xCoords)
+  data.lunarCoreLabels <- toJSON(labels(xCoords)[[1]])
+  data.lunarSurfaceNodes <- toJSON(yCoords)
+  data.lunarSurfaceLabels <- toJSON(labels(yCoords)[[1]])
+  data.lunarSurfaceSizes <- toJSON(sizeOfYLabels)
+
+
   # forward options using x
   x = list(
-    data = data
+    lunarCoreNodes = data.lunarCoreNodes,
+    lunarCoreLabels = data.lunarCoreLabels,
+    lunarSurfaceNodes = data.lunarSurfaceNodes,
+    lunarSurfaceLabels = data.lunarSurfaceLabels,
+    lunarSurfaceSizes = data.lunarSurfaceSizes
   )
-
-  CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.1916, 0.284,  0.3514, 0.2534, 0.2089,
-                           c(  0.0198, 0.4604, 0.2151, 0.5235, 0.1151, 0.12,   0.5457, 0.3041, 0.06312,    0.384,  0.06064),
-                           c(  0.01114,    0.4111, 0.1904, 0.4494, 0.06931,    0.1112, 0.4716, 0.2859, 0.0495, 0.3296, 0.03837),
-                           c(  0.01114,    0.2373, 0.089,  0.2707, 0.05322,    0.06436,    0.2756, 0.1656, 0.02967,    0.1916, 0.02228),
-                           c(  0.0198, 0.177,  0.07054,    0.0297, 0.0396, 0.02719,    0.0136, 0.02847,    0.0198, 0.02847,    0.02472),
-                           c(  0.4543, 0.1275, 0.07673,    0.02847,    0.07293,    0.1077, 0.01609,    0.05198,    0.321,  0.01856,    0.0297),
-                           c(  0.06807,    0.1089, 0.06064,    0.0198, 0.1174, 0.04084,    0.01609,    0.01733,    0.03465,    0.01361,    0.03589),
-                           c(  0.08168,    0.224,  0.1015, 0.04579,    0.04815,    0.04084,    0.03094,    0.05562,    0.05322,    0.04084,    0.02847)),nrow=8,byrow=TRUE,
-                           dimnames=list(Brand=c('Coke','V',"Red\nBull","Lift\nPlus",'Diet.Coke','Fanta','Lift','Pepsi'),
-                                       Attribute=c('Kids', 'Teens',    "Enjoy life",   'Picks you up', 'Refreshes',    'Cheers you up',    'Energy',   'Up-to-date',   'Fun',  'When tired',   'Relax')))
-
-  # print(CSDperceptions)
-  # obj <- MASS::corresp(round(100*CSDperceptions),2)
-  # X <- obj$rscore[, 1:2]
-  # Y <- obj$cscore[, 1:2]
-  # print(X)
-  # print(Y)
-
-  result <- moonplotFunc(round(100*CSDperceptions),xlab.mult=1.2,y.cex.scale=0.5,space.gap=.012,xlab.offsets=matrix(c(0,0,-.2,-.2,0,-.38,.25,-.2,rep(0,8)),byrow=T,ncol=2),xlab.pos=1,col=1)
-  print(result)
-
 
   # create widget
   htmlwidgets::createWidget(
     name = 'moonplot',
-    toJSON(result),
+    x,
     width = width,
     height = height,
     package = 'moonplot'

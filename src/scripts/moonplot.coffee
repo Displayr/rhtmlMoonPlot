@@ -15,13 +15,42 @@ HTMLWidgets.widget
   renderValue: (el, params, instance) ->
     console.log 'RenderValue called'
 
-    console.log "instance"
-    console.log instance
-    console.log "params"
-    console.log params
+    # console.log "instance"
+    # console.log instance
+    # console.log "params"
+    # console.log params
 
     # setting the test data
-    params.data = testData
+    unless params.lunarCoreLabels
+      console.log 'here'
+      instance.draw(testData)
+      return instance
 
-    instance.draw(params.data)
+    # setup real data
+    lunarCoreLabels = []
+    lunarSurfaceLabels = []
+    i = 0
+    while i < params.lunarCoreLabels.length
+      lunarCoreLabels.push {
+        name: params.lunarCoreLabels[i]
+        x: params.lunarCoreNodes[i][0]
+        y: params.lunarCoreNodes[i][1]
+      }
+      i++
+
+    i = 0
+    while i < params.lunarSurfaceLabels.length
+      lunarSurfaceLabels.push {
+        name: params.lunarSurfaceLabels[i]
+        x: params.lunarSurfaceNodes[i][0]
+        y: params.lunarSurfaceNodes[i][1]
+        size: params.lunarSurfaceSizes[i]
+      }
+      i++
+
+    instance.draw
+      lunarSurfaceLabels: lunarSurfaceLabels
+      lunarCoreLabels: lunarCoreLabels
+
+    # instance.draw(params.data)
     return instance
