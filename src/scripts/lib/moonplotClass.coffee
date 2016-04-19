@@ -19,4 +19,4 @@ class MoonPlot
 
   redraw: (@width, @height) ->
     d3.select('.moonplot-container').remove()
-    @draw(@width, @height)
+    @draw(@data, @width, @height)

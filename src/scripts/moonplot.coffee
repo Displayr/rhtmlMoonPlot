@@ -18,7 +18,7 @@ HTMLWidgets.widget
     console.log "instance"
     console.log instance
     console.log "params"
-    console.log params
+    console.log params.data
 
     # setting the test data
     params.data = testData
