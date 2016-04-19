@@ -24,4 +24,4 @@ HTMLWidgets.widget
     params.data = testData
 
     instance.draw(params.data)
-    return
+    return instance
