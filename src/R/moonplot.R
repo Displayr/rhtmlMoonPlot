@@ -126,9 +126,6 @@ moonplot.symmetric <- function (x, y, var.axes = TRUE, col, cex = rep(par("cex")
   sizeOfYLabels <<- c()
   for (i in 1:p)
     sizeOfYLabels <<- c(sizeOfYLabels, c(cex[2]*y.cex*(y.dist[i]/y.max.dist)^y.cex.scale))
-  # print(xCoords)
-  # print(yCoords)
-  # print(sizeOfYLabels)
   return(list(xCoords, yCoords, sizeOfYLabels))
 }
 
@@ -155,8 +152,6 @@ moonplotFunc <- function (x, brands.row=T, type = c("symmetric", "rows", "column
     if(sum(dim(xlab.offsets)==c(n,2))!=2)
       stop("xlab.offsets must be an array with two columns and the same number of rows as x")}
     return(moonplot.symmetric(X, Y, var.axes = FALSE,xlab.offsets=xlab.offsets,xlab.pos=xlab.pos,...))
-    # switch(type, symmetric = moonplot.symmetric(X, Y, var.axes = FALSE,xlab.offsets=xlab.offsets,xlab.pos=xlab.pos,...),
-    #        rows = biplot.bdr(X, Y, ...), columns = biplot.bdr(Y, X, ...))
 }
 
 
