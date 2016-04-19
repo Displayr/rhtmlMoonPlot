@@ -58,43 +58,39 @@ space.degrees <- function(x,gap=0.05)
 }
 
 
-moonplot.symmetric <- function (x, y)
+moonplot.symmetric <- function (x, y, var.axes = TRUE, col, cex = rep(par("cex"), 2),
+                                xlabs = NULL, ylabs = NULL, expand = 1, xlab.offsets=NULL,xlab.pos=1,
+                                xlab.mult = 1.1,ylab.mult=1.1,offsets=c(0,0),space.gap=0,
+                                arrow.len = 0.1,y.cex=1.5,y.cex.scale=0.5,circle.scaler=1.1, ...)
   #y.cex.scale = values below 1 reduce font size differences
   # xlab.offsets = array of number of rows of x with two columns, showing how much the points representing the brands should be moved (for use to avoid overlapping brands)
 {
   n <- nrow(x)
   p <- nrow(y)
-  xlab.mult <- 1.1
-  ylab.mult <- 1.1
-  offsets=c(0,0)
-  space.gap <- 0
-  cex <- rep(par("cex"), 2)
-  y.cex <- 1.5
-  y.cex.scale <- 0.5
-  # if (missing(xlabs)) {
-  #   xlabs <- dimnames(x)[[1]]
-  #   if (is.null(xlabs))
-  #     xlabs <- 1:n
-  # }
-  # xlabs <- as.character(xlabs)
-  # dimnames(x) <- list(xlabs, dimnames(x)[[2]])
-  # if (missing(ylabs)) {
-  #   ylabs <- dimnames(y)[[1]]
-  #   if (is.null(ylabs))
-  #     ylabs <- paste("Var", 1:p)
-  # }
-  # ylabs <- as.character(ylabs)
-  # dimnames(y) <- list(ylabs, dimnames(y)[[2]])
-  # if (length(cex) == 1)
-  #   cex <- c(cex, cex)
-  # if (missing(col)) {
-  #   col <- par("col")
-  #   if (!is.numeric(col))
-  #     col <- match(col, palette())
-  #   col <- c(col, col + 1)
-  # }
-  # else if (length(col) == 1)
-  #   col <- c(col, col)
+  if (missing(xlabs)) {
+    xlabs <- dimnames(x)[[1]]
+    if (is.null(xlabs))
+      xlabs <- 1:n
+  }
+  xlabs <- as.character(xlabs)
+  dimnames(x) <- list(xlabs, dimnames(x)[[2]])
+  if (missing(ylabs)) {
+    ylabs <- dimnames(y)[[1]]
+    if (is.null(ylabs))
+      ylabs <- paste("Var", 1:p)
+  }
+  ylabs <- as.character(ylabs)
+  dimnames(y) <- list(ylabs, dimnames(y)[[2]])
+  if (length(cex) == 1)
+    cex <- c(cex, cex)
+  if (missing(col)) {
+    col <- par("col")
+    if (!is.numeric(col))
+      col <- match(col, palette())
+    col <- c(col, col + 1)
+  }
+  else if (length(col) == 1)
+    col <- c(col, col)
   max.x <- c(max(x)*xlab.mult,min(x)*xlab.mult,max(y),min(y))
   max.x <- max(abs(max.x))
   xlim <- ylab.mult*max.x*c(-1,1)+offsets
@@ -142,19 +138,77 @@ moonplot.symmetric <- function (x, y)
   # plot(y, axes = FALSE, type = "n", xlim = xlim * ratio, ylim = ylim *
   #        ratio, xlab = "", ylab = "", col = col[1],asp=T, ...)
   yCoords <<- y.moved
+  # temp2 <<- xlabs
   xCoords <<- x
   sizeOfYLabels <<- c()
+  # temp <<- y.srt
   for (i in 1:p)
     sizeOfYLabels <<- c(sizeOfYLabels, c(cex[2]*y.cex*(y.dist[i]/y.max.dist)^y.cex.scale))
-
-  print(xCoords)
-  print(yCoords)
-  print(sizeOfYLabels)
-
   # for (i in 1:p)
   #   text(y.moved[i,1],y.moved[i,2], labels = ylabs[i], cex = cex[2]*y.cex*(y.dist[i]/y.max.dist)^y.cex.scale, col = col[2],pos=y.pos[i],offset=0,srt=y.srt[i],...)
   # symbols(offsets[1],offsets[2],sqrt(min(apply((y.moved^2),1,sum)))*.98,inches=F,add=TRUE)
-  # #    symbols(offsets[1],offsets[2],max.x/ylab.mult*circle.scaler,inches=F,add=TRUE)
+  #    symbols(offsets[1],offsets[2],max.x/ylab.mult*circle.scaler,inches=F,add=TRUE)
+  # invisible()
+  print(xCoords)
+  print(yCoords)
+  print(sizeOfYLabels)
+}
+
+moonplotFunc <- function (x, brands.row=T, type = c("symmetric", "rows", "columns"),trad.ca=F,xlab.offsets=NULL,xlab.pos=1,trad.ca.xlim=NULL, ...)
+{
+  if (!brands.row)
+    x <- t(x)
+  n <- nrow(x)
+  obj <- MASS::corresp(x,2)
+  type <- match.arg(type)
+  X <- obj$rscore[, 1:2]
+  if (type != "columns")
+    X <- X %*% diag(obj$cor[1:2])
+  colnames(X) <- rep("", 2)
+  Y <- obj$cscore[, 1:2]
+  if (type != "rows")
+    Y <- Y %*% diag(obj$cor[1:2])
+  colnames(Y) <- rep("", 2)
+  #  Checking offets for x labels
+  if (!is.null(xlab.offsets))
+  {   if(sum(abs(xlab.offsets))==0)
+  {warning("xlab.offsets are all 0")
+    xlab.offsets=NULL}
+    if(sum(dim(xlab.offsets)==c(n,2))!=2)
+      stop("xlab.offsets must be an array with two columns and the same number of rows as x")}
+  #   Traditional correspondence analysis
+  # if(trad.ca)
+  # {
+  #   old.par <- par(no.readonly = TRUE) # all par settings which
+  #   # could be changed.
+  #   on.exit(par(old.par))
+  #   par("plt"=c(.01,.99,.01,.99))
+  #   plot(X,type="n",asp=1,axes=F,xlim=trad.ca.xlim,...)
+  #   text(Y,dimnames(Y)[[1]],font=3)
+  #   points(0,0,pch=3,cex=3)
+  #   box()
+  #   xlabs <- dimnames(X)[[1]]
+  #   if (is.null(xlab.offsets)) {
+  #     text(X,xlabs)
+  #   }
+  #   else
+  #   {
+  #     x.offset <- !(xlab.offsets[,1]==0 & xlab.offsets[,2]==0)
+  #     points(X[x.offset,],pch=19)
+  #     text(X[!x.offset,], xlabs[!x.offset], ...)
+  #     text(X[x.offset,]+xlab.offsets[x.offset,], xlabs[x.offset],pos=xlab.pos, ...)
+  #     for (i in 1:n)
+  #       if (x.offset[i])
+  #         lines(c(X[i,1],X[i,1]+xlab.offsets[i,1]),c(X[i,2],X[i,2]+xlab.offsets[i,2]))
+  #   }
+  # }
+  # else
+  # {#offsets
+
+    switch(type, symmetric = moonplot.symmetric(X, Y, var.axes = FALSE,xlab.offsets=xlab.offsets,xlab.pos=xlab.pos,...),
+           rows = biplot.bdr(X, Y, ...), columns = biplot.bdr(Y, X, ...))
+    # points(0, 0, pch = 3, cex = 3)
+  # }
   # invisible()
 }
 
@@ -188,20 +242,20 @@ moonplot <- function(
                                        Attribute=c('Kids', 'Teens',    "Enjoy life",   'Picks you up', 'Refreshes',    'Cheers you up',    'Energy',   'Up-to-date',   'Fun',  'When tired',   'Relax')))
 
   # print(CSDperceptions)
-  obj <- MASS::corresp(CSDperceptions,2)
-  X <- obj$rscore[, 1:2]
-  Y <- obj$cscore[, 1:2]
+  # obj <- MASS::corresp(round(100*CSDperceptions),2)
+  # X <- obj$rscore[, 1:2]
+  # Y <- obj$cscore[, 1:2]
   # print(X)
   # print(Y)
 
-  result <- moonplot.symmetric(X, Y)
-  # print(result)
+  result <- moonplotFunc(round(100*CSDperceptions),xlab.mult=1.2,y.cex.scale=0.5,space.gap=.012,xlab.offsets=matrix(c(0,0,-.2,-.2,0,-.38,.25,-.2,rep(0,8)),byrow=T,ncol=2),xlab.pos=1,col=1)
+  print(result)
 
 
   # create widget
   htmlwidgets::createWidget(
     name = 'moonplot',
-    x,
+    toJSON(result),
     width = width,
     height = height,
     package = 'moonplot'
