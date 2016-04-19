@@ -12,6 +12,7 @@ class MoonPlot
     radius = Math.min(@height, @width) / 3
 
     drawCircle(svg, xCenter, yCenter, radius, @height, @width)
+
     drawLunarCoreLabels(@data.lunarCoreLabels, svg,
                         xCenter,yCenter,radius)
     drawLunarSurfaceLabels(@data.lunarSurfaceLabels,svg,

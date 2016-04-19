@@ -10,7 +10,7 @@ HTMLWidgets.widget
   resize: (el, width, height, instance) ->
     console.log 'Resized'
     instance.redraw(width, height)
-    return mp
+    return instance
 
   renderValue: (el, params, instance) ->
     console.log 'RenderValue called'
@@ -22,7 +22,6 @@ HTMLWidgets.widget
 
     # setting the test data
     params.data = testData
-
 
     instance.draw(params.data)
     return
