@@ -1,4 +1,5 @@
-drawLunarSurfaceLabels = (svg,
+drawLunarSurfaceLabels = (lunarSurfaceLabels
+                          svg,
                           cx,
                           cy,
                           radius,

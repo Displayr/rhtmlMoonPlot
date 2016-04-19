@@ -1,6 +1,5 @@
 'use strict'
 
-
 HTMLWidgets.widget
   name: 'moonplot'
   type: 'output'
@@ -16,10 +15,14 @@ HTMLWidgets.widget
   renderValue: (el, params, instance) ->
     console.log 'RenderValue called'
 
-    instance.draw()
-
     console.log "instance"
     console.log instance
-    console.log "params #{params}"
+    console.log "params"
     console.log params
-    d3.select(el)
+
+    # setting the test data
+    params.data = testData
+
+
+    instance.draw(params.data)
+    return

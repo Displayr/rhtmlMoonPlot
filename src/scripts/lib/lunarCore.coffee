@@ -1,4 +1,5 @@
-drawLunarCoreLabels = (svg,
+drawLunarCoreLabels = (lunarCoreLabels,
+                       svg,
                        cx,
                        cy,
                        radius) ->
