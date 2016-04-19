@@ -48,3 +48,7 @@ dependencies:
     version: 1.0.0
     src: htmlwidgets/lib/rhtmlMoonPlot
     script: utils.js
+  - name: moonplot-baseclass
+    version: 1.0.0
+    src: htmlwidgets/lib/rhtmlMoonPlot
+    script: moonplotClass.js

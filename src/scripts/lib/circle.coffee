@@ -6,6 +6,7 @@ drawCircle = (svg, cx, cy, radius, height, width) ->
               .attr('cx', cx)
               .attr('cy', cy)
               .attr('r', radius)
+              .attr('class', 'moon-circle')
               .attr 'stroke-width', 1
               .attr('cursor', 'all-scroll')
               .style('fill', 'none')

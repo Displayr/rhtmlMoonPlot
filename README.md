@@ -33,7 +33,16 @@ Run this sequence in R:
 ```
 library('devtools')
 install('dist/package')
-source('dist/package/R/moonplot.r')
+source('dist/package/R/moonplot.R')
+```
+
+Or if you are re-running in dev:
+
+```
+remove.packages('moonplot','home/po/R/x86_64-pc-linux-gnu-library/3.2')
+install('dist/package')
+source('dist/package/R/moonplot.R')
+moonplot("lksjdf")
 ```
 
 

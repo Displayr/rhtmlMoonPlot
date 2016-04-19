@@ -28,8 +28,9 @@
 
     $(document).ready( function() {
       console.log("Document ready call. Instantiating captured widget");
-
+      var params = []
       widgetInstance = myWidgetDefinition.initialize($('.content-window'),800,600);
+      myWidgetDefinition.renderValue($('.content-window'), params, widgetInstance);
       // myWidgetDefinition.renderValue($('.content-window'), params, widgetInstance);
     });
   </script>
@@ -39,6 +40,7 @@
   <script src="scripts/utils.js"></script>
   <script src="scripts/drag.js"></script>
   <script src="scripts/circle.js"></script>
+  <script src="scripts/moonplotClass.js"></script>
   <script src="scripts/moonplot.js"></script>
   <script src="scripts/labeler.js"></script>
 </html>

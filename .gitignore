@@ -8,3 +8,5 @@ node_modules
 dist/browser
 dist/package
 src-i386/
+tags
+.tags_swap

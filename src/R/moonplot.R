@@ -15,7 +15,8 @@ moonplot <- function(
     data = data
   )
 
-  print("testing..why doesnt this print")
+  print("123123")
+  print(x)
 
   # create widget
   htmlwidgets::createWidget(
