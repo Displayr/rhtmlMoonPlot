@@ -1,8 +1,8 @@
 class MoonPlot
   constructor: (@width, @height) ->
 
-  draw: (@data) ->
-    svg = d3.select('body')
+  draw: (@data, el) ->
+    svg = d3.select(el)
                      .append('svg')
                      .attr('width', @width)
                      .attr('height', @height)
@@ -11,13 +11,14 @@ class MoonPlot
     yCenter = @height /2
     radius = Math.min(@height, @width) / 3
 
-    drawCircle(svg, xCenter, yCenter, radius, @height, @width)
+    drawCircle(@data, svg, xCenter, yCenter, radius, @height, @width)
 
     drawLunarCoreLabels(@data.lunarCoreLabels, svg,
                         xCenter,yCenter,radius)
     drawLunarSurfaceLabels(@data.lunarSurfaceLabels,svg,
                           xCenter,yCenter,radius,@height,@width)
 
-  redraw: (@width, @height) ->
+
+  redraw: (@width, @height, el) ->
     d3.select('.moonplot-container').remove()
-    @draw(@data, @width, @height)
+    @draw(@data, el)

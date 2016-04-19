@@ -73,7 +73,6 @@ The signature definition is documented in the main [R file](src/R/CroppedImage.R
 # To do
 
 1. Improve lunar surface algorithm
-2. Mouse interaction bug in RStudio viewer
-3. R code cleanup
-4. Expose visual algorithm settings to R user
-5. Make graph more visually appealing
+2. R code cleanup
+3. Expose visual algorithm settings to R user
+4. Make graph more visually appealing

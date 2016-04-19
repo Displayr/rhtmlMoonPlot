@@ -1,7 +1,7 @@
-drawCircle = (svg, cx, cy, radius, height, width) ->
+drawCircle = (data, svg, cx, cy, radius, height, width) ->
   drawCross(svg, cx, cy)
 
-  moonDrag = setupMoonResize(svg, cx, cy, height, width, radius)
+  moonDrag = setupMoonResize(data, svg, cx, cy, height, width, radius)
   moon = svg.append('circle')
               .attr('cx', cx)
               .attr('cy', cy)

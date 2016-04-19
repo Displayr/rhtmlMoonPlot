@@ -99,7 +99,7 @@ setupLunarSurfaceDragAndDrop = (svg,
            .on('drag', dragMove)
            .on('dragend', dragEnd)
 
-setupMoonResize = (svg, cx, cy, height, width, radius) ->
+setupMoonResize = (data, svg, cx, cy, height, width, radius) ->
   drag = () ->
 
     findDistance = (cx, cy, x, y) ->
@@ -119,12 +119,12 @@ setupMoonResize = (svg, cx, cy, height, width, radius) ->
 
   dragEnd = () ->
     console.log "Moon resized to r=#{radius}"
-    drawLunarCoreLabels(svg,
+    drawLunarCoreLabels(data.lunarCoreLabels, svg,
                         cx,
                         cy,
                         radius)
 
-    drawLunarSurfaceLabels(svg,
+    drawLunarSurfaceLabels(data.lunarSurfaceLabels, svg,
                            cx,
                            cy,
                            radius,

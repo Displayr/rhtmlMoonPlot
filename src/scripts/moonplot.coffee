@@ -9,7 +9,7 @@ HTMLWidgets.widget
 
   resize: (el, width, height, instance) ->
     console.log 'Resized'
-    instance.redraw(width, height)
+    instance.redraw(width, height, el)
     return instance
 
   renderValue: (el, params, instance) ->
@@ -17,7 +17,7 @@ HTMLWidgets.widget
 
     # setting the test data
     unless params.lunarCoreLabels
-      instance.draw(testData)
+      instance.draw testData, el
       return instance
 
     # setup real data
@@ -45,6 +45,6 @@ HTMLWidgets.widget
     @data =
       lunarSurfaceLabels: lunarSurfaceLabels
       lunarCoreLabels: lunarCoreLabels
-    instance.draw @data
+    instance.draw @data, el
 
     return instance
