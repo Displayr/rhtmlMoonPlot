@@ -17,7 +17,6 @@ HTMLWidgets.widget
 
     # setting the test data
     unless params.lunarCoreLabels
-      console.log 'here'
       instance.draw(testData)
       return instance
 
