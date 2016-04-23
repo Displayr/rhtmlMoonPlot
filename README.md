@@ -45,9 +45,11 @@ library('jsonlite')
 remove.packages('moonplot','home/po/R/x86_64-pc-linux-gnu-library/3.2')
 
 
-
+library('devtools')
+library('jsonlite')
 install('dist/package')
 source('dist/package/R/moonplot.R')
+moonplot("skldjfdf")
 
 CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.1916, 0.284,  0.3514, 0.2534, 0.2089,
                          c(  0.0198, 0.4604, 0.2151, 0.5235, 0.1151, 0.12,   0.5457, 0.3041, 0.06312,    0.384,  0.06064),
@@ -76,3 +78,8 @@ The signature definition is documented in the main [R file](src/R/CroppedImage.R
 2. R code cleanup
 3. Expose visual algorithm settings to R user
 4. Make graph more visually appealing
+
+Font size is calculated from distance function, so the point size is
+(scaling factor)*(y.dist[i]/y.max.dist)^0.5)
+
+normalized distance from origin, square rooted multipled by a scaling factor

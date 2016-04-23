@@ -7,8 +7,8 @@ class MoonPlot
                      .attr('width', @width)
                      .attr('height', @height)
                      .attr('class', 'moonplot-container')
-    xCenter = @width /2
-    yCenter = @height /2
+    xCenter = @width / 2
+    yCenter = @height / 2
     radius = Math.min(@height, @width) / 3
 
     drawCircle(@data, svg, xCenter, yCenter, radius, @height, @width)
