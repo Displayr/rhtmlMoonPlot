@@ -22,15 +22,14 @@ moonplot <- function(
                                        Attribute=c('Kids', 'Teens',    "Enjoy life",   'Picks you up', 'Refreshes',    'Cheers you up',    'Energy',   'Up-to-date',   'Fun',  'When tired',   'Relax')))
 
   obj <- MASS::corresp(CSDperceptions,2)
-  X <- obj$rscore[, 1:2]
-  Y <- obj$cscore[, 1:2]
-  #  moonplot.symmetric(X, Y, y.cex.scale=0.5)
+  coreNodes <- obj$rscore[, 1:2]
+  surfaceNodes <- obj$cscore[, 1:2]
 
 
-  data.lunarCoreNodes <- toJSON(X)
-  data.lunarCoreLabels <- toJSON(labels(X)[[1]])
-  data.lunarSurfaceNodes <- toJSON(Y)
-  data.lunarSurfaceLabels <- toJSON(labels(Y)[[1]])
+  data.lunarCoreNodes <- toJSON(coreNodes)
+  data.lunarCoreLabels <- toJSON(labels(coreNodes)[[1]])
+  data.lunarSurfaceNodes <- toJSON(surfaceNodes)
+  data.lunarSurfaceLabels <- toJSON(labels(surfaceNodes)[[1]])
 
   # forward options using x
   x = list(

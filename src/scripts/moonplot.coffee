@@ -30,8 +30,12 @@ HTMLWidgets.widget
       min = node[1] if node[1] < min
 
     for node in params.lunarCoreNodes
-      node[0] = -1 + (node[0]-min)*2/(max-min)
-      node[1] = -1 + (node[1]-min)*2/(max-min)
+      squareX = -1 + (node[0]-min)*2/(max-min)
+      squareY = -1 + (node[1]-min)*2/(max-min)
+
+      # map square values into circular moon
+      node[0] = squareX * Math.sqrt(1 - 0.5 * Math.pow(squareY,2))
+      node[1] = squareY * Math.sqrt(1 - 0.5 * Math.pow(squareX,2))
 
 
     distanceFromCenter = (x, y) ->

@@ -12,17 +12,6 @@ drawLunarCoreLabels = (lunarCoreLabels,
                           cy)
   # prevent labels from escaping moon surface
   for label in lunarCoreLabels
-    console.log label
-#    threshold = 1
-#    barrier = 0.8
-#    if label.x < -threshold
-#      label.x = -barrier
-#    if label.x > threshold
-#      label.x = barrier
-#    if label.y < -threshold
-#      label.y = -barrier
-#    if label.y > threshold
-#      label.y = barrier
     x = label.x * radius + cx
     y = -label.y * radius + cy
 
