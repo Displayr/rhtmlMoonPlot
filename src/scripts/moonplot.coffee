@@ -20,42 +20,10 @@ HTMLWidgets.widget
       instance.draw testData, el
       return instance
 
-    # normalization between -1 and 1
-    max = -Infinity
-    min = Infinity
-    for node in params.lunarCoreNodes
-      max = node[0] if node[0] > max
-      max = node[1] if node[1] > max
-      min = node[0] if node[0] < min
-      min = node[1] if node[1] < min
-
-    for node in params.lunarCoreNodes
-      squareX = -1 + (node[0]-min)*2/(max-min)
-      squareY = -1 + (node[1]-min)*2/(max-min)
-
-      # map square values into circular moon
-      node[0] = squareX * Math.sqrt(1 - 0.5 * Math.pow(squareY,2))
-      node[1] = squareY * Math.sqrt(1 - 0.5 * Math.pow(squareX,2))
-
-
-    distanceFromCenter = (x, y) ->
-      Math.sqrt(Math.pow(x,2) + Math.pow(y, 2))
-
-    lunarSurfaceSizes = []
-    maxSize = -Infinity
-    for node in params.lunarSurfaceNodes
-      size = distanceFromCenter(node[0], node[1])
-      maxSize = size if size > maxSize
-      lunarSurfaceSizes.push size
-
-    for size in lunarSurfaceSizes
-      size = size / maxSize
-
-    for node in params.lunarSurfaceNodes
-      angle = Math.atan2 node[1], node[0]
-      node[0] = Math.cos angle
-      node[1] = Math.sin angle
-
+    # process raw input data
+    normalizeCoreNodes params.lunarCoreNodes
+    lunarSurfaceSizes = calculateSurfaceLabelSizes params.lunarSurfaceNodes, 1.5, 0.5
+    calculateSurfaceNodePositions params.lunarSurfaceNodes
 
     # setup real data
     lunarCoreLabels = []

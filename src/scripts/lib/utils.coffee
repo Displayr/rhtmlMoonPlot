@@ -150,3 +150,40 @@ adjustCoreLabelLength = (core_labels, radius, cx, cy) ->
   for core_label in core_labels
     if failsCoreLabelBoundaryRules(core_label, radius, cx, cy)
       condenseCoreLabel core_label, radius, cx, cy
+
+distanceFromCenter = (x, y) ->
+  Math.sqrt(Math.pow(x,2) + Math.pow(y, 2))
+
+normalizeCoreNodes = (rawCoreNodes) ->
+  # normalization between -1 and 1
+  max = -Infinity
+  min = Infinity
+  for node in rawCoreNodes
+    max = node[0] if node[0] > max
+    max = node[1] if node[1] > max
+    min = node[0] if node[0] < min
+    min = node[1] if node[1] < min
+
+  for node in rawCoreNodes
+    squareX = -1 + (node[0]-min)*2/(max-min)
+    squareY = -1 + (node[1]-min)*2/(max-min)
+
+    # map square values into circular moon
+    node[0] = squareX * Math.sqrt(1 - 0.5 * Math.pow(squareY,2))
+    node[1] = squareY * Math.sqrt(1 - 0.5 * Math.pow(squareX,2))
+
+calculateSurfaceNodePositions = (rawSurfaceNodes) ->
+  for node in rawSurfaceNodes
+    angle = Math.atan2 node[1], node[0]
+    node[0] = Math.cos angle
+    node[1] = Math.sin angle
+
+calculateSurfaceLabelSizes = (rawSurfaceNodes, scaleFactor, equalizeFactor) ->
+  lunarSurfaceSizes = []
+  maxSize = -Infinity
+  for node in rawSurfaceNodes
+    size = distanceFromCenter(node[0], node[1])
+    maxSize = size if size > maxSize
+    lunarSurfaceSizes.push size
+
+  _.map lunarSurfaceSizes, (s) -> scaleFactor * Math.pow((s / maxSize), equalizeFactor)
