@@ -5,8 +5,7 @@
 .idea
 bower_components
 node_modules
-dist/browser
-dist/package
+browser
 src-i386/
 tags
 .tags_swap

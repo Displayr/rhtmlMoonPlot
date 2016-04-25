@@ -14,90 +14,92 @@ var less = require('gulp-less');
 var rename = require('gulp-rename');
 
 gulp.task('clean', function(cb) {
-  fs.remove('dist', cb);
+  fs.remove('browser', cb);
+  fs.remove('R', cb);
+  fs.remove('inst', cb);
 });
 
 gulp.task('less', function () {
-  return gulp.src('src/styles/**/*.less')
+  return gulp.src('theSrc/styles/**/*.less')
     .pipe(less({}))
-    .pipe(gulp.dest('dist/browser/styles'))
-    .pipe(gulp.dest('dist/package/inst/htmlwidgets/lib/style'));
+    .pipe(gulp.dest('browser/styles'))
+    .pipe(gulp.dest('inst/htmlwidgets/lib/style'));
 });
 
 gulp.task('compile-coffee', function () {
   var gulp_coffee = require("gulp-coffee");
 
-  gulp.src('src/scripts/moonplot.coffee')
+  gulp.src('theSrc/scripts/moonplot.coffee')
     .pipe(gulp_coffee({ bare: true }))
-    .pipe(gulp.dest('dist/browser/scripts'))
-    .pipe(gulp.dest('dist/package/inst/htmlwidgets/'));
+    .pipe(gulp.dest('browser/scripts'))
+    .pipe(gulp.dest('inst/htmlwidgets/'));
 
-  gulp.src('src/scripts/lib/*.coffee')
+  gulp.src('theSrc/scripts/lib/*.coffee')
     .pipe(gulp_coffee({ bare: true }))
-    .pipe(gulp.dest('dist/browser/scripts'))
-    .pipe(gulp.dest('dist/package/inst/htmlwidgets/lib/rhtmlMoonPlot/'));
+    .pipe(gulp.dest('browser/scripts'))
+    .pipe(gulp.dest('inst/htmlwidgets/lib/rhtmlMoonPlot/'));
 });
 
 gulp.task('copy', function () {
   gulp.src([
-    'src/**/*.html'
+    'theSrc/**/*.html'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist/browser'));
+  }).pipe(gulp.dest('browser'));
 
   gulp.src([
-    'src/scripts/lib/labeler.js'
+    'theSrc/scripts/lib/labeler.js'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist/browser/scripts'))
-  .pipe(gulp.dest('dist/package/inst/htmlwidgets/lib/rhtmlMoonPlot'));
+  }).pipe(gulp.dest('browser/scripts'))
+  .pipe(gulp.dest('inst/htmlwidgets/lib/rhtmlMoonPlot'));
 
   gulp.src([
     'bower_components/**/*'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist/browser/bower_components'));
+  }).pipe(gulp.dest('browser/bower_components'));
 
   gulp.src([
-    'src/R/**/*.R'
+    'theSrc/R/**/*.R'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist/package/R'));
+  }).pipe(gulp.dest('R'));
 
   gulp.src('htmlwidget.yaml')
     .pipe(rename(widgetName + '.yaml'))
-    .pipe(gulp.dest('dist/package/inst/htmlwidgets/'));
+    .pipe(gulp.dest('inst/htmlwidgets/'));
 
   gulp.src(['DESCRIPTION', 'NAMESPACE'])
-    .pipe(gulp.dest('dist/package/'));
+    .pipe(gulp.dest(''));
 
 
   gulp.src([
     'man/**/*'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist/package/man'));
+  }).pipe(gulp.dest('man'));
 
   var extLibs = [
     {
       src: 'bower_components/lodash/dist/lodash.min.js',
-      dest: 'dist/package/inst/htmlwidgets/lib/lodash-2.4.2/'
+      dest: 'inst/htmlwidgets/lib/lodash-2.4.2/'
     },
     {
       src: 'bower_components/jquery/dist/jquery.min.js',
-      dest: 'dist/package/inst/htmlwidgets/lib/jquery-2.2.1/'
+      dest: 'inst/htmlwidgets/lib/jquery-2.2.1/'
     },
     {
       src: 'bower_components/d3/d3.min.js',
-      dest: 'dist/package/inst/htmlwidgets/lib/d3/'
+      dest: 'inst/htmlwidgets/lib/d3/'
     },
     {
       src: 'bower_components/victor/build/victor.min.js',
-      dest: 'dist/package/inst/htmlwidgets/lib/victor/'
+      dest: 'inst/htmlwidgets/lib/victor/'
     },
     {
       src: 'bower_components/random/lib/random.min.js',
-      dest: 'dist/package/inst/htmlwidgets/lib/random/'
+      dest: 'inst/htmlwidgets/lib/random/'
     }
   ]
 
@@ -116,8 +118,8 @@ gulp.task('connect', ['build'], function () {
   var serveIndex = require('serve-index');
   var app = require('connect')()
     .use(require('connect-livereload')({port: 35729}))
-    .use(serveStatic('dist/browser'))
-    .use(serveIndex('dist/browser'));
+    .use(serveStatic('browser'))
+    .use(serveIndex('browser'));
 
   require('http').createServer(app)
     .listen(9000)
@@ -134,7 +136,7 @@ gulp.task('serve', ['connect', 'watch'], function () {
 gulp.task('wiredep', function () {
   var wiredep = require('wiredep').stream;
 
-  gulp.src('src/index.html')
+  gulp.src('theSrc/index.html')
     .pipe(wiredep({exclude: ['bootstrap-sass-official']}))
     .pipe(gulp.dest('src'));
 });
@@ -144,16 +146,16 @@ gulp.task('watch', ['connect'], function () {
 
   // watch for changes
   gulp.watch([
-    'dist/browser/**/*',
+    'browser/**/*',
   ]).on('change', $.livereload.changed);
 
-  gulp.watch('src/R/moonplot.R', ['copy'])
-  gulp.watch('htmlwidget.yaml', ['copy'])
-  gulp.watch('src/**/*.html', ['copy']);
-  gulp.watch('src/scripts/**/*.js', ['copy'])
-  gulp.watch('src/images/**/*', ['images']);
-  gulp.watch('src/styles/**/*.less', ['less']);
-  gulp.watch('src/scripts/**/*.coffee', ['compile-coffee']);
+  gulp.watch('theSrc/R/rHTMLMoonPlot.R', ['copy']);
+  gulp.watch('htmlwidget.yaml', ['copy']);
+  gulp.watch('theSrc/**/*.html', ['copy']);
+  gulp.watch('theSrc/scripts/**/*.js', ['copy']);
+  gulp.watch('theSrc/images/**/*', ['images']);
+  gulp.watch('theSrc/styles/**/*.less', ['less']);
+  gulp.watch('theSrc/scripts/**/*.coffee', ['compile-coffee']);
 
 });
 
