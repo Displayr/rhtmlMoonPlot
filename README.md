@@ -6,7 +6,7 @@ A R HTMLWidget that displays a moonplot for correspondence analysis.
 Prerequisites:
 
 1. Must have node.js version >= 5.0 installed
-2. tested on Linux/Windows, should work on OSX
+2. tested on Ubuntu/Windows/OSX
 
 Steps:
 
@@ -26,22 +26,13 @@ This should load a browser window, where a list of links to examples will be dis
 
 # To test locally in r context
 
-Prerequisite: `gulp build`
-
 Run this sequence in R:
 
 ```
 library('devtools')
-install('dist/package')
-source('dist/package/R/moonplot.R')
-```
-
-Or if you are re-running in dev:
-
-```
-library('devtools')
 library('jsonlite')
-install('')
+install_github('NumbersInternational/rhtmlMoonPlot')
+install()
 
 CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.1916, 0.284,  0.3514, 0.2534, 0.2089,
                            c(  0.0198, 0.4604, 0.2151, 0.5235, 0.1151, 0.12,   0.5457, 0.3041, 0.06312,    0.384,  0.06064),
@@ -57,14 +48,14 @@ CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.191
 obj <- MASS::corresp(CSDperceptions,2)
 coreNodes <- obj$rscore[, 1:2]
 surfaceNodes <- obj$cscore[, 1:2]
-moonplot::moonplot(coreNodes, surfaceNodes)
+rhtmlMoonPlot::moonplot(coreNodes, surfaceNodes)
 
 ```
 
 
 # R Usage
 
-The actual R package - the project deliverable - is automatically generated in the `dist/package` directory when you run `gulp build`.
+The actual R package - the project deliverable - is automatically generated in the `inst/htmlwidgets` and `R` directorues when you run `gulp build`.
 
 The signature definition is documented in the main [R file](src/R/CroppedImage.R)
 

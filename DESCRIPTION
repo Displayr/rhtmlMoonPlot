@@ -1,5 +1,5 @@
-Package: rHTMLMoonPlot
-Title: rHTMLMoonPlot
+Package: rhtmlMoonPlot
+Title: rhtmlMoonPlot
 Version: 0.0.0.9000
 Authors@R: person("Po", "Liu", email = "pliu0771@uni.sydney.edu.au", role = c("aut", "cre"))
 Description: Drawing MoonPlots from the results of a correspondence analysis.

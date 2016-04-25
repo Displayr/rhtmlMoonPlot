@@ -149,7 +149,7 @@ gulp.task('watch', ['connect'], function () {
     'browser/**/*',
   ]).on('change', $.livereload.changed);
 
-  gulp.watch('theSrc/R/rHTMLMoonPlot.R', ['copy']);
+  gulp.watch('theSrc/R/rhtmlMoonPlot.R', ['copy']);
   gulp.watch('htmlwidget.yaml', ['copy']);
   gulp.watch('theSrc/**/*.html', ['copy']);
   gulp.watch('theSrc/scripts/**/*.js', ['copy']);
