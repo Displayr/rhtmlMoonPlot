@@ -1,32 +1,8 @@
 A R HTMLWidget that displays a moonplot for correspondence analysis.
 
+# To run locally in R context
 
-# Installation
-
-Prerequisites:
-
-1. Must have node.js version >= 5.0 installed
-2. tested on Ubuntu/Windows/OSX
-
-Steps:
-
-1. `npm install`
-2. `bower install`
-3. `gulp build`
-
-
-# To develop and test in test browser context:
-
-Prerequisites: Chrome installed (tested on OSX only, should work in Windows/Linux)
-
-`gulp serve`
-
-This should load a browser window, where a list of links to examples will be displayed. Choose an example or add another example to [R file](src/R/index.html). When changes to the [widget definition](src/scripts/moonplot.coffee) or any other file are saved, the browser will automatically reload.
-
-
-# To test locally in r context
-
-Run this sequence in R:
+Run this sequence in R (you may get errors if you don't have some packages already installed):
 
 ```
 library('devtools')
@@ -52,21 +28,31 @@ rhtmlMoonPlot::moonplot(coreNodes, surfaceNodes)
 ```
 
 
-# R Usage
+# Installation for development
 
-The actual R package - the project deliverable - is automatically generated in the `inst/htmlwidgets` and `R` directorues when you run `gulp build`.
+Prerequisites:
 
-The signature definition is documented in the main [R file](src/R/CroppedImage.R)
+1. Must have node.js version >= 5.0 installed
+2. tested on Ubuntu/Windows/OSX
+
+Steps:
+
+1. `npm install`
+2. `bower install`
+3. `gulp build`
+
+
+# To test in test browser context during development:
+
+Prerequisites: Chrome installed (tested on OSX only, should work in Windows/Linux)
+
+`gulp serve`
+
+This should load a browser window, where a list of links to examples will be displayed. Choose an example or add another example to [R file](src/R/index.html). When changes to the [widget definition](theSrc/scripts/moonplot.coffee) or any other file are saved, the browser will automatically reload.
 
 
 # To do
 
-1. Improve lunar surface algorithm
-2. R code cleanup
-3. Expose visual algorithm settings to R user
-4. Make graph more visually appealing
-
-Font size is calculated from distance function, so the point size is
-(scaling factor)*(y.dist[i]/y.max.dist)^0.5)
-
-normalized distance from origin, square rooted multipled by a scaling factor
+- Improve lunar surface algorithm
+- Expose visual algorithm settings to R user
+- Make graph more visually appealing
