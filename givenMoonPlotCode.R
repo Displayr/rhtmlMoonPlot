@@ -224,12 +224,3 @@ CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.191
 
 moonplot(round(100*CSDperceptions),xlab.mult=1.2,y.cex.scale=0.5,space.gap=.012,xlab.offsets=matrix(c(0,0,-.2,-.2,0,-.38,.25,-.2,rep(0,8)),byrow=T,ncol=2),xlab.pos=1,col=1)
 
-
-# obj <- MASS::corresp(CSDperceptions,2)    
-# X <- obj$rscore[, 1:2]
-# Y <- obj$cscore[, 1:2]
-# X
-# Y
-#
-# rownames(X)
-# colnames(X)
