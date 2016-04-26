@@ -6,7 +6,6 @@ Run this sequence in R (you may get errors if you don't have some packages alrea
 
 ```
 library('devtools')
-library('jsonlite')
 install_github('NumbersInternational/rhtmlMoonPlot')
 
 CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.1916, 0.284,  0.3514, 0.2534, 0.2089,
