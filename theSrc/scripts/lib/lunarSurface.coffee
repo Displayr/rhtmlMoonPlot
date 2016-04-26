@@ -47,11 +47,14 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
 
   moveSurfaceCollsions(polar_coords, length_of_line, radius)
   cart_coords = cartesianCoords polar_coords
+
+  # Load the new cartesian coordinates into lunarSurfaceLabels array
+  i = 0
   for label in lunarSurfaceLabels
-    index = _.findIndex(lunarSurfaceLabels, (e) -> e.name is label.name)
-    label.newX = cart_coords[index].x
-    label.newY = cart_coords[index].y
-    label.rotation = calculateLabelRotation(polarCoord(cart_coords[index]).a)
+    label.newX = cart_coords[i].x
+    label.newY = cart_coords[i].y
+    label.rotation = calculateLabelRotation(polarCoord(cart_coords[i]).a)
+    i++
 
 
   # Plot the surface links
@@ -72,6 +75,8 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('class', 'surface-link')
                   .attr('x1', x)
                   .attr('y1', y)
+                  .attr('ox', x)
+                  .attr('oy', y)
                   .attr('x2', x_new)
                   .attr('y2', y_new)
                   .attr('stroke', 'gray')
@@ -81,6 +86,8 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
         y1: y
         x2: x_new
         y2: y_new
+        ox: x
+        oy: y
 
   t = null
   lunar_surface_labels = []
@@ -121,7 +128,6 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('title', label.name)
                   .text label.name
                   .call(drag)
-
     lunar_surface_labels.push t[0][0]
 
   adjustSurfaceLabelLength lunar_surface_labels, height, width

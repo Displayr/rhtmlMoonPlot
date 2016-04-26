@@ -60,12 +60,11 @@ setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_links, radius, xCente
       for (i = 0, len = lunar_surface_links.length; i < len; i++) {
         surface_link = lunar_surface_links[i];
         if (surface_link.x2.toString() === ox && surface_link.y2.toString() === oy) {
-          surface_link.transform = d3.select(this).attr('transform');
           surface_link.x2 = d3.mouse(this)[0];
           surface_link.y2 = d3.mouse(this)[1];
           ctm = d3.select(this)[0][0].getCTM();
-          surface_link.x1 = surface_link.x1 * ctm.a + surface_link.y1 * ctm.c + ctm.e;
-          surface_link.y1 = surface_link.x1 * ctm.b + surface_link.y1 * ctm.d + ctm.f;
+          surface_link.x2 = surface_link.x2 * ctm.a + surface_link.y2 * ctm.c + ctm.e;
+          surface_link.y2 = surface_link.x2 * ctm.b + surface_link.y2 * ctm.d + ctm.f;
           d3.select(this).attr('ox', surface_link.x2).attr('oy', surface_link.y2);
         }
       }
@@ -78,8 +77,6 @@ setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_links, radius, xCente
       return d.x2;
     }).attr('y2', function(d) {
       return d.y2;
-    }).attr('transform', function(d) {
-      return d.transform;
     }).attr('stroke-width', 0.6).attr('stroke', 'gray');
     return d3.select(this).style('fill', 'black');
   };

@@ -1,7 +1,7 @@
 # Detect if there is intersection between lunar surface labels
 # Return the pairs of collisions
 detectSurfaceCollisions = (polar_coords, length_of_line) ->
-  error_allowed = 10
+  error_allowed = 5
   collisions = []
   i = 0
   while i < polar_coords.length
@@ -32,7 +32,7 @@ moveSurfaceCollsions = (polar_coords, length_of_line, radius) ->
     pc.r = radius
 
   move_amount = 0.2 / 360 * 2 * Math.PI # deg to rad
-  altitude_incr = 0.05 * length_of_line / 360
+  altitude_incr = 0.1 * length_of_line / 360
   collisions = detectSurfaceCollisions(polar_coords, length_of_line)
 
   max_moves = 500
