@@ -2,7 +2,7 @@ A R HTMLWidget that displays a moonplot for correspondence analysis.
 
 # To run locally in R context
 
-Run this sequence in R (you may get errors if you don't have some packages already installed):
+Run this sequence in R:
 
 ```
 library('devtools')
