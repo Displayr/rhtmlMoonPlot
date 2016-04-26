@@ -17,8 +17,7 @@ HTMLWidgets.widget
 
     # setting the test data, for debugging
     unless params.lunarCoreLabels
-      instance.draw testData, el
-      return instance
+      params = testData
 
     # process raw input data
     normalizeCoreNodes params.lunarCoreNodes
