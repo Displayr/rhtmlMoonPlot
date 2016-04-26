@@ -69,8 +69,14 @@ setupLunarSurfaceDragAndDrop = (svg,
       oy = d3.select(this).attr('oy').toString()
       for surface_link in lunar_surface_links
         if surface_link.x2.toString() == ox and surface_link.y2.toString() == oy
-          surface_link.x2 = d3.select(this).attr('x')
-          surface_link.y2 = d3.select(this).attr('y')
+          surface_link.transform = d3.select(this).attr('transform')
+          surface_link.x2 = d3.mouse(this)[0]
+          surface_link.y2 = d3.mouse(this)[1]
+
+          ctm = d3.select(this)[0][0].getCTM()
+          surface_link.x1 = surface_link.x1*ctm.a + surface_link.y1*ctm.c + ctm.e
+          surface_link.y1 = surface_link.x1*ctm.b + surface_link.y1*ctm.d + ctm.f
+
           d3.select(this).attr('ox', surface_link.x2)
                          .attr('oy', surface_link.y2)
 
@@ -83,6 +89,7 @@ setupLunarSurfaceDragAndDrop = (svg,
       .attr('y1', (d) -> d.y1)
       .attr('x2', (d) -> d.x2)
       .attr('y2', (d) -> d.y2)
+      .attr('transform', (d) -> d.transform)
       .attr('stroke-width', 0.6)
       .attr('stroke', 'gray')
 

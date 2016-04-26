@@ -16,6 +16,7 @@
   </body>
   <script>
     myWidgetDefinition = null;
+    widgetInstance = null;
 
     // This is a stub that will capture the widget definition,
     // so that we can use it once the page finishes loading
@@ -29,7 +30,7 @@
     $(document).ready( function() {
       console.log("Document ready call. Instantiating captured widget");
       var params = []
-      widgetInstance = myWidgetDefinition.initialize($('.content-window'),800,600);
+      widgetInstance = myWidgetDefinition.initialize($('.content-window'),window.innerWidth,window.innerHeight);
       myWidgetDefinition.renderValue($('.content-window')[0], params, widgetInstance);
     });
   </script>
