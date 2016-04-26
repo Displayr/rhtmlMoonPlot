@@ -10,10 +10,10 @@ moonplot <- function(
   width = NULL,
   height = NULL) {
 
-  data.lunarCoreNodes <- toJSON(coreNodes)
-  data.lunarCoreLabels <- toJSON(labels(coreNodes)[[1]])
-  data.lunarSurfaceNodes <- toJSON(surfaceNodes)
-  data.lunarSurfaceLabels <- toJSON(labels(surfaceNodes)[[1]])
+  data.lunarCoreNodes <- jsonlite::toJSON(coreNodes)
+  data.lunarCoreLabels <- jsonlite::toJSON(labels(coreNodes)[[1]])
+  data.lunarSurfaceNodes <- jsonlite::toJSON(surfaceNodes)
+  data.lunarSurfaceLabels <- jsonlite::toJSON(labels(surfaceNodes)[[1]])
 
   # forward options using x
   x = list(
