@@ -3,6 +3,6 @@ Title: rhtmlMoonPlot
 Version: 0.0.0.9000
 Authors@R: person("Po", "Liu", email = "pliu0771@uni.sydney.edu.au", role = c("aut", "cre"))
 Description: Drawing MoonPlots from the results of a correspondence analysis.
-Depends: R (>= 3.2.4)
+Depends: R (>= 3.2.4), jsonlite
 License: MIT
 LazyData: true
