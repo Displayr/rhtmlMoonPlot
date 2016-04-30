@@ -22,8 +22,7 @@ setupLunarCoreDragAndDrop = function(svg, lunar_core_labels, radius, xCenter, yC
     return results;
   };
   dragEnd = function() {
-    var lunar_core_links_svg;
-    lunar_core_links_svg = svg.selectAll('.core-link').data(lunar_core_labels).enter().append('line').attr('class', 'core-link').attr('x1', function(d) {
+    svg.selectAll('.core-link').data(lunar_core_labels).enter().append('line').attr('class', 'core-link').attr('x1', function(d) {
       return d.ox;
     }).attr('y1', function(d) {
       return d.oy;

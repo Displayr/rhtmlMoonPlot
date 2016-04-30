@@ -20,7 +20,7 @@ setupLunarCoreDragAndDrop = (svg,
         core_label.y = d3.event.y
 
   dragEnd = ->
-    lunar_core_links_svg = svg.selectAll('.core-link')
+    svg.selectAll('.core-link')
                         .data(lunar_core_labels)
                         .enter()
                         .append('line')
@@ -72,6 +72,7 @@ setupLunarSurfaceDragAndDrop = (svg,
           surface_link.x2 = d3.mouse(this)[0]
           surface_link.y2 = d3.mouse(this)[1]
 
+          # Use the context transformation matrix to rotate the link's new positions
           ctm = d3.select(this)[0][0].getCTM()
           surface_link.x2 = surface_link.x2*ctm.a + surface_link.y2*ctm.c + ctm.e
           surface_link.y2 = surface_link.x2*ctm.b + surface_link.y2*ctm.d + ctm.f
