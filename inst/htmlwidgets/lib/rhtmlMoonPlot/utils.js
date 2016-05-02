@@ -64,7 +64,7 @@ moveSurfaceCollsions = function(polar_coords, length_of_line, radius) {
           } else if (pc.a < -0.5 * Math.PI) {
             pc.a += move_amount;
           } else if (pc.a > -.5 * Math.PI && pc.a < 0) {
-            pc.a -= move_amount;
+            pc.a += move_amount;
           } else if (pc.a > 0 && pc.a < .5 * Math.PI) {
             pc.a += move_amount;
           }
@@ -80,7 +80,7 @@ moveSurfaceCollsions = function(polar_coords, length_of_line, radius) {
           } else if (pc.a < -.5 * Math.PI) {
             pc.a -= move_amount;
           } else if (pc.a > -.5 * Math.PI && pc.a < 0) {
-            pc.a += move_amount;
+            pc.a -= move_amount;
           } else if (pc.a > 0 && pc.a < .5 * Math.PI) {
             pc.a -= move_amount;
           }

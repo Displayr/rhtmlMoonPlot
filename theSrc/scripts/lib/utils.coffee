@@ -52,7 +52,7 @@ moveSurfaceCollsions = (polar_coords, length_of_line, radius) ->
         else if pc.a < -0.5*Math.PI # LL
           pc.a += move_amount
         else if pc.a > -.5*Math.PI and pc.a < 0 #LR
-          pc.a -= move_amount
+          pc.a += move_amount
         else if pc.a > 0 and pc.a < .5*Math.PI #UR
           pc.a += move_amount
         pc.collision_l = false
@@ -69,7 +69,7 @@ moveSurfaceCollsions = (polar_coords, length_of_line, radius) ->
         else if pc.a < -.5*Math.PI #LL
           pc.a -= move_amount
         else if pc.a > -.5*Math.PI and pc.a < 0 #LR
-          pc.a += move_amount
+          pc.a -= move_amount
         else if pc.a > 0 and pc.a < .5*Math.PI #UR
           pc.a -= move_amount
 
