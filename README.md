@@ -53,5 +53,4 @@ This should load a browser window, where a list of links to examples will be dis
 # To do
 
 - Links to the surface labels on drag
-- Core links to closest point
 - Improve lunar surface algorithm
