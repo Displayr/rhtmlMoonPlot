@@ -54,5 +54,4 @@ This should load a browser window, where a list of links to examples will be dis
 
 - Pass dimensions of viewer through R
 - Improve lunar surface algorithm
-- Add links to all surface labels
 - Center links to surface labels
