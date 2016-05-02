@@ -5,6 +5,7 @@ setupLunarCoreDragAndDrop = (svg,
                     yCenter) ->
   dragStart = () ->
     svg.selectAll('.core-link').remove()
+    svg.selectAll('.core-label-background').remove()
     d3.select(this).style('fill', 'red')
 
   dragMove = () ->
@@ -33,6 +34,13 @@ setupLunarCoreDragAndDrop = (svg,
                         .attr('stroke', 'gray')
 
     d3.select(this).style('fill', 'black')
+
+    drawBackground(svg, lunar_core_labels)
+
+    d3.selectAll('.core-label').moveToFront()
+    d3.selectAll('.moon-circle').moveToFront()
+    d3.selectAll('.core-cross').moveToFront()
+    d3.selectAll('.core-anchor').moveToFront()
     adjustCoreLabelLength(d3.selectAll('.core-label')[0], radius, xCenter, yCenter)
 
   d3.behavior.drag()

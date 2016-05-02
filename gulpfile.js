@@ -82,6 +82,10 @@ gulp.task('copy', function () {
 
   var extLibs = [
     {
+      src: 'bower_components/d3-extended/d3-extended.min.js',
+      dest: 'inst/htmlwidgets/lib/d3-extended/'
+    },
+    {
       src: 'bower_components/lodash/dist/lodash.min.js',
       dest: 'inst/htmlwidgets/lib/lodash-2.4.2/'
     },

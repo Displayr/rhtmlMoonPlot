@@ -4,6 +4,7 @@ setupLunarCoreDragAndDrop = function(svg, lunar_core_labels, radius, xCenter, yC
   var dragEnd, dragMove, dragStart;
   dragStart = function() {
     svg.selectAll('.core-link').remove();
+    svg.selectAll('.core-label-background').remove();
     return d3.select(this).style('fill', 'red');
   };
   dragMove = function() {
@@ -32,6 +33,11 @@ setupLunarCoreDragAndDrop = function(svg, lunar_core_labels, radius, xCenter, yC
       return d.y;
     }).attr('stroke-width', 0.6).attr('stroke', 'gray');
     d3.select(this).style('fill', 'black');
+    drawBackground(svg, lunar_core_labels);
+    d3.selectAll('.core-label').moveToFront();
+    d3.selectAll('.moon-circle').moveToFront();
+    d3.selectAll('.core-cross').moveToFront();
+    d3.selectAll('.core-anchor').moveToFront();
     return adjustCoreLabelLength(d3.selectAll('.core-label')[0], radius, xCenter, yCenter);
   };
   return d3.behavior.drag().origin(function() {
