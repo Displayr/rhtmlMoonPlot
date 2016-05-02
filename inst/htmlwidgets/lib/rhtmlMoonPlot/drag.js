@@ -58,18 +58,18 @@ setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_links, radius, xCente
     return d3.select(this).attr('x', d3.select(this).x = d3.mouse(this)[0]).attr('y', d3.select(this).y = d3.mouse(this)[1]).attr('cursor', 'all-scroll');
   };
   dragEnd = function() {
-    var ctm, i, len, ox, oy, surface_link;
+    var ctm, i, len, ox, oy, surface_link, x2, y2;
     if (d3.select(this).attr('ox')) {
       ox = d3.select(this).attr('ox').toString();
       oy = d3.select(this).attr('oy').toString();
       for (i = 0, len = lunar_surface_links.length; i < len; i++) {
         surface_link = lunar_surface_links[i];
         if (surface_link.x2.toString() === ox && surface_link.y2.toString() === oy) {
-          surface_link.x2 = d3.mouse(this)[0];
-          surface_link.y2 = d3.mouse(this)[1];
+          x2 = d3.mouse(this)[0];
+          y2 = d3.mouse(this)[1];
           ctm = d3.select(this)[0][0].getCTM();
-          surface_link.x2 = surface_link.x2 * ctm.a + surface_link.y2 * ctm.c + ctm.e;
-          surface_link.y2 = surface_link.x2 * ctm.b + surface_link.y2 * ctm.d + ctm.f;
+          surface_link.x2 = x2 * ctm.a + y2 * ctm.c + ctm.e;
+          surface_link.y2 = x2 * ctm.b + y2 * ctm.d + ctm.f;
           d3.select(this).attr('ox', surface_link.x2).attr('oy', surface_link.y2);
         }
       }

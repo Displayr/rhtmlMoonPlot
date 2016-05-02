@@ -77,13 +77,13 @@ setupLunarSurfaceDragAndDrop = (svg,
       oy = d3.select(this).attr('oy').toString()
       for surface_link in lunar_surface_links
         if surface_link.x2.toString() == ox and surface_link.y2.toString() == oy
-          surface_link.x2 = d3.mouse(this)[0]
-          surface_link.y2 = d3.mouse(this)[1]
+          x2 = d3.mouse(this)[0]
+          y2 = d3.mouse(this)[1]
 
           # Use the context transformation matrix to rotate the link's new positions
           ctm = d3.select(this)[0][0].getCTM()
-          surface_link.x2 = surface_link.x2*ctm.a + surface_link.y2*ctm.c + ctm.e
-          surface_link.y2 = surface_link.x2*ctm.b + surface_link.y2*ctm.d + ctm.f
+          surface_link.x2 = x2*ctm.a + y2*ctm.c + ctm.e
+          surface_link.y2 = x2*ctm.b + y2*ctm.d + ctm.f
 
           d3.select(this).attr('ox', surface_link.x2)
                          .attr('oy', surface_link.y2)
