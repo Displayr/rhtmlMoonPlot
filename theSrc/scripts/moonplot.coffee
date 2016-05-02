@@ -8,10 +8,10 @@ HTMLWidgets.widget
 
     # document.body.style.height = window.innerHeight
     # document.body.style.width = window.innerWidth
-    width = document.getElementById('htmlwidget_container').offsetWidth
-    height = document.getElementById('htmlwidget_container').offsetHeight
-    console.log width
-    console.log height
+    # width = document.getElementById('htmlwidget_container').offsetWidth
+    # height = document.getElementById('htmlwidget_container').offsetHeight
+    console.log "Given width #{width}"
+    console.log "Given height #{height}"
 
     return new MoonPlot(width, height)
 

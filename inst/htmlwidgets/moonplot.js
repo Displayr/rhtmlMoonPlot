@@ -4,10 +4,8 @@ HTMLWidgets.widget({
   type: 'output',
   initialize: function(el, width, height) {
     console.log('Initialized');
-    width = document.getElementById('htmlwidget_container').offsetWidth;
-    height = document.getElementById('htmlwidget_container').offsetHeight;
-    console.log(width);
-    console.log(height);
+    console.log("Given width " + width);
+    console.log("Given height " + height);
     return new MoonPlot(width, height);
   },
   resize: function(el, width, height, instance) {

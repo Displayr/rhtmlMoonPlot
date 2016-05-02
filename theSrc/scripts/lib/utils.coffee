@@ -194,7 +194,7 @@ drawBackground = (svg, label_data) ->
                  .enter()
                  .append('rect')
                  .attr('class', 'core-label-background')
-                 .attr('x', (d) -> d.x)
+                 .attr('x', (d) -> d.x - 2)
                  .attr('y', (d) -> d.y - d.height + 2)
                  .attr('width', (d) -> d.width + 2)
                  .attr('height', (d) -> d.height + 2)

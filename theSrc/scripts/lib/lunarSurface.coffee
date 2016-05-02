@@ -36,6 +36,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('text-anchor', 'start')
                   .style('font-family', 'Arial')
                   .text label.name
+
     cart_coords.push
       x: label.x
       y: label.y
@@ -66,7 +67,6 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
         h: pc.h
       }
       cc_new = cartesianCoord pc
-
       x =  cc.x + cx
       y = -cc.y + cy
       x_new =  cc_new.x + cx
