@@ -5,6 +5,10 @@ HTMLWidgets.widget
   type: 'output'
   initialize: (el, width, height) ->
     console.log 'Initialized'
+
+    console.log width
+    console.log height
+
     return new MoonPlot(width, height)
 
   resize: (el, width, height, instance) ->
