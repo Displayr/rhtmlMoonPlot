@@ -155,7 +155,8 @@ distanceFromCenter = (x, y) ->
   Math.sqrt(Math.pow(x,2) + Math.pow(y, 2))
 
 normalizeCoreNodes = (rawCoreNodes) ->
-  # normalization between -1 and 1
+  # normalization between -1 and 1 (padded by threshold)
+  threshold = .2
   max = -Infinity
   min = Infinity
   for node in rawCoreNodes
@@ -165,8 +166,8 @@ normalizeCoreNodes = (rawCoreNodes) ->
     min = node[1] if node[1] < min
 
   for node in rawCoreNodes
-    squareX = -1 + (node[0]-min)*2/(max-min)
-    squareY = -1 + (node[1]-min)*2/(max-min)
+    squareX = -1 + threshold + (node[0]-min)*(2-2*threshold)/(max-min)
+    squareY = -1 + threshold + (node[1]-min)*(2-2*threshold)/(max-min)
 
     # map square values into circular moon
     node[0] = squareX * Math.sqrt(1 - 0.5 * Math.pow(squareY,2))
