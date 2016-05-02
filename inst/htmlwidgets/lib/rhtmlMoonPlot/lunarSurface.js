@@ -36,27 +36,30 @@ drawLunarSurfaceLabels = function(lunarSurfaceLabels, svg, cx, cy, radius, heigh
   }
   for (m = 0, len2 = polar_coords.length; m < len2; m++) {
     pc = polar_coords[m];
+    cc = null;
     if (pc.oa) {
       cc = cartesianCoord({
         a: pc.oa,
         r: pc.or,
         h: pc.h
       });
-      cc_new = cartesianCoord(pc);
-      x = cc.x + cx;
-      y = -cc.y + cy;
-      x_new = cc_new.x + cx;
-      y_new = -cc_new.y + cy;
-      l = svg.append('line').attr('class', 'surface-link').attr('x1', x).attr('y1', y).attr('ox', x).attr('oy', y).attr('x2', x_new).attr('y2', y_new).attr('stroke', 'gray').attr('stroke-width', 0.6);
-      lunar_surface_links.push({
-        x1: x,
-        y1: y,
-        x2: x_new,
-        y2: y_new,
-        ox: x,
-        oy: y
-      });
+    } else {
+      cc = cartesianCoord(pc);
     }
+    cc_new = cartesianCoord(pc);
+    x = cc.x + cx;
+    y = -cc.y + cy;
+    x_new = cc_new.x + cx;
+    y_new = -cc_new.y + cy;
+    l = svg.append('line').attr('class', 'surface-link').attr('x1', x).attr('y1', y).attr('ox', x).attr('oy', y).attr('x2', x_new).attr('y2', y_new).attr('stroke', 'gray').attr('stroke-width', 0.6);
+    lunar_surface_links.push({
+      x1: x,
+      y1: y,
+      x2: x_new,
+      y2: y_new,
+      ox: x,
+      oy: y
+    });
   }
   t = null;
   lunar_surface_labels = [];
