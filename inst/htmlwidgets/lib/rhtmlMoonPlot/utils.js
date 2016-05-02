@@ -38,6 +38,9 @@ moveSurfaceCollsions = function(polar_coords, length_of_line, radius) {
     pc = polar_coords[k];
     pc.r = radius;
   }
+  polar_coords = _.sortBy(polar_coords, function(coords) {
+    return coords.a;
+  });
   move_amount = 0.2 / 360 * 2 * Math.PI;
   altitude_incr = 0.1 * length_of_line / 360;
   collisions = detectSurfaceCollisions(polar_coords, length_of_line);
@@ -56,7 +59,15 @@ moveSurfaceCollsions = function(polar_coords, length_of_line, radius) {
             pc.oa = pc.a;
             pc.or = pc.r;
           }
-          pc.a += move_amount;
+          if (pc.a > .5 * Math.PI) {
+            pc.a += move_amount;
+          } else if (pc.a < -0.5 * Math.PI) {
+            pc.a += move_amount;
+          } else if (pc.a > -.5 * Math.PI && pc.a < 0) {
+            pc.a -= move_amount;
+          } else if (pc.a > 0 && pc.a < .5 * Math.PI) {
+            pc.a += move_amount;
+          }
           pc.collision_l = false;
           pc.r += altitude_incr;
         } else if (pc.collision_r) {
@@ -64,7 +75,15 @@ moveSurfaceCollsions = function(polar_coords, length_of_line, radius) {
             pc.oa = pc.a;
             pc.or = pc.r;
           }
-          pc.a -= move_amount;
+          if (pc.a > .5 * Math.PI) {
+            pc.a -= move_amount;
+          } else if (pc.a < -.5 * Math.PI) {
+            pc.a -= move_amount;
+          } else if (pc.a > -.5 * Math.PI && pc.a < 0) {
+            pc.a += move_amount;
+          } else if (pc.a > 0 && pc.a < .5 * Math.PI) {
+            pc.a -= move_amount;
+          }
           pc.collision_r = false;
           pc.r += altitude_incr;
         }

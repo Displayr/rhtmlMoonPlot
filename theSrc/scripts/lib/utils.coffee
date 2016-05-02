@@ -31,6 +31,7 @@ moveSurfaceCollsions = (polar_coords, length_of_line, radius) ->
   for pc in polar_coords
     pc.r = radius
 
+  polar_coords = _.sortBy polar_coords, (coords) -> coords.a
   move_amount = 0.2 / 360 * 2 * Math.PI # deg to rad
   altitude_incr = 0.1 * length_of_line / 360
   collisions = detectSurfaceCollisions(polar_coords, length_of_line)
@@ -46,7 +47,14 @@ moveSurfaceCollsions = (polar_coords, length_of_line, radius) ->
           pc.oa = pc.a
           pc.or = pc.r
 
-        pc.a += move_amount
+        if pc.a > .5*Math.PI # UL
+          pc.a += move_amount
+        else if pc.a < -0.5*Math.PI # LL
+          pc.a += move_amount
+        else if pc.a > -.5*Math.PI and pc.a < 0 #LR
+          pc.a -= move_amount
+        else if pc.a > 0 and pc.a < .5*Math.PI #UR
+          pc.a += move_amount
         pc.collision_l = false
         pc.r += altitude_incr
 
@@ -56,7 +64,15 @@ moveSurfaceCollsions = (polar_coords, length_of_line, radius) ->
           pc.oa = pc.a
           pc.or = pc.r
 
-        pc.a -= move_amount
+        if pc.a > .5*Math.PI #UL
+          pc.a -= move_amount
+        else if pc.a < -.5*Math.PI #LL
+          pc.a -= move_amount
+        else if pc.a > -.5*Math.PI and pc.a < 0 #LR
+          pc.a += move_amount
+        else if pc.a > 0 and pc.a < .5*Math.PI #UR
+          pc.a -= move_amount
+
         pc.collision_r = false
         pc.r += altitude_incr
 
