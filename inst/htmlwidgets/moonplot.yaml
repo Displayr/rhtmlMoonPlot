@@ -5,7 +5,7 @@ dependencies:
     script: d3.min.js
   - name: moonplot
     version: 0.0.1
-    src: htmlwidgets/lib/moonplot
+    src: htmlwidgets/lib/style
     stylesheet: main.css
   - name: victor
     version: 1.1.0
