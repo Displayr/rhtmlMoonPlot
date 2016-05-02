@@ -68,6 +68,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius) {
     d3.select('svg').append('circle').attr('stroke-width', 3).attr('class', 'core-anchor').attr('fill', 'black').attr('cx', anchor.x).attr('cy', anchor.y).attr('r', anchor.r);
   }
   lunar_core_links_svg = drawLinks(lunar_core_labels);
+  lunar_core_links_svg.moveToBack();
   lunar_core_label_background_svg.moveToFront();
   lunar_core_labels_svg.moveToFront();
   d3.selectAll('.core-anchor').moveToFront();
@@ -85,7 +86,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius) {
     return d.y;
   });
   lunar_core_label_background_svg.transition().duration(800).attr('x', function(d) {
-    return d.x;
+    return d.x - 4;
   }).attr('y', function(d) {
     return d.y - d.height + 2;
   });

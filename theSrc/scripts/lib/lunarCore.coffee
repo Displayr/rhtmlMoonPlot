@@ -93,6 +93,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
 
   # Draw the links
   lunar_core_links_svg = drawLinks(lunar_core_labels)
+  lunar_core_links_svg.moveToBack()
   lunar_core_label_background_svg.moveToFront()
   lunar_core_labels_svg.moveToFront()
   d3.selectAll('.core-anchor').moveToFront()
@@ -119,7 +120,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
 
   lunar_core_label_background_svg.transition()
                                  .duration(800)
-                                 .attr('x', (d) -> d.x)
+                                 .attr('x', (d) -> d.x - 4)
                                  .attr('y', (d) -> d.y - d.height + 2)
 
   adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy)
