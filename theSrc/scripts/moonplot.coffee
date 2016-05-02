@@ -6,8 +6,8 @@ HTMLWidgets.widget
   initialize: (el, width, height) ->
     console.log 'Initialized'
 
-    width = window.innerWidth
-    height = window.innerHeight
+    width = document.getElementById('htmlwidget_container').offsetWidth
+    height = document.getElementById('htmlwidget_container').offsetHeight
     console.log width
     console.log height
 
