@@ -99,7 +99,6 @@ drawLunarCoreLabels = (lunarCoreLabels,
   d3.selectAll('.moon-circle').moveToFront()
   d3.selectAll('.core-cross').moveToFront()
 
-
   # Check if labels are overlapping and if need to be repositioned
   labeler = d3.labeler()
     .label(lunar_core_labels)
@@ -122,6 +121,5 @@ drawLunarCoreLabels = (lunarCoreLabels,
                                  .duration(800)
                                  .attr('x', (d) -> d.x)
                                  .attr('y', (d) -> d.y - d.height + 2)
-
 
   adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy)

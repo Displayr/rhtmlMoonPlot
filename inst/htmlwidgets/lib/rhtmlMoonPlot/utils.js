@@ -272,11 +272,11 @@ calculateSurfaceLabelSizes = function(rawSurfaceNodes, scaleFactor, equalizeFact
 
 drawBackground = function(svg, label_data) {
   return svg.selectAll('.core-label-background').data(label_data).enter().append('rect').attr('class', 'core-label-background').attr('x', function(d) {
-    return d.x - 2;
+    return d.x - 4;
   }).attr('y', function(d) {
     return d.y - d.height + 2;
   }).attr('width', function(d) {
-    return d.width + 2;
+    return d.width + 4;
   }).attr('height', function(d) {
     return d.height + 2;
   }).attr('fill', 'white');

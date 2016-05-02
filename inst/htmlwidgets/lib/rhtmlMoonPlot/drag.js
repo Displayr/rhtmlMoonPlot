@@ -59,6 +59,7 @@ setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_links, radius, xCente
   };
   dragEnd = function() {
     var ctm, i, len, ox, oy, surface_link, x2, y2;
+    d3.select(this).style('fill', 'black');
     if (d3.select(this).attr('ox')) {
       ox = d3.select(this).attr('ox').toString();
       oy = d3.select(this).attr('oy').toString();
@@ -74,7 +75,7 @@ setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_links, radius, xCente
         }
       }
     }
-    svg.selectAll('.surface-link').data(lunar_surface_links).enter().append('line').attr('class', 'surface-link').attr('x1', function(d) {
+    return svg.selectAll('.surface-link').data(lunar_surface_links).enter().append('line').attr('class', 'surface-link').attr('x1', function(d) {
       return d.x1;
     }).attr('y1', function(d) {
       return d.y1;
@@ -83,7 +84,6 @@ setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_links, radius, xCente
     }).attr('y2', function(d) {
       return d.y2;
     }).attr('stroke-width', 0.6).attr('stroke', 'gray');
-    return d3.select(this).style('fill', 'black');
   };
   return d3.behavior.drag().origin(function() {
     return {

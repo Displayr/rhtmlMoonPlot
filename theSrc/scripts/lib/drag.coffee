@@ -72,6 +72,8 @@ setupLunarSurfaceDragAndDrop = (svg,
     .attr('cursor', 'all-scroll')
 
   dragEnd = ->
+    d3.select(this).style('fill', 'black')
+
     if d3.select(this).attr('ox')
       ox = d3.select(this).attr('ox').toString()
       oy = d3.select(this).attr('oy').toString()
@@ -100,7 +102,6 @@ setupLunarSurfaceDragAndDrop = (svg,
       .attr('stroke-width', 0.6)
       .attr('stroke', 'gray')
 
-    d3.select(this).style('fill', 'black')
 
   d3.behavior.drag()
            .origin(() ->
