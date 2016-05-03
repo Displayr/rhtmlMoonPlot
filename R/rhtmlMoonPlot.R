@@ -5,7 +5,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-rhtmlMoonPlot <- function(
+moonplot <- function(
   coreNodes=NULL,surfaceNodes=NULL,
   width = NULL,
   height = NULL) {
@@ -25,7 +25,7 @@ rhtmlMoonPlot <- function(
 
   # create widget
   htmlwidgets::createWidget(
-    name = 'rhtmlMoonPlot',
+    name = 'moonplot',
     x,
     width = width,
     height = height,
