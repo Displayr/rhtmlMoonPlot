@@ -78,6 +78,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
   d3.selectAll('.core-anchor').moveToFront();
   d3.selectAll('.moon-circle').moveToFront();
   d3.selectAll('.core-cross').moveToFront();
+  d3.selectAll('.surface-label').moveToFront();
   labeler = d3.labeler().label(lunar_core_labels).anchor(anchor_array).width(600).height(600).start(100);
   lunar_core_labels_svg.transition().duration(800).attr('x', function(d) {
     return d.x;

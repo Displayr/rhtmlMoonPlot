@@ -104,6 +104,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
   d3.selectAll('.core-anchor').moveToFront()
   d3.selectAll('.moon-circle').moveToFront()
   d3.selectAll('.core-cross').moveToFront()
+  d3.selectAll('.surface-label').moveToFront()
 
   # Check if labels are overlapping and if need to be repositioned
   labeler = d3.labeler()

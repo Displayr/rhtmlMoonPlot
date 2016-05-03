@@ -38,6 +38,7 @@ setupLunarCoreDragAndDrop = function(svg, lunar_core_labels, radius, xCenter, yC
     d3.selectAll('.moon-circle').moveToFront();
     d3.selectAll('.core-cross').moveToFront();
     d3.selectAll('.core-anchor').moveToFront();
+    d3.selectAll('.surface-label').moveToFront();
     return adjustCoreLabelLength(d3.selectAll('.core-label')[0], radius, xCenter, yCenter);
   };
   return d3.behavior.drag().origin(function() {
