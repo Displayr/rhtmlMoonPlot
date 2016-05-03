@@ -135,6 +135,7 @@ setupMoonResize = (data, svg, cx, cy, height, width, radius, textColor) ->
   dragStart = () ->
     svg.selectAll('.core-link').remove()
     svg.selectAll('.core-label').remove()
+    svg.selectAll('.core-label-background').remove()
     svg.selectAll('.core-anchor').remove()
     svg.selectAll('.surface-link').remove()
     svg.selectAll('.surface-label').remove()

@@ -110,6 +110,7 @@ setupMoonResize = function(data, svg, cx, cy, height, width, radius, textColor) 
   dragStart = function() {
     svg.selectAll('.core-link').remove();
     svg.selectAll('.core-label').remove();
+    svg.selectAll('.core-label-background').remove();
     svg.selectAll('.core-anchor').remove();
     svg.selectAll('.surface-link').remove();
     return svg.selectAll('.surface-label').remove();
