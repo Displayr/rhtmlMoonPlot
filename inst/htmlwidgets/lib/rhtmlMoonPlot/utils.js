@@ -150,17 +150,20 @@ detectViewportCollision = function(surface_label, viewport_height, viewport_widt
 };
 
 condenseSurfaceLabel = function(surface_label, viewport_height, viewport_width) {
-  var innerHTML;
+  var innerHTML, tooltipText;
+  tooltipText = d3.select(surface_label).attr('title');
   while (detectViewportCollision(surface_label, viewport_height, viewport_width)) {
     innerHTML = d3.select(surface_label)[0][0].textContent;
     d3.select(surface_label).text(innerHTML.slice(0, -1));
   }
   innerHTML = d3.select(surface_label)[0][0].textContent;
-  return d3.select(surface_label).text(innerHTML.slice(0, -3) + '...');
+  d3.select(surface_label).text(innerHTML.slice(0, -3) + '...');
+  return d3.select(surface_label).append('title').text(tooltipText);
 };
 
 adjustSurfaceLabelLength = function(surface_labels, view_height, view_width) {
   var k, len, results, surface_label;
+  extendFullLabelName(surface_labels);
   results = [];
   for (k = 0, len = surface_labels.length; k < len; k++) {
     surface_label = surface_labels[k];
@@ -192,13 +195,15 @@ failsCoreLabelBoundaryRules = function(core_label, radius, cx, cy) {
 };
 
 condenseCoreLabel = function(core_label, radius, cx, cy) {
-  var innerHTML;
+  var innerHTML, tooltipText;
+  tooltipText = d3.select(core_label).attr('title');
   while (failsCoreLabelBoundaryRules(core_label, radius, cx, cy)) {
     innerHTML = d3.select(core_label)[0][0].textContent;
     d3.select(core_label).text(innerHTML.slice(0, -1));
   }
   innerHTML = d3.select(core_label)[0][0].textContent;
-  return d3.select(core_label).text(innerHTML.slice(0, -3) + '...');
+  d3.select(core_label).text(innerHTML.slice(0, -3) + '...');
+  return d3.select(core_label).append('title').text(tooltipText);
 };
 
 extendFullLabelName = function(labels) {

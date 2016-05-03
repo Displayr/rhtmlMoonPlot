@@ -3,7 +3,8 @@ var drawLunarCoreLabels;
 drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius) {
   var anchor, anchor_array, drag, drawLabels, drawLinks, i, j, k, l, label, labeler, len, len1, len2, lunar_core_label, lunar_core_label_background_svg, lunar_core_labels, lunar_core_labels_svg, lunar_core_links_svg, x, y;
   drawLabels = function(label_data, drag) {
-    return svg.selectAll('.core-label').data(label_data).enter().append('text').style('fill', 'black').attr('class', 'core-label').attr('x', function(d) {
+    var labels;
+    labels = svg.selectAll('.core-label').data(label_data).enter().append('text').style('fill', 'black').attr('class', 'core-label').attr('x', function(d) {
       return d.x;
     }).attr('y', function(d) {
       return d.y;
@@ -15,7 +16,10 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius) {
       return d.name;
     }).text(function(d) {
       return d.name;
-    }).call(drag);
+    }).call(drag).append('title').text(function(d) {
+      return d.name;
+    });
+    return svg.selectAll('.core-label');
   };
   drawLinks = function(label_data) {
     return svg.append('g').selectAll('.core-link').data(label_data).enter().append('line').attr('class', 'core-link').attr('x1', function(d) {

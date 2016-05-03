@@ -5,7 +5,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
                        radius) ->
 
   drawLabels = (label_data, drag) ->
-    svg.selectAll('.core-label')
+    labels = svg.selectAll('.core-label')
        .data(label_data)
        .enter()
        .append('text')
@@ -21,6 +21,9 @@ drawLunarCoreLabels = (lunarCoreLabels,
        .attr('title', (d) -> d.name)
        .text (d) -> d.name
        .call(drag)
+       .append('title').text((d) -> d.name)
+    svg.selectAll('.core-label')
+
 
   drawLinks = (label_data) ->
     svg.append('g').selectAll('.core-link')

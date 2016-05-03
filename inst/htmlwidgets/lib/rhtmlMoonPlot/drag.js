@@ -48,7 +48,7 @@ setupLunarCoreDragAndDrop = function(svg, lunar_core_labels, radius, xCenter, yC
   }).on('dragstart', dragStart).on('drag', dragMove).on('dragend', dragEnd);
 };
 
-setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_links, radius, xCenter, yCenter) {
+setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_labels, lunar_surface_links, radius, xCenter, yCenter, height, width) {
   var dragEnd, dragMove, dragStart;
   dragStart = function() {
     svg.selectAll('.surface-link').remove();
@@ -75,7 +75,7 @@ setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_links, radius, xCente
         }
       }
     }
-    return svg.selectAll('.surface-link').data(lunar_surface_links).enter().append('line').attr('class', 'surface-link').attr('x1', function(d) {
+    svg.selectAll('.surface-link').data(lunar_surface_links).enter().append('line').attr('class', 'surface-link').attr('x1', function(d) {
       return d.x1;
     }).attr('y1', function(d) {
       return d.y1;
@@ -84,6 +84,7 @@ setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_links, radius, xCente
     }).attr('y2', function(d) {
       return d.y2;
     }).attr('stroke-width', 0.6).attr('stroke', 'gray');
+    return adjustSurfaceLabelLength(lunar_surface_labels, height, width);
   };
   return d3.behavior.drag().origin(function() {
     return {

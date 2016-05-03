@@ -57,10 +57,13 @@ setupLunarCoreDragAndDrop = (svg,
 
 
 setupLunarSurfaceDragAndDrop = (svg,
+                    lunar_surface_labels,
                     lunar_surface_links,
                     radius,
                     xCenter,
-                    yCenter) ->
+                    yCenter,
+                    height,
+                    width) ->
   dragStart = () ->
     svg.selectAll('.surface-link').remove()
     d3.select(this).style('fill', 'red')
@@ -101,6 +104,8 @@ setupLunarSurfaceDragAndDrop = (svg,
       .attr('y2', (d) -> d.y2)
       .attr('stroke-width', 0.6)
       .attr('stroke', 'gray')
+
+    adjustSurfaceLabelLength lunar_surface_labels, height, width
 
 
   d3.behavior.drag()
