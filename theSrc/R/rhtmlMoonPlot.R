@@ -29,11 +29,6 @@ moonplot <- function(
     x,
     width = width,
     height = height,
-    # sizingPolicy = htmlwidgets::sizingPolicy(
-    #         padding = 5,
-    #         browser.fill = TRUE, # resizing will not work if FALSE
-    #         viewer.fill = TRUE
-    # ),
     package = "rhtmlMoonPlot"
   )
 }
