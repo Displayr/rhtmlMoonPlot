@@ -25,7 +25,7 @@ moonplot <- function(
 
   # create widget
   htmlwidgets::createWidget(
-    name = 'rhtmlMoonPlot',
+    name = "rhtmlMoonPlot",
     x,
     width = width,
     height = height,
@@ -34,6 +34,6 @@ moonplot <- function(
             browser.fill = TRUE, # resizing will not work if FALSE
             viewer.fill = TRUE
     ),
-    package = 'rhtmlMoonPlot'
+    package = "rhtmlMoonPlot"
   )
 }
