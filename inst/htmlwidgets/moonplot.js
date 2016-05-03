@@ -1,6 +1,6 @@
 'use strict';
 HTMLWidgets.widget({
-  name: 'rhtmlPalmTrees',
+  name: 'rhtmlMoonPlot',
   type: 'output',
   initialize: function(el, width, height) {
     console.log('Initialized');
