@@ -7,8 +7,8 @@
 #' @export
 moonplot <- function(
   coreNodes=NULL,surfaceNodes=NULL,
-  width = NULL,
-  height = NULL) {
+  width = 350,
+  height = 350) {
 
   data.lunarCoreNodes <- jsonlite::toJSON(coreNodes)
   data.lunarCoreLabels <- jsonlite::toJSON(labels(coreNodes)[[1]])
