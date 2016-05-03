@@ -1,7 +1,7 @@
 'use strict'
 
 HTMLWidgets.widget
-  name: 'moonplot'
+  name: 'rhtmlPalmTrees'
   type: 'output'
   initialize: (el, width, height) ->
     console.log 'Initialized'
