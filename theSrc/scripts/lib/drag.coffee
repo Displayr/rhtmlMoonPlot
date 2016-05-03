@@ -81,6 +81,7 @@ setupLunarSurfaceDragAndDrop = (svg,
 
     if d3.select(this).attr('ox')
       crossColorox = d3.select(this).attr('ox').toString()
+      ox = d3.select(this).attr('ox').toString()
       oy = d3.select(this).attr('oy').toString()
       for surface_link in lunar_surface_links
         if surface_link.x2.toString() == ox and surface_link.y2.toString() == oy

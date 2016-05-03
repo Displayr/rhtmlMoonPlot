@@ -58,10 +58,11 @@ setupLunarSurfaceDragAndDrop = function(svg, lunar_surface_labels, lunar_surface
     return d3.select(this).attr('x', d3.select(this).x = d3.mouse(this)[0]).attr('y', d3.select(this).y = d3.mouse(this)[1]).attr('cursor', 'all-scroll');
   };
   dragEnd = function() {
-    var crossColorox, ctm, i, len, oy, surface_link, x2, y2;
+    var crossColorox, ctm, i, len, ox, oy, surface_link, x2, y2;
     d3.select(this).style('fill', textColor);
     if (d3.select(this).attr('ox')) {
       crossColorox = d3.select(this).attr('ox').toString();
+      ox = d3.select(this).attr('ox').toString();
       oy = d3.select(this).attr('oy').toString();
       for (i = 0, len = lunar_surface_links.length; i < len; i++) {
         surface_link = lunar_surface_links[i];
