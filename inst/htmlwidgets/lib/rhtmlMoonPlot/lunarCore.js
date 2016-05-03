@@ -1,10 +1,10 @@
 var drawLunarCoreLabels;
 
-drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius) {
+drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) {
   var anchor, anchor_array, drag, drawLabels, drawLinks, i, j, k, l, label, labeler, len, len1, len2, lunar_core_label, lunar_core_label_background_svg, lunar_core_labels, lunar_core_labels_svg, lunar_core_links_svg, x, y;
   drawLabels = function(label_data, drag) {
     var labels;
-    labels = svg.selectAll('.core-label').data(label_data).enter().append('text').style('fill', 'black').attr('class', 'core-label').attr('x', function(d) {
+    labels = svg.selectAll('.core-label').data(label_data).enter().append('text').style('fill', textColor).attr('class', 'core-label').attr('x', function(d) {
       return d.x;
     }).attr('y', function(d) {
       return d.y;
@@ -34,7 +34,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius) {
   };
   lunar_core_labels_svg = [];
   lunar_core_labels = [];
-  drag = setupLunarCoreDragAndDrop(svg, lunar_core_labels, radius, cx, cy);
+  drag = setupLunarCoreDragAndDrop(svg, lunar_core_labels, radius, cx, cy, textColor);
   for (j = 0, len = lunarCoreLabels.length; j < len; j++) {
     label = lunarCoreLabels[j];
     x = label.x * radius + cx;

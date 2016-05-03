@@ -9,3 +9,4 @@ browser
 src-i386/
 tags
 .tags_swap
+.tags

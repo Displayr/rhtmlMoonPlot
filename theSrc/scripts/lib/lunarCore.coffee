@@ -2,14 +2,15 @@ drawLunarCoreLabels = (lunarCoreLabels,
                        svg,
                        cx,
                        cy,
-                       radius) ->
+                       radius,
+                       textColor) ->
 
   drawLabels = (label_data, drag) ->
     labels = svg.selectAll('.core-label')
        .data(label_data)
        .enter()
        .append('text')
-       .style('fill', 'black')
+       .style('fill', textColor)
        .attr('class', 'core-label')
        .attr('x', (d) -> d.x)
        .attr('y', (d) -> d.y)
@@ -44,7 +45,8 @@ drawLunarCoreLabels = (lunarCoreLabels,
                           lunar_core_labels,
                           radius,
                           cx,
-                          cy)
+                          cy,
+                          textColor)
   # prevent labels from escaping moon surface
   for label in lunarCoreLabels
     x = label.x * radius + cx

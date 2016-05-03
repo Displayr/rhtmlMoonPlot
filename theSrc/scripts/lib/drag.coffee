@@ -2,7 +2,8 @@ setupLunarCoreDragAndDrop = (svg,
                     lunar_core_labels,
                     radius,
                     xCenter,
-                    yCenter) ->
+                    yCenter,
+                    textColor) ->
   dragStart = () ->
     svg.selectAll('.core-link').remove()
     svg.selectAll('.core-label-background').remove()
@@ -33,7 +34,7 @@ setupLunarCoreDragAndDrop = (svg,
                         .attr('stroke-width', 0.6)
                         .attr('stroke', 'gray')
 
-    d3.select(this).style('fill', 'black')
+    d3.select(this).style('fill', textColor)
 
     drawBackground(svg, lunar_core_labels)
 
@@ -63,7 +64,8 @@ setupLunarSurfaceDragAndDrop = (svg,
                     xCenter,
                     yCenter,
                     height,
-                    width) ->
+                    width,
+                    textColor) ->
   dragStart = () ->
     svg.selectAll('.surface-link').remove()
     d3.select(this).style('fill', 'red')
@@ -75,10 +77,10 @@ setupLunarSurfaceDragAndDrop = (svg,
     .attr('cursor', 'all-scroll')
 
   dragEnd = ->
-    d3.select(this).style('fill', 'black')
+    d3.select(this).style('fill', textColor)
 
     if d3.select(this).attr('ox')
-      ox = d3.select(this).attr('ox').toString()
+      crossColorox = d3.select(this).attr('ox').toString()
       oy = d3.select(this).attr('oy').toString()
       for surface_link in lunar_surface_links
         if surface_link.x2.toString() == ox and surface_link.y2.toString() == oy
@@ -119,7 +121,7 @@ setupLunarSurfaceDragAndDrop = (svg,
            .on('drag', dragMove)
            .on('dragend', dragEnd)
 
-setupMoonResize = (data, svg, cx, cy, height, width, radius) ->
+setupMoonResize = (data, svg, cx, cy, height, width, radius, textColor) ->
   drag = () ->
 
     findDistance = (cx, cy, x, y) ->
@@ -142,14 +144,16 @@ setupMoonResize = (data, svg, cx, cy, height, width, radius) ->
     drawLunarCoreLabels(data.lunarCoreLabels, svg,
                         cx,
                         cy,
-                        radius)
+                        radius,
+                        textColor)
 
     drawLunarSurfaceLabels(data.lunarSurfaceLabels, svg,
                            cx,
                            cy,
                            radius,
                            height,
-                           width)
+                           width,
+                           textColor)
 
   d3.behavior.drag()
             .origin(() ->

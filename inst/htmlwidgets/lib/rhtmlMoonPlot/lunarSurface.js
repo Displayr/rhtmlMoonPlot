@@ -1,10 +1,10 @@
 var drawLunarSurfaceLabels;
 
-drawLunarSurfaceLabels = function(lunarSurfaceLabels, svg, cx, cy, radius, height, width) {
+drawLunarSurfaceLabels = function(lunarSurfaceLabels, svg, cx, cy, radius, height, width, textColor) {
   var cart_coords, cc, cc_new, drag, i, j, k, l, label, len, len1, len2, len3, length_of_line, lunar_surface_labels, lunar_surface_links, m, n, pc, polar_coords, t, x, x_new, y, y_new;
   lunar_surface_links = [];
   lunar_surface_labels = [];
-  drag = setupLunarSurfaceDragAndDrop(svg, lunar_surface_labels, lunar_surface_links, radius, cx, cy, height, width);
+  drag = setupLunarSurfaceDragAndDrop(svg, lunar_surface_labels, lunar_surface_links, radius, cx, cy, height, width, textColor);
   cart_coords = [];
   t = null;
   for (j = 0, len = lunarSurfaceLabels.length; j < len; j++) {
@@ -68,9 +68,9 @@ drawLunarSurfaceLabels = function(lunarSurfaceLabels, svg, cx, cy, radius, heigh
     x = label.newX + cx;
     y = -label.newY + cy;
     if (label.newX < 0) {
-      t = svg.append('text').style('fill', 'black').attr('class', 'surface-label').attr('x', x).attr('y', y).attr('ox', x).attr('oy', y).attr('font-size', (label.size * 20).toString() + 'px').attr('transform', 'rotate(' + (180 - label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'end').attr('cursor', 'all-scroll').style('font-family', 'Arial').attr('title', label.name).text(label.name).call(drag);
+      t = svg.append('text').style('fill', textColor).attr('class', 'surface-label').attr('x', x).attr('y', y).attr('ox', x).attr('oy', y).attr('font-size', (label.size * 20).toString() + 'px').attr('transform', 'rotate(' + (180 - label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'end').attr('cursor', 'all-scroll').style('font-family', 'Arial').attr('title', label.name).text(label.name).call(drag);
     } else {
-      t = svg.append('text').style('fill', 'black').attr('class', 'surface-label').attr('y', y).attr('x', x).attr('ox', x).attr('oy', y).attr('font-size', (label.size * 20).toString() + 'px').attr('transform', 'rotate(' + (-label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'start').attr('cursor', 'all-scroll').style('font-family', 'Arial').attr('title', label.name).text(label.name).call(drag);
+      t = svg.append('text').style('fill', textColor).attr('class', 'surface-label').attr('y', y).attr('x', x).attr('ox', x).attr('oy', y).attr('font-size', (label.size * 20).toString() + 'px').attr('transform', 'rotate(' + (-label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'start').attr('cursor', 'all-scroll').style('font-family', 'Arial').attr('title', label.name).text(label.name).call(drag);
     }
     t.append('title').text(label.name);
     lunar_surface_labels.push(t[0][0]);

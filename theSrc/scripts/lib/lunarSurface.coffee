@@ -4,7 +4,8 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                           cy,
                           radius,
                           height,
-                          width) ->
+                          width,
+                          textColor) ->
 
   lunar_surface_links = []
   lunar_surface_labels = []
@@ -15,7 +16,8 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                                       cx,
                                       cy,
                                       height,
-                                      width)
+                                      width,
+                                      textColor)
   cart_coords = []
   t = null
   for label in lunarSurfaceLabels
@@ -104,7 +106,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
 
     if label.newX < 0
       t = svg.append('text')
-                  .style('fill', 'black')
+                  .style('fill', textColor)
                   .attr('class', 'surface-label')
                   .attr('x', x)
                   .attr('y', y)
@@ -120,7 +122,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .call(drag)
     else
       t = svg.append('text')
-                  .style('fill', 'black')
+                  .style('fill', textColor)
                   .attr('class', 'surface-label')
                   .attr('y', y)
                   .attr('x', x)
