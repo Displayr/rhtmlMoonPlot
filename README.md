@@ -56,4 +56,4 @@ This should load a browser window, where a list of links to examples will be dis
 - ~~Improve lunar surface algorithm~~
 - ~~Center links to surface labels~~
 - ~~Check why tooltips not appearing~~ Fixed
-- Make prettier
+- ~~Make prettier~~
