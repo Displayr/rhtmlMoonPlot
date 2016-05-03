@@ -2,7 +2,7 @@
 'use strict';
 // generated on 2015-01-10 using generator-gulp-webapp 0.2.0
 
-var widgetName = 'moonplot';
+var widgetName = 'rhtmlMoonPlot';
 
 var _ = require('lodash');
 var gulp = require('gulp');
@@ -29,7 +29,7 @@ gulp.task('less', function () {
 gulp.task('compile-coffee', function () {
   var gulp_coffee = require("gulp-coffee");
 
-  gulp.src('theSrc/scripts/moonplot.coffee')
+  gulp.src('theSrc/scripts/rhtmlMoonPlot.coffee')
     .pipe(gulp_coffee({ bare: true }))
     .pipe(gulp.dest('browser/scripts'))
     .pipe(gulp.dest('inst/htmlwidgets/'));
