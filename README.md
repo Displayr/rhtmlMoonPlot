@@ -26,6 +26,8 @@ rhtmlMoonPlot::moonplot(coreNodes, surfaceNodes)
 
 ```
 
+![MoonPlot](moonplot.jpg)
+
 
 # Installation for development
 
