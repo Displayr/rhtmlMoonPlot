@@ -26,6 +26,8 @@ rhtmlMoonPlot::moonplot(coreNodes, surfaceNodes)
 
 ```
 
+Help after package install: `help(rhtmlMoonPlot::moonplot)` or `help(moonplot)`
+
 ![MoonPlot](moonplot.jpg)
 
 
@@ -54,8 +56,5 @@ This should load a browser window, where a list of links to examples will be dis
 
 # To do
 
-- ~~Pass dimensions of viewer through R~~ Done
-- ~~Improve lunar surface algorithm~~
-- ~~Center links to surface labels~~
-- ~~Check why tooltips not appearing~~ Fixed
-- ~~Make prettier~~
+- Center the core labels
+- Help file

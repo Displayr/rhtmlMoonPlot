@@ -1,6 +1,15 @@
-#' MoonPlot
+#' rhtmlMoonPlot
 #'
 #' Uses correspondence analysis to create a Moon Plot
+#'
+#' @author Po Liu <pliu0771@uni.sydney.edu>
+#'
+#' @source https://github.com/NumbersInternational/rhtmlMoonPlot
+#'
+#' @param coreNodes Coordinates of nodes in the center of the moon
+#' @param surfaceNodes Coordinates of nodes outside of the moon
+#' @param width Width of the viewer window
+#' @param height Height of viewer window
 #'
 #' @import htmlwidgets
 #'

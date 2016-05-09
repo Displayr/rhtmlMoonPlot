@@ -26,6 +26,12 @@ gulp.task('less', function () {
     .pipe(gulp.dest('inst/htmlwidgets/lib/style'));
 });
 
+gulp.task('makeDocs', function () {
+  var shell = require('gulp-shell');
+  return gulp.src('./build/makeDoc.r', {read: false})
+    .pipe(shell(['R --no-save < <%= file.path %>', ], {}))
+});
+
 gulp.task('compile-coffee', function () {
   var gulp_coffee = require("gulp-coffee");
 
@@ -165,7 +171,7 @@ gulp.task('watch', ['connect'], function () {
 
 //clean doesn't finish before next task ..
 //gulp.task('build', ['clean', 'wiredep', 'images', 'fonts', 'styles', 'copy'], function () {
-gulp.task('build', ['compile-coffee', 'less', 'copy'], function () {
+gulp.task('build', ['compile-coffee', 'less', 'makeDocs', 'copy'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
