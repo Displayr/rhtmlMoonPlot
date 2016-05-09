@@ -47,14 +47,12 @@ d3.labeler = function() {
       // label orientation bias
       dx /= dist;
       dy /= dist;
-      if (dx > 0 && dy > 0) { ener += 0 * w_orient; }
-      else if (dx < 0 && dy > 0) { ener += 1 * w_orient; }
-      else if (dx < 0 && dy < 0) { ener += 2 * w_orient; }
-      else { ener += 3 * w_orient; }
+      if (dy > 0) { ener += 2 * w_orient; }
+      else { ener += 0 * w_orient; }
 
-      var x21 = lab[index].x,
+      var x21 = lab[index].x - lab[index].width/2,
           y21 = lab[index].y - lab[index].height + 2.0,
-          x22 = lab[index].x + lab[index].width,
+          x22 = lab[index].x + lab[index].width/2,
           y22 = lab[index].y + 2.0;
       var x11, x12, y11, y12, x_overlap, y_overlap, overlap_area;
 
@@ -67,9 +65,9 @@ d3.labeler = function() {
           if (overlap) ener += w_inter;
 
           // penalty for label-label overlap
-          x11 = lab[i].x;
+          x11 = lab[i].x - lab[i].width/2;
           y11 = lab[i].y - lab[i].height + 2.0;
-          x12 = lab[i].x + lab[i].width;
+          x12 = lab[i].x + lab[i].width/2;
           y12 = lab[i].y + 2.0;
           x_overlap = Math.max(0, Math.min(x12,x22) - Math.max(x11,x21));
           y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21));
@@ -251,6 +249,9 @@ d3.labeler = function() {
   // users insert label positions
     if (!arguments.length) return lab;
     lab = x;
+    for(var i=0; i<lab.length;i++) {
+      lab[i].x = lab[i].x - lab[i].width/2;
+    }
     return labeler;
   };
 

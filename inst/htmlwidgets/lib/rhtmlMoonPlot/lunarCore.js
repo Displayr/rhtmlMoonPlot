@@ -12,7 +12,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
       return d.x;
     }).attr('oy', function(d) {
       return d.y;
-    }).attr('cursor', 'all-scroll').attr('text-anchor', 'start').style('font-family', 'Arial').attr('title', function(d) {
+    }).attr('cursor', 'all-scroll').attr('text-anchor', 'middle').style('font-family', 'Arial').attr('title', function(d) {
       return d.name;
     }).text(function(d) {
       return d.name;
@@ -91,7 +91,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
     return d.y;
   });
   lunar_core_label_background_svg.transition().duration(800).attr('x', function(d) {
-    return d.x - 4;
+    return d.x - 2 - d.width / 2;
   }).attr('y', function(d) {
     return d.y - d.height + 2;
   });

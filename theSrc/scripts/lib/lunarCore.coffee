@@ -17,7 +17,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
        .attr('ox', (d) -> d.x)
        .attr('oy', (d) -> d.y)
        .attr('cursor', 'all-scroll')
-       .attr('text-anchor', 'start')
+       .attr('text-anchor', 'middle')
        .style('font-family', 'Arial')
        .attr('title', (d) -> d.name)
        .text (d) -> d.name
@@ -126,7 +126,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
 
   lunar_core_label_background_svg.transition()
                                  .duration(800)
-                                 .attr('x', (d) -> d.x - 4)
+                                 .attr('x', (d) -> d.x - 2 - d.width/2)
                                  .attr('y', (d) -> d.y - d.height + 2)
 
   adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy)
