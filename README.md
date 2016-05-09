@@ -26,7 +26,7 @@ rhtmlMoonPlot::moonplot(coreNodes, surfaceNodes)
 
 ```
 
-Help after package install: `help(rhtmlMoonPlot::moonplot)` or `help(moonplot)`
+Help after package install: `help(moonplot)`
 
 ![MoonPlot](moonplot.jpg)
 
@@ -57,4 +57,3 @@ This should load a browser window, where a list of links to examples will be dis
 # To do
 
 - Center the core labels
-- Help file
