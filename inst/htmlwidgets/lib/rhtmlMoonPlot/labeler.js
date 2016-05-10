@@ -20,9 +20,10 @@ d3.labeler = function() {
 
   // weights
   var w_len = 0.2, // leader line length
-      w_inter = 3.0, // leader line intersection
-      w_lab2 = 30.0, // label-label overlap
-      w_lab_anc = 500.0; // label-anchor overlap
+      w_inter = 10.0, // leader line intersection
+      w_lablink = 10000.0, // leader line-label intersection
+      w_lab2 = 3.0, // label-label overlap
+      w_lab_anc = 40.0; // label-anchor overlap
       w_orient = 3.0; // orientation bias
 
   // booleans for user defined functions
@@ -50,7 +51,7 @@ d3.labeler = function() {
       // label orientation bias
       if (dx > 0 && dy > 0) { ener += 0 * w_orient; }
       else if (dx < 0 && dy > 0) { ener += 1 * w_orient; }
-      else if (dx < 0 && dy < 0) { ener += 2 * w_orient; }
+      else if (dx < 0 && dy < 0) { ener += 1 * w_orient; }
       else { ener += 3 * w_orient; }
 
       var x21 = lab[index].x - lab[index].width/2,
@@ -63,7 +64,7 @@ d3.labeler = function() {
         if (i != index) {
 
           // penalty for intersection of leader lines
-          overlap = intersect(anc[index].x, lab[index].x, anc[i].x, lab[i].x,
+          overlap = intersect(anc[index].x, lab[index].x + lab[index].width/2, anc[i].x, lab[i].x + lab[i].width/2,
                           anc[index].y, lab[index].y, anc[i].y, lab[i].y);
           if (overlap) ener += w_inter;
 
@@ -87,6 +88,38 @@ d3.labeler = function() {
           y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21));
           overlap_area = x_overlap * y_overlap;
           ener += (overlap_area * w_lab_anc);
+
+          // penalty for label-leader line intersection
+          var intersec = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width/2,
+                                   lab[index].y, lab[index].y, anc[i].y, lab[i].y
+                                  )
+
+          // if (intersec) {
+          //   ener += w_lablink;
+          //
+          // }
+          intersec = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width/2,
+                               lab[index].y-lab[index].height, lab[index].y-lab[index].height, anc[i].y, lab[i].y
+                             );
+          if (intersec) {
+            // ener += w_lablink;
+            // svg.append('line').attr('x1', lab[index].x)
+            //                   .attr('y1', lab[index].y-lab[index].height)
+            //                   .attr('x2', lab[index].x + lab[index].width)
+            //                   .attr('y2', lab[index].y-lab[index].height)
+            //                   .attr('stroke', 'yellow')
+            //                   .attr('opacity', 0.1)
+            //                   .attr('stroke-width', 1);
+            //
+            // svg.append('line').attr('x1', anc[i].x)
+            //                   .attr('y1', anc[i].y)
+            //                   .attr('x2', lab[i].x + lab[i].width/2)
+            //                   .attr('y2', lab[i].y)
+            //                   .attr('stroke', 'red')
+            //                   .attr('opacity', 0.1)
+            //                   .attr('stroke-width', 1);
+          }
+          console.log(intersec);
 
       }
       return ener;
@@ -343,16 +376,16 @@ d3.labeler = function() {
   // users insert label positions
     if (!arguments.length) return lab;
     lab = x;
-    // for(var i=0; i<lab.length;i++) {
-    //   lab[i].x -= lab[i].width/2;
-    //   svg.append('rect').attr('x', lab[i].x)
-    //                     .attr('y', lab[i].y - lab[i].height)
-    //                     .attr('width', lab[i].width)
-    //                     .attr('height', lab[i].height)
-    //                     .attr('fill', 'yellow')
-    //                     .attr('stroke', 'blue')
-    //                     .attr('opacity', 0.1);
-    // }
+    for(var i=0; i<lab.length;i++) {
+      lab[i].x -= lab[i].width/2;
+      // svg.append('rect').attr('x', lab[i].x)
+      //                   .attr('y', lab[i].y - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'yellow')
+      //                   .attr('stroke', 'blue')
+      //                   .attr('opacity', 0.1);
+    }
     return labeler;
   };
 

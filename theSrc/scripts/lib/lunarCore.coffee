@@ -73,7 +73,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
     i++
 
   svg.selectAll('.core-label').remove()
-  lunar_core_label_background_svg = drawBackground(svg, lunar_core_labels)
+  # lunar_core_label_background_svg = drawBackground(svg, lunar_core_labels)
   lunar_core_labels_svg = drawLabels(lunar_core_labels, drag)
 
 
@@ -100,7 +100,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
   # Draw the links
   lunar_core_links_svg = drawLinks(lunar_core_labels)
   lunar_core_links_svg.moveToBack()
-  lunar_core_label_background_svg.moveToFront()
+  # lunar_core_label_background_svg.moveToFront()
   lunar_core_labels_svg.moveToFront()
   d3.selectAll('.core-anchor').moveToFront()
   d3.selectAll('.moon-circle').moveToFront()
@@ -137,9 +137,9 @@ drawLunarCoreLabels = (lunarCoreLabels,
       .attr('x2', (d) -> d.x)
       .attr('y2', (d) -> d.y)
 
-  lunar_core_label_background_svg.transition()
-                                 .duration(800)
-                                 .attr('x', (d) -> d.x - 2 - d.width/2)
-                                 .attr('y', (d) -> d.y - d.height + 2)
+  # lunar_core_label_background_svg.transition()
+  #                                .duration(800)
+  #                                .attr('x', (d) -> d.x - 2 - d.width/2)
+  #                                .attr('y', (d) -> d.y - d.height + 2)
 
   adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy)
