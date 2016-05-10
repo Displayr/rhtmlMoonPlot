@@ -83,7 +83,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
     anchor_array.push({
       x: lunar_core_label.x
       y: lunar_core_label.y
-      r: 5
+      r: 8
       dr: 2
       })
 
