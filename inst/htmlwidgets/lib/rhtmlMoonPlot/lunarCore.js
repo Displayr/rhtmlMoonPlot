@@ -1,7 +1,7 @@
 var drawLunarCoreLabels;
 
 drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) {
-  var anchor, anchor_array, drag, drawLabels, drawLinks, i, j, k, l, label, labeler, len, len1, len2, lunar_core_label, lunar_core_label_background_svg, lunar_core_labels, lunar_core_labels_svg, lunar_core_links_svg, x, y;
+  var anchor, anchor_array, drag, drawLabels, drawLinks, endAll, i, j, k, l, label, labeler, len, len1, len2, lunar_core_label, lunar_core_label_background_svg, lunar_core_labels, lunar_core_labels_svg, lunar_core_links_svg, n, x, y;
   drawLabels = function(label_data, drag) {
     var labels;
     labels = svg.selectAll('.core-label').data(label_data).enter().append('text').style('fill', textColor).attr('class', 'core-label').attr('x', function(d) {
@@ -64,12 +64,13 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
     anchor_array.push({
       x: lunar_core_label.x,
       y: lunar_core_label.y,
-      r: 2
+      r: 5,
+      dr: 2
     });
   }
   for (l = 0, len2 = anchor_array.length; l < len2; l++) {
     anchor = anchor_array[l];
-    d3.select('svg').append('circle').attr('stroke-width', 3).attr('class', 'core-anchor').attr('fill', 'black').attr('cx', anchor.x).attr('cy', anchor.y).attr('r', anchor.r);
+    d3.select('svg').append('circle').attr('stroke-width', 3).attr('class', 'core-anchor').attr('fill', 'black').attr('cx', anchor.x).attr('cy', anchor.y).attr('r', anchor.dr);
   }
   lunar_core_links_svg = drawLinks(lunar_core_labels);
   lunar_core_links_svg.moveToBack();
@@ -79,12 +80,24 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
   d3.selectAll('.moon-circle').moveToFront();
   d3.selectAll('.core-cross').moveToFront();
   d3.selectAll('.surface-label').moveToFront();
-  labeler = d3.labeler().label(lunar_core_labels).anchor(anchor_array).width(600).height(600).start(100);
+  labeler = d3.labeler().svg(svg).cx(cx).cy(cy).radius(radius).label(lunar_core_labels).anchor(anchor_array).start(100);
+  n = 0;
   lunar_core_labels_svg.transition().duration(800).attr('x', function(d) {
     return d.x;
   }).attr('y', function(d) {
     return d.y;
+  }).each(function() {
+    return n++;
+  }).each('end', function() {
+    n--;
+    if (!n) {
+      return endAll();
+    }
   });
+  endAll = function() {
+    console.log('callback');
+    return adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy);
+  };
   lunar_core_links_svg.transition().duration(800).attr('x2', function(d) {
     return d.x;
   }).attr('y2', function(d) {

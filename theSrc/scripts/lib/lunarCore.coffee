@@ -83,7 +83,8 @@ drawLunarCoreLabels = (lunarCoreLabels,
     anchor_array.push({
       x: lunar_core_label.x
       y: lunar_core_label.y
-      r: 2
+      r: 5
+      dr: 2
       })
 
   # Lay the anchor
@@ -94,7 +95,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
                     .attr('fill', 'black')
                     .attr('cx', anchor.x)
                     .attr('cy', anchor.y)
-                    .attr('r', anchor.r)
+                    .attr('r', anchor.dr)
 
   # Draw the links
   lunar_core_links_svg = drawLinks(lunar_core_labels)
@@ -108,16 +109,28 @@ drawLunarCoreLabels = (lunarCoreLabels,
 
   # Check if labels are overlapping and if need to be repositioned
   labeler = d3.labeler()
+    .svg(svg)
+    .cx(cx)
+    .cy(cy)
+    .radius(radius)
     .label(lunar_core_labels)
     .anchor(anchor_array)
-    .width(600)
-    .height(600)
     .start(100)
 
+  n = 0
   lunar_core_labels_svg.transition()
       .duration(800)
       .attr('x', (d) -> d.x)
       .attr('y', (d) -> d.y)
+      .each(-> n++)
+      .each('end', ->
+        n--
+        endAll() if not n
+        )
+
+  endAll = () ->
+    console.log 'callback'
+    adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy)
 
   lunar_core_links_svg.transition()
       .duration(800)
