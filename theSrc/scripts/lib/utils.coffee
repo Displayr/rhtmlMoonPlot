@@ -221,3 +221,67 @@ drawBackground = (svg, label_data) ->
                  .attr('width', (d) -> d.width + 4)
                  .attr('height', (d) -> d.height + 2)
                  .attr('fill', 'white')
+
+adjustCoreLinks = (lunar_core_labels, anchor_array) ->
+  dist = (x1, x2, y1, y2) ->
+    Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+
+  closestPtOnLabelBorder = (lab, anc) ->
+    ptsOnLab = [
+      [lab.x - lab.width/2,     lab.y]
+      [lab.x,                   lab.y]
+      [lab.x + lab.width/2,     lab.y]
+      [lab.x - lab.width/2,     lab.y - lab.height]
+      [lab.x,                   lab.y - lab.height]
+      [lab.x + lab.width/2,     lab.y - lab.height]
+      [lab.x - lab.width/2,     lab.y - lab.height/2]
+      [lab.x + lab.width/2,     lab.y - lab.height/2]
+    ]
+
+    # j = 0
+    # while j < 8
+    #   d3.select('svg').append('circle').attr('cx', ptsOnLab[j][0])
+    #                       .attr('stroke-width', 1)
+    #                       .attr('fill', 'green')
+    #                       .attr('cy', ptsOnLab[j][1])
+    #                       .attr('r', 1)
+    #                       .attr('stroke')
+    #   j++
+
+    dists = _.map ptsOnLab, (e) ->
+      dist(e[0], anc.x, e[1], anc.y)
+
+    # d3.select('svg').append('circle').attr('cx', anc.x)
+    #                     .attr('stroke-width', 3)
+    #                     .attr('class', 'blah')
+    #                     .attr('fill', 'red')
+    #                     .attr('cy', anc.y)
+    #                     .attr('r', 5)
+    #                     .attr('stroke')
+
+    minPt = _.reduce(dists, (acc, val, i) ->
+      return {i_min: i, val: val} if val < acc.val
+      return {i_min: acc.i_min, val: acc.val}
+    , {val: Infinity})
+    ptsOnLab[minPt.i_min]
+
+
+  j = 0
+  while j < lunar_core_labels.length
+    newLinkPt = closestPtOnLabelBorder lunar_core_labels[j], anchor_array[j]
+    # d3.select('svg').append('circle').attr('cx', newLinkPt[0])
+    #                     .attr('stroke-width',1)
+    #                     .attr('class', 'core-anchor')
+    #                     .attr('fill', 'blue')
+    #                     .attr('cy', newLinkPt[1])
+    #                     .attr('r', 2)
+    #                     .attr('stroke')
+
+    svg.append('line').attr('class', 'core-link')
+                   .attr('x1', anchor_array[j].x)
+                   .attr('y1', anchor_array[j].y)
+                   .attr('x2', newLinkPt[0])
+                   .attr('y2', newLinkPt[1])
+                   .attr('stroke-width', 0.6)
+                   .attr('stroke', 'gray')
+    j++

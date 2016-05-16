@@ -1,12 +1,13 @@
 setupLunarCoreDragAndDrop = (svg,
                     lunar_core_labels,
+                    anchor_array,
                     radius,
                     xCenter,
                     yCenter,
                     textColor) ->
   dragStart = () ->
     svg.selectAll('.core-link').remove()
-    svg.selectAll('.core-label-background').remove()
+    # svg.selectAll('.core-label-background').remove()
     d3.select(this).style('fill', 'red')
 
   dragMove = () ->
@@ -22,27 +23,28 @@ setupLunarCoreDragAndDrop = (svg,
         core_label.y = d3.event.y
 
   dragEnd = ->
-    svg.selectAll('.core-link')
-                        .data(lunar_core_labels)
-                        .enter()
-                        .append('line')
-                        .attr('class', 'core-link')
-                        .attr('x1', (d) -> d.ox)
-                        .attr('y1', (d) -> d.oy)
-                        .attr('x2', (d) -> d.x)
-                        .attr('y2', (d) -> d.y)
-                        .attr('stroke-width', 0.6)
-                        .attr('stroke', 'gray')
+    # svg.selectAll('.core-link')
+    #                     .data(lunar_core_labels)
+    #                     .enter()
+    #                     .append('line')
+    #                     .attr('class', 'core-link')
+    #                     .attr('x1', (d) -> d.ox)
+    #                     .attr('y1', (d) -> d.oy)
+    #                     .attr('x2', (d) -> d.x)
+    #                     .attr('y2', (d) -> d.y)
+    #                     .attr('stroke-width', 0.6)
+    #                     .attr('stroke', 'gray')
 
     d3.select(this).style('fill', textColor)
 
-    drawBackground(svg, lunar_core_labels)
+    # drawBackground(svg, lunar_core_labels)
 
-    d3.selectAll('.core-label').moveToFront()
-    d3.selectAll('.moon-circle').moveToFront()
-    d3.selectAll('.core-cross').moveToFront()
-    d3.selectAll('.core-anchor').moveToFront()
-    d3.selectAll('.surface-label').moveToFront()
+    # d3.selectAll('.core-label').moveToFront()
+    # d3.selectAll('.moon-circle').moveToFront()
+    # d3.selectAll('.core-cross').moveToFront()
+    # d3.selectAll('.core-anchor').moveToFront()
+    # d3.selectAll('.surface-label').moveToFront()
+    adjustCoreLinks(lunar_core_labels, anchor_array)
     adjustCoreLabelLength(d3.selectAll('.core-label')[0], radius, xCenter, yCenter)
 
   d3.behavior.drag()

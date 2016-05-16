@@ -1,4 +1,4 @@
-var adjustCoreLabelLength, adjustSurfaceLabelLength, calculateLabelRotation, calculateSurfaceLabelSizes, calculateSurfaceNodePositions, cartesianCoord, cartesianCoords, condenseCoreLabel, condenseSurfaceLabel, coreLabelTooLong, detectCoreLabelBoundaryCollision, detectSurfaceCollisions, detectViewportCollision, distanceFromCenter, drawBackground, extendFullLabelName, failsCoreLabelBoundaryRules, moveSurfaceCollsions, normalizeCoreNodes, polarCoord, polarCoords, positionAlongLine;
+var adjustCoreLabelLength, adjustCoreLinks, adjustSurfaceLabelLength, calculateLabelRotation, calculateSurfaceLabelSizes, calculateSurfaceNodePositions, cartesianCoord, cartesianCoords, condenseCoreLabel, condenseSurfaceLabel, coreLabelTooLong, detectCoreLabelBoundaryCollision, detectSurfaceCollisions, detectViewportCollision, distanceFromCenter, drawBackground, extendFullLabelName, failsCoreLabelBoundaryRules, moveSurfaceCollsions, normalizeCoreNodes, polarCoord, polarCoords, positionAlongLine;
 
 detectSurfaceCollisions = function(polar_coords, length_of_line) {
   var collisions, error_allowed, i, j, p1, p1l, p1r, p2, p2l, p2r;
@@ -305,4 +305,41 @@ drawBackground = function(svg, label_data) {
   }).attr('height', function(d) {
     return d.height + 2;
   }).attr('fill', 'white');
+};
+
+adjustCoreLinks = function(lunar_core_labels, anchor_array) {
+  var closestPtOnLabelBorder, dist, j, newLinkPt, results;
+  dist = function(x1, x2, y1, y2) {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+  };
+  closestPtOnLabelBorder = function(lab, anc) {
+    var dists, minPt, ptsOnLab;
+    ptsOnLab = [[lab.x - lab.width / 2, lab.y], [lab.x, lab.y], [lab.x + lab.width / 2, lab.y], [lab.x - lab.width / 2, lab.y - lab.height], [lab.x, lab.y - lab.height], [lab.x + lab.width / 2, lab.y - lab.height], [lab.x - lab.width / 2, lab.y - lab.height / 2], [lab.x + lab.width / 2, lab.y - lab.height / 2]];
+    dists = _.map(ptsOnLab, function(e) {
+      return dist(e[0], anc.x, e[1], anc.y);
+    });
+    minPt = _.reduce(dists, function(acc, val, i) {
+      if (val < acc.val) {
+        return {
+          i_min: i,
+          val: val
+        };
+      }
+      return {
+        i_min: acc.i_min,
+        val: acc.val
+      };
+    }, {
+      val: Infinity
+    });
+    return ptsOnLab[minPt.i_min];
+  };
+  j = 0;
+  results = [];
+  while (j < lunar_core_labels.length) {
+    newLinkPt = closestPtOnLabelBorder(lunar_core_labels[j], anchor_array[j]);
+    svg.append('line').attr('class', 'core-link').attr('x1', anchor_array[j].x).attr('y1', anchor_array[j].y).attr('x2', newLinkPt[0]).attr('y2', newLinkPt[1]).attr('stroke-width', 0.6).attr('stroke', 'gray');
+    results.push(j++);
+  }
+  return results;
 };

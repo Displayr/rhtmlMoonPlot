@@ -1,7 +1,7 @@
 var drawLunarCoreLabels;
 
 drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) {
-  var anchor, anchor_array, drag, drawLabels, drawLinks, endAll, i, k, l, label, labeler, len, len1, len2, lunar_core_label, lunar_core_labels, lunar_core_labels_svg, lunar_core_links_svg, m, n, x, y;
+  var anchor, anchor_array, drag, drawLabels, drawLinks, endAll, i, j, k, l, label, labeler, len, len1, len2, lunar_core_label, lunar_core_labels, lunar_core_labels_svg, lunar_core_links_svg, n, x, y;
   drawLabels = function(label_data, drag) {
     var labels;
     labels = svg.selectAll('.core-label').data(label_data).enter().append('text').style('fill', textColor).attr('class', 'core-label').attr('x', function(d) {
@@ -34,9 +34,10 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
   };
   lunar_core_labels_svg = [];
   lunar_core_labels = [];
-  drag = setupLunarCoreDragAndDrop(svg, lunar_core_labels, radius, cx, cy, textColor);
-  for (k = 0, len = lunarCoreLabels.length; k < len; k++) {
-    label = lunarCoreLabels[k];
+  anchor_array = [];
+  drag = setupLunarCoreDragAndDrop(svg, lunar_core_labels, anchor_array, radius, cx, cy, textColor);
+  for (j = 0, len = lunarCoreLabels.length; j < len; j++) {
+    label = lunarCoreLabels[j];
     x = label.x * radius + cx;
     y = -label.y * radius + cy;
     lunar_core_labels.push({
@@ -57,9 +58,8 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
   }
   svg.selectAll('.core-label').remove();
   lunar_core_labels_svg = drawLabels(lunar_core_labels, drag);
-  anchor_array = [];
-  for (l = 0, len1 = lunar_core_labels.length; l < len1; l++) {
-    lunar_core_label = lunar_core_labels[l];
+  for (k = 0, len1 = lunar_core_labels.length; k < len1; k++) {
+    lunar_core_label = lunar_core_labels[k];
     anchor_array.push({
       x: lunar_core_label.x,
       y: lunar_core_label.y,
@@ -67,8 +67,8 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
       dr: 2
     });
   }
-  for (m = 0, len2 = anchor_array.length; m < len2; m++) {
-    anchor = anchor_array[m];
+  for (l = 0, len2 = anchor_array.length; l < len2; l++) {
+    anchor = anchor_array[l];
     d3.select('svg').append('circle').attr('stroke-width', 3).attr('class', 'core-anchor').attr('fill', 'black').attr('cx', anchor.x).attr('cy', anchor.y).attr('r', anchor.dr);
   }
   lunar_core_links_svg = drawLinks(lunar_core_labels);
@@ -93,42 +93,9 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
     }
   });
   endAll = function() {
-    var closestPtOnLabelBorder, dist, j, newLinkPt, results;
+    svg.selectAll('.init-core-link').remove();
     adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy);
-    dist = function(x1, x2, y1, y2) {
-      return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-    };
-    closestPtOnLabelBorder = function(lab, anc) {
-      var dists, minPt, ptsOnLab;
-      ptsOnLab = [[lab.x - lab.width / 2, lab.y], [lab.x, lab.y], [lab.x + lab.width / 2, lab.y], [lab.x - lab.width / 2, lab.y - lab.height], [lab.x, lab.y - lab.height], [lab.x + lab.width / 2, lab.y - lab.height], [lab.x - lab.width / 2, lab.y - lab.height / 2], [lab.x + lab.width / 2, lab.y - lab.height / 2]];
-      dists = _.map(ptsOnLab, function(e) {
-        return dist(e[0], anc.x, e[1], anc.y);
-      });
-      minPt = _.reduce(dists, function(acc, val, i) {
-        if (val < acc.val) {
-          return {
-            i_min: i,
-            val: val
-          };
-        }
-        return {
-          i_min: acc.i_min,
-          val: acc.val
-        };
-      }, {
-        val: Infinity
-      });
-      return ptsOnLab[minPt.i_min];
-    };
-    j = 0;
-    results = [];
-    while (j < lunar_core_labels.length) {
-      newLinkPt = closestPtOnLabelBorder(lunar_core_labels[j], anchor_array[j]);
-      svg.selectAll('.init-core-link').remove();
-      svg.append('line').attr('class', 'core-link').attr('x1', anchor_array[j].x).attr('y1', anchor_array[j].y).attr('x2', newLinkPt[0]).attr('y2', newLinkPt[1]).attr('stroke-width', 0.6).attr('stroke', 'gray');
-      results.push(j++);
-    }
-    return results;
+    return adjustCoreLinks(lunar_core_labels, anchor_array);
   };
   return lunar_core_links_svg.transition().duration(800).attr('x2', function(d) {
     return d.x;
