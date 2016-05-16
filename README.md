@@ -59,3 +59,4 @@ This should load a browser window, where a list of links to examples will be dis
 - ~~Center the core labels~~
 - ~~Put circular boundaries into simulated annealing algorithm~~
 - On small screens Fanta gets ejected from the moon because of x_old gets modified but T too high
+- Fix top empty space in lunar core labels, during core link adjustment

@@ -71,7 +71,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
   i = 0
   while i < lunar_core_labels.length
     lunar_core_labels[i].width = lunar_core_labels_svg[0][i].getBBox().width
-    lunar_core_labels[i].height = lunar_core_labels_svg[0][i].getBBox().height
+    lunar_core_labels[i].height = lunar_core_labels_svg[0][i].getBBox().height - 5
     i++
 
   svg.selectAll('.core-label').remove()
