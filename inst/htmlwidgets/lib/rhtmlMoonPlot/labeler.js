@@ -2,7 +2,8 @@
 
 d3.labeler = function() {
   // Use Mersenne Twister seeded random number generator
-  var random = new Random(Random.engines.mt19937().seed(0));
+  // var random = new Random(Random.engines.mt19937().seed(0));
+  var random = new Random();
 
   var lab = [],
       anc = [],
@@ -98,8 +99,8 @@ d3.labeler = function() {
                              );
           if (intersecBottom) ener += w_lablink
           if (intersecTop) ener += w_lablink;
-          console.log(intersecTop);
-          console.log(intersecBottom);
+          // console.log(intersecTop);
+          // console.log(intersecBottom);
       }
       return ener;
   };
@@ -109,7 +110,7 @@ d3.labeler = function() {
     //right
     if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangle)) {
       lab[i].x = cx + radius*Math.cos(asinangle) - lab[i].width;
-      anc[i].x = lab[i].x;
+      // anc[i].x = lab[i].x;
       x_old = lab[i].x;
       lab[i].adjust = true;
       // svg.append('rect').attr('x', lab[i].x)
@@ -129,7 +130,7 @@ d3.labeler = function() {
     //left
     else if (lab[i].x < cx - radius*Math.cos(asinangle)) {
       lab[i].x = cx - radius*Math.cos(asinangle);
-      anc[i].x = lab[i].x;
+      // anc[i].x = lab[i].x;
       x_old = lab[i].x;
       // svg.append('rect').attr('x', lab[i].x)
       //                   .attr('y', lab[i].y - lab[i].height)
