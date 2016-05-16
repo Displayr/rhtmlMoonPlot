@@ -3,7 +3,6 @@
 d3.labeler = function() {
   // Use Mersenne Twister seeded random number generator
   var random = new Random(Random.engines.mt19937().seed(0));
-  // var random = new Random();
 
   var lab = [],
       anc = [],
@@ -21,7 +20,7 @@ d3.labeler = function() {
   // weights
   var w_len = 0.2, // leader line length
       w_inter = 10.0, // leader line intersection
-      w_lablink = 10000.0, // leader line-label intersection
+      w_lablink = 100.0, // leader line-label intersection
       w_lab2 = 3.0, // label-label overlap
       w_lab_anc = 40.0; // label-anchor overlap
       w_orient = 3.0; // orientation bias
@@ -90,46 +89,28 @@ d3.labeler = function() {
           ener += (overlap_area * w_lab_anc);
 
           // penalty for label-leader line intersection
-          var intersec = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width/2,
+          var intersecBottom = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width/2,
                                    lab[index].y, lab[index].y, anc[i].y, lab[i].y
                                   )
 
-          // if (intersec) {
-          //   ener += w_lablink;
-          //
-          // }
-          intersec = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width/2,
+          var intersecTop = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width/2,
                                lab[index].y-lab[index].height, lab[index].y-lab[index].height, anc[i].y, lab[i].y
                              );
-          if (intersec) {
-            // ener += w_lablink;
-            // svg.append('line').attr('x1', lab[index].x)
-            //                   .attr('y1', lab[index].y-lab[index].height)
-            //                   .attr('x2', lab[index].x + lab[index].width)
-            //                   .attr('y2', lab[index].y-lab[index].height)
-            //                   .attr('stroke', 'yellow')
-            //                   .attr('opacity', 0.1)
-            //                   .attr('stroke-width', 1);
-            //
-            // svg.append('line').attr('x1', anc[i].x)
-            //                   .attr('y1', anc[i].y)
-            //                   .attr('x2', lab[i].x + lab[i].width/2)
-            //                   .attr('y2', lab[i].y)
-            //                   .attr('stroke', 'red')
-            //                   .attr('opacity', 0.1)
-            //                   .attr('stroke-width', 1);
-          }
-          console.log(intersec);
-
+          if (intersecBottom) ener += w_lablink
+          if (intersecTop) ener += w_lablink;
+          console.log(intersecTop);
+          console.log(intersecBottom);
       }
       return ener;
   };
 
-  adjustForBoundaries = function(lab, i, x_old, y_old) {
+  adjustForBoundaries = function(lab, anc, i, x_old, y_old) {
     asinangle = Math.asin((lab[i].y - cy - lab[i].height)/radius);
     //right
     if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangle)) {
       lab[i].x = cx + radius*Math.cos(asinangle) - lab[i].width;
+      anc[i].x = lab[i].x;
+      x_old = lab[i].x;
       lab[i].adjust = true;
       // svg.append('rect').attr('x', lab[i].x)
       //                   .attr('y', lab[i].y - lab[i].height)
@@ -146,8 +127,10 @@ d3.labeler = function() {
 
     }
     //left
-    if (lab[i].x < cx - radius*Math.cos(asinangle)) {
+    else if (lab[i].x < cx - radius*Math.cos(asinangle)) {
       lab[i].x = cx - radius*Math.cos(asinangle);
+      anc[i].x = lab[i].x;
+      x_old = lab[i].x;
       // svg.append('rect').attr('x', lab[i].x)
       //                   .attr('y', lab[i].y - lab[i].height)
       //                   .attr('width', lab[i].width)
@@ -183,7 +166,7 @@ d3.labeler = function() {
       //                   .attr('fill', 'yellow')
       //                   .attr('fill-opacity', 0.1);
     }
-    if (lab[i].y > cy + radius*Math.sin(acosangleR)) {
+    else if (lab[i].y > cy + radius*Math.sin(acosangleR)) {
       // lab[i].y = cy + radius*Math.sin(acosangleR);
       lab[i].y = y_old;
       lab[i].adjust = true;
@@ -235,6 +218,7 @@ d3.labeler = function() {
       //                   .attr('fill', 'purple')
       //                   .attr('fill-opacity', 0.1);
     }
+    return x_old;
   }
 
   mcmove = function(currT) {
@@ -257,7 +241,7 @@ d3.labeler = function() {
       lab[i].y += (random.real(0,1) - 0.5) * max_move;
 
       // hard wall boundaries
-      adjustForBoundaries(lab, i, x_old, y_old);
+      x_old = adjustForBoundaries(lab, anc, i, x_old, y_old);
 
       // new energy
       var new_energy;
@@ -312,7 +296,7 @@ d3.labeler = function() {
       lab[i].y = y_new + anc[i].y
 
       // hard wall boundaries
-      adjustForBoundaries(lab, i, x_old, y_old);
+      adjustForBoundaries(lab, anc, i, x_old, y_old);
 
       // new energy
       var new_energy;
