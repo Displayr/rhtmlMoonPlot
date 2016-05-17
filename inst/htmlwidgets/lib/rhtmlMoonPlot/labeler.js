@@ -106,158 +106,29 @@ d3.labeler = function() {
   };
 
   initLabBoundaries = function(lab, anc, i) {
-    rightBoundaryCollision = function(lab, i) {
-      return lab[i].x + lab[i].width > cx + radius*Math.cos(asinangle);
-    }
-
-    leftBoundaryCollision = function(lab, i) {
-      return lab[i].x < cx - radius*Math.cos(asinangle);
-    }
-
-    topLBoundaryCollision = function(lab, i) {
-      return lab[i].y + lab[i].height < cy - radius*Math.sin(acosangleL);
-    }
-
-    topRBoundaryCollision = function(lab, i) {
-      return lab[i].y + lab[i].height < cy - radius*Math.sin(acosangleR);
-    }
-
-    bottomLBoundaryCollision = function(lab, i) {
-      return lab[i].y > cy + radius*Math.sin(acosangleL);
-    }
-
-    bottomRBoundaryCollision = function(lab, i) {
-      return lab[i].y > cy + radius*Math.sin(acosangleR);
-    }
-
-    asinangle = Math.asin((lab[i].y - cy - lab[i].height)/radius);
+    asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
+    asinangleB = Math.asin((lab[i].y - cy)/radius);
     //right
-    if (rightBoundaryCollision(lab, i)) {
-      lab[i].x = cx + radius*Math.cos(asinangle) - lab[i].width;
+    if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleT)) {
+      lab[i].x = cx + radius*Math.cos(asinangleB) - lab[i].width;
     }
     //left
-    else if (leftBoundaryCollision(lab, i)) {
-      lab[i].x = cx - radius*Math.cos(asinangle);
+    else if (lab[i].x < cx - radius*Math.cos(asinangleT)) {
+      lab[i].x = cx - radius*Math.cos(asinangleB);
     }
   }
 
   adjustForBoundaries = function(lab, anc, i, x_old, y_old) {
-    rightBoundaryCollision = function(lab, i) {
-      return lab[i].x + lab[i].width > cx + radius*Math.cos(asinangle);
-    }
-
-    leftBoundaryCollision = function(lab, i) {
-      return lab[i].x < cx - radius*Math.cos(asinangle);
-    }
-
-    topLBoundaryCollision = function(lab, i) {
-      return lab[i].y + lab[i].height < cy - radius*Math.sin(acosangleL);
-    }
-
-    topRBoundaryCollision = function(lab, i) {
-      return lab[i].y + lab[i].height < cy - radius*Math.sin(acosangleR);
-    }
-
-    bottomLBoundaryCollision = function(lab, i) {
-      return lab[i].y > cy + radius*Math.sin(acosangleL);
-    }
-
-    bottomRBoundaryCollision = function(lab, i) {
-      return lab[i].y > cy + radius*Math.sin(acosangleR);
-    }
-    topBotBoundaryCheck = function() {
-      acosangleL = Math.acos((lab[i].x - cx)/radius);
-      acosangleR = Math.acos((lab[i].x + lab[i].width - cx)/radius);
-      //bottom
-      if (bottomLBoundaryCollision(lab, i)) {
-        lab[i].y = y_old;
-        lab[i].adjust = true;
-
-        lab[i].y = cy + radius*Math.sin(acosangleL);
-        // x_old = lab[i].x;
-        // y_old = lab[i].y;
-        // svg.append('rect').attr('x', lab[i].x)
-        //                   .attr('y', lab[i].y - lab[i].height)
-        //                   .attr('width', lab[i].width)
-        //                   .attr('height', lab[i].height)
-        //                   .attr('fill', 'green')
-        //                   .attr('fill-opacity', 0.1);
-        // svg.append('rect').attr('x', lab[i].x)
-        //                   .attr('y', y_old - lab[i].height)
-        //                   .attr('width', lab[i].width)
-        //                   .attr('height', lab[i].height)
-        //                   .attr('fill', 'yellow')
-        //                   .attr('fill-opacity', 0.1);
-      }
-      else if (bottomRBoundaryCollision(lab, i)) {
-        // lab[i].y = cy + radius*Math.sin(acosangleR);
-        lab[i].y = y_old;
-        lab[i].adjust = true;
-        // x_old = lab[i].x;
-        // y_old = lab[i].y;
-        // svg.append('rect').attr('x', lab[i].x)
-        //                   .attr('y', lab[i].y - lab[i].height)
-        //                   .attr('width', lab[i].width)
-        //                   .attr('height', lab[i].height)
-        //                   .attr('fill', 'green')
-        //                   .attr('fill-opacity', 0.1);
-        // svg.append('rect').attr('x', lab[i].x)
-        //                   .attr('y', y_old - lab[i].height)
-        //                   .attr('width', lab[i].width)
-        //                   .attr('height', lab[i].height)
-        //                   .attr('fill', 'yellow')
-        //                   .attr('fill-opacity', 0.1);
-
-
-      }
-
-      //top
-      if (topLBoundaryCollision(lab, i)) {
-        lab[i].y = cy - radius*Math.sin(acosangleL) - lab[i].height;
-        // x_old = lab[i].x;
-        // y_old = lab[i].y;
-        // svg.append('rect').attr('x', lab[i].x)
-        //                   .attr('y', lab[i].y)
-        //                   .attr('width', lab[i].width)
-        //                   .attr('height', lab[i].height)
-        //                   .attr('fill', 'green')
-        //                   .attr('fill-opacity', 0.1);
-        // svg.append('rect').attr('x', lab[i].x)
-        //                   .attr('y', y_old)
-        //                   .attr('width', lab[i].width)
-        //                   .attr('height', lab[i].height)
-        //                   .attr('fill', 'purple')
-        //                   .attr('fill-opacity', 0.1);
-
-      }
-      else if (topLBoundaryCollision(lab, i)) {
-        lab[i].y = cy - radius*Math.sin(acosangleR) - lab[i].height;
-        // x_old = lab[i].x;
-        // y_old = lab[i].y;
-        // svg.append('rect').attr('x', lab[i].x)
-        //                   .attr('y', lab[i].y)
-        //                   .attr('width', lab[i].width)
-        //                   .attr('height', lab[i].height)
-        //                   .attr('fill', 'green')
-        //                   .attr('fill-opacity', 0.1);
-        // svg.append('rect').attr('x', lab[i].x)
-        //                   .attr('y', y_old)
-        //                   .attr('width', lab[i].width)
-        //                   .attr('height', lab[i].height)
-        //                   .attr('fill', 'purple')
-        //                   .attr('fill-opacity', 0.1);
-      }
-    }
-
-
-
-    asinangle = Math.asin((lab[i].y - cy - lab[i].height)/radius);
+    asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
+    asinangleB = Math.asin((lab[i].y - cy)/radius);
     //right
-    if (rightBoundaryCollision(lab, i)) {
-      lab[i].x = cx + radius*Math.cos(asinangle) - lab[i].width;
-      lab[i].adjust = true;
-      x_old = lab[i].x;
-      y_old = lab[i].y;
+    if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleT)) {
+      if (lab[i].y < cy) {
+        lab[i].x = cx + radius*Math.cos(asinangleB) - lab[i].width;
+      }
+      else {
+        lab[i].x = cx + radius*Math.cos(asinangleT) - lab[i].width;
+      }
       // svg.append('rect').attr('x', lab[i].x)
       //                   .attr('y', lab[i].y - lab[i].height)
       //                   .attr('width', lab[i].width)
@@ -270,33 +141,36 @@ d3.labeler = function() {
       //                   .attr('height', lab[i].height)
       //                   .attr('fill', 'black')
       //                   .attr('fill-opacity', 0.1);
-      topBotBoundaryCheck();
     }
     //left
-    else if (leftBoundaryCollision(lab, i)) {
-      lab[i].x = cx - radius*Math.cos(asinangle);
-      svg.append('rect').attr('x', x_old)
-                        .attr('y', lab[i].y - lab[i].height)
-                        .attr('width', lab[i].width)
-                        .attr('height', lab[i].height)
-                        .attr('fill', 'red')
-                        .attr('fill-opacity', 0.1);
-      svg.append('rect').attr('x', lab[i].x)
-                        .attr('y', lab[i].y - lab[i].height)
-                        .attr('width', lab[i].width)
-                        .attr('height', lab[i].height)
-                        .attr('fill', 'blue')
-                        .attr('fill-opacity', 0.1);
-      topBotBoundaryCheck();
-      x_old = lab[i].x;
-      y_old = lab[i].y;
-    }
-    else {
-      topBotBoundaryCheck();
-    }
+    if (lab[i].x < cx - radius*Math.cos(asinangleT)) {
+      // svg.append('rect').attr('x', lab[i].x)
+      //                   .attr('y', lab[i].y - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'green')
+      //                   .attr('fill-opacity', 0.1);
+      if (lab[i].y < cy) {
+        lab[i].x = cx - radius*Math.cos(asinangleB);
+      }
+      else {
+        lab[i].x = cx - radius*Math.cos(asinangleT);
+      }
+      lab[i].adjust = true;
 
-
-    return {x: x_old, y: y_old};
+      // svg.append('rect').attr('x', x_old)
+      //                   .attr('y', y_old - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'red')
+      //                   .attr('fill-opacity', 0.1);
+      // svg.append('rect').attr('x', lab[i].x)
+      //                   .attr('y', lab[i].y - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'blue')
+      //                   .attr('fill-opacity', 0.1);
+    }
   }
 
   mcmove = function(currT) {
@@ -319,9 +193,13 @@ d3.labeler = function() {
       lab[i].y += (random.real(0,1) - 0.5) * max_move;
 
       // hard wall boundaries
-      corrected_coords = adjustForBoundaries(lab, anc, i, x_old, y_old);
-      // x_old = corrected_coords.x;
-      // y_old = corrected_coords.y;
+      if (lab[i].y - lab[i].height < cy - radius) {
+        lab[i].y = cy - radius + lab[i].height;
+      }
+      else if (lab[i].y > cy + radius) {
+        lab[i].y = cy + radius;
+      }
+      adjustForBoundaries(lab, anc, i, x_old, y_old);
 
       // new energy
       var new_energy;
@@ -376,9 +254,13 @@ d3.labeler = function() {
       lab[i].y = y_new + anc[i].y
 
       // hard wall boundaries
-      corrected_coords = adjustForBoundaries(lab, anc, i, x_old, y_old);
-      // x_old = corrected_coords.x;
-      // y_old = corrected_coords.y;
+      if (lab[i].y < cy - radius + lab[i].height) {
+        lab[i].y = cy - radius + lab[i].height;
+      }
+      else if (lab[i].y > cy + radius) {
+        lab[i].y = cy + radius;
+      }
+      adjustForBoundaries(lab, anc, i, x_old, y_old);
 
       // new energy
       var new_energy;
@@ -390,11 +272,23 @@ d3.labeler = function() {
 
       if (random.real(0,1) < Math.exp(-delta_energy / currT)) {
         acc += 1;
+        // svg.append('rect').attr('x', lab[i].x)
+        //                   .attr('y', lab[i].y - lab[i].height)
+        //                   .attr('width', lab[i].width)
+        //                   .attr('height', lab[i].height)
+        //                   .attr('fill', 'yellow')
+        //                   .attr('fill-opacity', 0.1);
       } else {
         // move back to old coordinates
         lab[i].x = x_old;
         lab[i].y = y_old;
         rej += 1;
+        // svg.append('rect').attr('x', lab[i].x)
+        //                   .attr('y', lab[i].y - lab[i].height)
+        //                   .attr('width', lab[i].width)
+        //                   .attr('height', lab[i].height)
+        //                   .attr('fill', 'purple')
+        //                   .attr('fill-opacity', 0.1);
       }
 
   };
@@ -443,7 +337,7 @@ d3.labeler = function() {
       }
 
       for(var i=0; i<lab.length;i++) {
-        if (lab[i].adjust) lab[i].x += lab[i].width/2;
+        if (lab[i].adjust) lab[i].x += lab[i].width;
       }
   };
 
