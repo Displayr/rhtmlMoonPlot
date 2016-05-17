@@ -161,6 +161,7 @@ condenseCoreLabel = (core_label, radius, cx, cy) ->
   innerHTML = d3.select(core_label)[0][0].textContent
   d3.select(core_label).text(innerHTML.slice(0, -3) + '...')
   d3.select(core_label).append('title').text(tooltipText)
+  d3.select(core_label).data()[0].width = core_label.getBBox().width
 
 extendFullLabelName = (labels) ->
   for label in labels

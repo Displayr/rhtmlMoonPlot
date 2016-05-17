@@ -23,8 +23,8 @@ setupLunarCoreDragAndDrop = function(svg, lunar_core_labels, anchor_array, radiu
   };
   dragEnd = function() {
     d3.select(this).style('fill', textColor);
-    adjustCoreLinks(lunar_core_labels, anchor_array);
-    return adjustCoreLabelLength(d3.selectAll('.core-label')[0], radius, xCenter, yCenter);
+    adjustCoreLabelLength(d3.selectAll('.core-label')[0], radius, xCenter, yCenter);
+    return adjustCoreLinks(lunar_core_labels, anchor_array);
   };
   return d3.behavior.drag().origin(function() {
     return {

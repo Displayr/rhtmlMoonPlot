@@ -44,8 +44,8 @@ setupLunarCoreDragAndDrop = (svg,
     # d3.selectAll('.core-cross').moveToFront()
     # d3.selectAll('.core-anchor').moveToFront()
     # d3.selectAll('.surface-label').moveToFront()
-    adjustCoreLinks(lunar_core_labels, anchor_array)
     adjustCoreLabelLength(d3.selectAll('.core-label')[0], radius, xCenter, yCenter)
+    adjustCoreLinks(lunar_core_labels, anchor_array)
 
   d3.behavior.drag()
            .origin(() ->
