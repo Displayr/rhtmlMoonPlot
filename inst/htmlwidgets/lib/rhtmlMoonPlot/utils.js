@@ -1,4 +1,4 @@
-var adjustCoreLabelLength, adjustCoreLinks, adjustSurfaceLabelLength, calculateLabelRotation, calculateSurfaceLabelSizes, calculateSurfaceNodePositions, cartesianCoord, cartesianCoords, condenseCoreLabel, condenseSurfaceLabel, coreLabelTooLong, detectCoreLabelBoundaryCollision, detectSurfaceCollisions, detectViewportCollision, distanceFromCenter, drawBackground, extendFullLabelName, failsCoreLabelBoundaryRules, moveSurfaceCollsions, normalizeCoreNodes, polarCoord, polarCoords, positionAlongLine;
+var adjustCoreLabelLength, adjustCoreLinks, adjustSurfaceLabelLength, calculateLabelRotation, calculateSurfaceLabelSizes, calculateSurfaceNodePositions, cartesianCoord, cartesianCoords, condenseCoreLabel, condenseSurfaceLabel, coreLabelTooLong, detectCoreLabelBoundaryCollision, detectSurfaceCollisions, detectViewportCollision, distanceFromCenter, extendFullLabelName, failsCoreLabelBoundaryRules, moveSurfaceCollsions, normalizeCoreNodes, polarCoord, polarCoords, positionAlongLine;
 
 detectSurfaceCollisions = function(polar_coords, length_of_line) {
   var collisions, error_allowed, i, j, p1, p1l, p1r, p2, p2l, p2r;
@@ -294,18 +294,6 @@ calculateSurfaceLabelSizes = function(rawSurfaceNodes, scaleFactor, equalizeFact
   return _.map(lunarSurfaceSizes, function(s) {
     return scaleFactor * Math.pow(s / maxSize, equalizeFactor);
   });
-};
-
-drawBackground = function(svg, label_data) {
-  return svg.selectAll('.core-label-background').data(label_data).enter().append('rect').attr('class', 'core-label-background').attr('x', function(d) {
-    return d.x - 2 - d.width / 2;
-  }).attr('y', function(d) {
-    return d.y - d.height + 2;
-  }).attr('width', function(d) {
-    return d.width + 4;
-  }).attr('height', function(d) {
-    return d.height + 2;
-  }).attr('fill', 'white');
 };
 
 adjustCoreLinks = function(lunar_core_labels, anchor_array) {

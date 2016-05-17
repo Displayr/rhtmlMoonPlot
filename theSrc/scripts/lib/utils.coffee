@@ -211,17 +211,6 @@ calculateSurfaceLabelSizes = (rawSurfaceNodes, scaleFactor, equalizeFactor) ->
 
   _.map lunarSurfaceSizes, (s) -> scaleFactor * Math.pow((s / maxSize), equalizeFactor)
 
-drawBackground = (svg, label_data) ->
-  svg.selectAll('.core-label-background')
-                 .data(label_data)
-                 .enter()
-                 .append('rect')
-                 .attr('class', 'core-label-background')
-                 .attr('x', (d) -> d.x - 2 - d.width/2)
-                 .attr('y', (d) -> d.y - d.height + 2)
-                 .attr('width', (d) -> d.width + 4)
-                 .attr('height', (d) -> d.height + 2)
-                 .attr('fill', 'white')
 
 adjustCoreLinks = (lunar_core_labels, anchor_array) ->
   dist = (x1, x2, y1, y2) ->
