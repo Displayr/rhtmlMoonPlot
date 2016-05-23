@@ -114,7 +114,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
     .radius(radius)
     .label(lunar_core_labels)
     .anchor(anchor_array)
-    .start(100)
+    .start(1000)
 
   n = 0
   lunar_core_labels_svg.transition()
@@ -129,7 +129,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
 
   endAll = () ->
     svg.selectAll('.init-core-link').remove()
-    adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy)
+    # adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy)
     adjustCoreLinks(lunar_core_labels, anchor_array)
 
   lunar_core_links_svg.transition()

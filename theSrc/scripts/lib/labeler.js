@@ -121,55 +121,62 @@ d3.labeler = function() {
   adjustForBoundaries = function(lab, anc, i, x_old, y_old) {
     asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
     asinangleB = Math.asin((lab[i].y - cy)/radius);
+    investigate = null
+    // investigate = 34
+
+
+
     //right
-    if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleT)) {
+    if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleT) ||
+        lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleB)) {
       if (lab[i].y < cy) {
-        lab[i].x = cx + radius*Math.cos(asinangleB) - lab[i].width;
-      }
-      else {
         lab[i].x = cx + radius*Math.cos(asinangleT) - lab[i].width;
       }
-      // svg.append('rect').attr('x', lab[i].x)
-      //                   .attr('y', lab[i].y - lab[i].height)
-      //                   .attr('width', lab[i].width)
-      //                   .attr('height', lab[i].height)
-      //                   .attr('fill', 'yellow')
-      //                   .attr('fill-opacity', 0.1);
-      // svg.append('rect').attr('x', x_old)
-      //                   .attr('y', lab[i].y - lab[i].height)
-      //                   .attr('width', lab[i].width)
-      //                   .attr('height', lab[i].height)
-      //                   .attr('fill', 'black')
-      //                   .attr('fill-opacity', 0.1);
+      else {
+        lab[i].x = cx + radius*Math.cos(asinangleB) - lab[i].width;
+      }
+      if (i==investigate) svg.append('rect').attr('x', lab[i].x)
+                        .attr('y', lab[i].y - lab[i].height)
+                        .attr('width', lab[i].width)
+                        .attr('height', lab[i].height)
+                        .attr('fill', 'yellow')
+                        .attr('fill-opacity', 0.1);
+      if (i==investigate) svg.append('rect').attr('x', x_old)
+                        .attr('y', lab[i].y - lab[i].height)
+                        .attr('width', lab[i].width)
+                        .attr('height', lab[i].height)
+                        .attr('fill', 'black')
+                        .attr('fill-opacity', 0.1);
+
     }
     //left
-    if (lab[i].x < cx - radius*Math.cos(asinangleT)) {
-      // svg.append('rect').attr('x', lab[i].x)
-      //                   .attr('y', lab[i].y - lab[i].height)
-      //                   .attr('width', lab[i].width)
-      //                   .attr('height', lab[i].height)
-      //                   .attr('fill', 'green')
-      //                   .attr('fill-opacity', 0.1);
+    if (lab[i].x < cx - radius*Math.cos(asinangleT) || lab[i].x < cx - radius*Math.cos(asinangleB)) {
+      if (i==investigate) svg.append('rect').attr('x', lab[i].x)
+                        .attr('y', lab[i].y - lab[i].height)
+                        .attr('width', lab[i].width)
+                        .attr('height', lab[i].height)
+                        .attr('fill', 'green')
+                        .attr('fill-opacity', 0.1);
       if (lab[i].y < cy) {
-        lab[i].x = cx - radius*Math.cos(asinangleB);
-      }
-      else {
         lab[i].x = cx - radius*Math.cos(asinangleT);
       }
-      lab[i].adjust = true;
+      else {
+        lab[i].x = cx - radius*Math.cos(asinangleB);
+      }
 
-      // svg.append('rect').attr('x', x_old)
-      //                   .attr('y', y_old - lab[i].height)
-      //                   .attr('width', lab[i].width)
-      //                   .attr('height', lab[i].height)
-      //                   .attr('fill', 'red')
-      //                   .attr('fill-opacity', 0.1);
-      // svg.append('rect').attr('x', lab[i].x)
-      //                   .attr('y', lab[i].y - lab[i].height)
-      //                   .attr('width', lab[i].width)
-      //                   .attr('height', lab[i].height)
-      //                   .attr('fill', 'blue')
-      //                   .attr('fill-opacity', 0.1);
+
+      if (i==investigate) svg.append('rect').attr('x', x_old)
+                        .attr('y', y_old - lab[i].height)
+                        .attr('width', lab[i].width)
+                        .attr('height', lab[i].height)
+                        .attr('fill', 'red')
+                        .attr('fill-opacity', 0.1);
+      if (i==investigate) svg.append('rect').attr('x', lab[i].x)
+                        .attr('y', lab[i].y - lab[i].height)
+                        .attr('width', lab[i].width)
+                        .attr('height', lab[i].height)
+                        .attr('fill', 'blue')
+                        .attr('fill-opacity', 0.1);
     }
   }
 
@@ -283,6 +290,7 @@ d3.labeler = function() {
         lab[i].x = x_old;
         lab[i].y = y_old;
         rej += 1;
+
         // svg.append('rect').attr('x', lab[i].x)
         //                   .attr('y', lab[i].y - lab[i].height)
         //                   .attr('width', lab[i].width)
@@ -335,9 +343,8 @@ d3.labeler = function() {
         }
         currT = cooling_schedule(currT, initialT, nsweeps);
       }
-
       for(var i=0; i<lab.length;i++) {
-        if (lab[i].adjust) lab[i].x += lab[i].width;
+        lab[i].x += lab[i].width/2;
       }
   };
 
