@@ -20,7 +20,7 @@ HTMLWidgets.widget
 
     # setting the test data, for debugging
     unless params.lunarCoreLabels
-      params = testData
+      params = testData3
 
     # process raw input data
     normalizeCoreNodes params.lunarCoreNodes
