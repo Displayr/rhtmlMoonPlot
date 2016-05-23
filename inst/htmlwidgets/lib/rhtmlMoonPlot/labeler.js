@@ -22,8 +22,8 @@ d3.labeler = function() {
   var w_len = 0.2, // leader line length
       w_inter = 10.0, // leader line intersection
       w_lablink = 10.0, // leader line-label intersection
-      w_lab2 = 3.0, // label-label overlap
-      w_lab_anc = 40.0; // label-anchor overlap
+      w_lab2 = 40.0, // label-label overlap
+      w_lab_anc = 30.0; // label-anchor overlap
       w_orient = 3.0; // orientation bias
 
   // booleans for user defined functions
@@ -71,9 +71,9 @@ d3.labeler = function() {
           if (overlap) ener += w_inter;
 
           // penalty for label-label overlap
-          x11 = lab[i].x - lab[i].width/2;
+          x11 = lab[i].x;
           y11 = lab[i].y - lab[i].height + 2.0;
-          x12 = lab[i].x + lab[i].width/2;
+          x12 = lab[i].x + lab[i].width;
           y12 = lab[i].y + 2.0;
           x_overlap = Math.max(0, Math.min(x12,x22) - Math.max(x11,x21));
           y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21));
@@ -92,11 +92,11 @@ d3.labeler = function() {
           ener += (overlap_area * w_lab_anc);
 
           // penalty for label-leader line intersection
-          var intersecBottom = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width/2,
+          var intersecBottom = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width,
                                    lab[index].y, lab[index].y, anc[i].y, lab[i].y
                                   )
 
-          var intersecTop = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width/2,
+          var intersecTop = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width,
                                lab[index].y-lab[index].height, lab[index].y-lab[index].height, anc[i].y, lab[i].y
                              );
           if (intersecBottom) ener += w_lablink
@@ -122,8 +122,7 @@ d3.labeler = function() {
     asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
     asinangleB = Math.asin((lab[i].y - cy)/radius);
     investigate = null
-    // investigate = 34
-
+    // investigate = 26
 
 
     //right
@@ -200,11 +199,12 @@ d3.labeler = function() {
       lab[i].y += (random.real(0,1) - 0.5) * max_move;
 
       // hard wall boundaries
-      if (lab[i].y - lab[i].height < cy - radius) {
-        lab[i].y = cy - radius + lab[i].height;
+      boundaryBuffer = 5
+      if (lab[i].y - lab[i].height < cy - radius) { //top
+        lab[i].y = cy - radius + lab[i].height + boundaryBuffer;
       }
-      else if (lab[i].y > cy + radius) {
-        lab[i].y = cy + radius;
+      else if (lab[i].y > cy + radius) { //bot
+        lab[i].y = cy + radius - boundaryBuffer;
       }
       adjustForBoundaries(lab, anc, i, x_old, y_old);
 
@@ -261,11 +261,12 @@ d3.labeler = function() {
       lab[i].y = y_new + anc[i].y
 
       // hard wall boundaries
+      boundaryBuffer = 5
       if (lab[i].y < cy - radius + lab[i].height) {
-        lab[i].y = cy - radius + lab[i].height;
+        lab[i].y = cy - radius + lab[i].height + boundaryBuffer;
       }
       else if (lab[i].y > cy + radius) {
-        lab[i].y = cy + radius;
+        lab[i].y = cy + radius - boundaryBuffer;
       }
       adjustForBoundaries(lab, anc, i, x_old, y_old);
 
