@@ -21,7 +21,7 @@ class MoonPlot
     drawLunarCoreLabels(@data.lunarCoreLabels, svg,
                         xCenter,yCenter,radius, @textColor)
     drawLunarSurfaceLabels(@data.lunarSurfaceLabels,svg,
-                          xCenter,yCenter,radius,@height,@width, @textColor)
+                          xCenter,yCenter,radius,@height,@width, @textColor, 14)
 
 
   redraw: (@width, @height, el) ->

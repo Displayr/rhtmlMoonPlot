@@ -136,7 +136,8 @@ setupMoonResize = (data, svg, cx, cy, height, width, radius, textColor) ->
                            radius,
                            height,
                            width,
-                           textColor)
+                           textColor,
+                           14)
 
   d3.behavior.drag()
             .origin(() ->

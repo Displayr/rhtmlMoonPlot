@@ -5,7 +5,8 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                           radius,
                           height,
                           width,
-                          textColor) ->
+                          textColor,
+                          label_size_const) ->
 
   lunar_surface_links = []
   lunar_surface_labels = []
@@ -112,7 +113,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('y', y)
                   .attr('ox', x)
                   .attr('oy', y)
-                  .attr('font-size', (label.size * 20).toString() + 'px')
+                  .attr('font-size', (label.size * label_size_const).toString() + 'px')
                   .attr('transform', 'rotate(' + (180 - label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                   .attr('text-anchor', 'end')
                   .attr('cursor', 'all-scroll')
@@ -128,7 +129,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('x', x)
                   .attr('ox', x)
                   .attr('oy', y)
-                  .attr('font-size', (label.size * 20).toString() + 'px')
+                  .attr('font-size', (label.size * label_size_const).toString() + 'px')
                   .attr('transform', 'rotate(' + (-label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                   .attr('text-anchor', 'start')
                   .attr('cursor', 'all-scroll')

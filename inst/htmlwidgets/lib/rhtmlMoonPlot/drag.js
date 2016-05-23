@@ -104,7 +104,7 @@ setupMoonResize = function(data, svg, cx, cy, height, width, radius, textColor) 
   dragEnd = function() {
     console.log("Moon resized to r=" + radius);
     drawLunarCoreLabels(data.lunarCoreLabels, svg, cx, cy, radius, textColor);
-    return drawLunarSurfaceLabels(data.lunarSurfaceLabels, svg, cx, cy, radius, height, width, textColor);
+    return drawLunarSurfaceLabels(data.lunarSurfaceLabels, svg, cx, cy, radius, height, width, textColor, 14);
   };
   return d3.behavior.drag().origin(function() {
     return {
