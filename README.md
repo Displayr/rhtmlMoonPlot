@@ -56,3 +56,4 @@ This should load a browser window, where a list of links to examples will be dis
 
 # To do
 - Text colouring
+- Add regression tests in Q
