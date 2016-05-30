@@ -49,9 +49,9 @@ d3.labeler = function() {
 
       // penalty for length of leader line
       if (dist < dist2) {
-        if (dist > 0) ener += dist * w_len;
-      } else {
-        if (dist2 > 0) ener += dist2 * w_len;
+        ener += dist * w_len;
+      } else if (dist2 < dist) {
+        ener += dist2 * w_len;
       }
 
       // label orientation bias
