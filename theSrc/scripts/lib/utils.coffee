@@ -178,7 +178,7 @@ distanceFromCenter = (x, y) ->
 
 normalizeCoreNodes = (rawCoreNodes) ->
   # normalization between -1 and 1 (padded by threshold)
-  threshold = 0
+  threshold = 0.1
   max = -Infinity
   min = Infinity
   for node in rawCoreNodes
@@ -233,9 +233,9 @@ adjustCoreLinks = (lunar_core_labels, anchor_array) ->
     left = anc.x < lab.x - lab.width/2
     right = anc.x > lab.x + lab.width/2
 
-    if centered and aboveMid
+    if centered and above
       return p[4]
-    else if centered and belowMid
+    else if centered and not above
       return p[1]
     else if above and left
       return p[3]

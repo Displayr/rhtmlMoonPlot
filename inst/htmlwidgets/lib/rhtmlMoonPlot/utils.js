@@ -238,7 +238,7 @@ distanceFromCenter = function(x, y) {
 
 normalizeCoreNodes = function(rawCoreNodes) {
   var k, l, len, len1, max, min, node, results, squareX, squareY, threshold;
-  threshold = 0;
+  threshold = 0.1;
   max = -Infinity;
   min = Infinity;
   for (k = 0, len = rawCoreNodes.length; k < len; k++) {
@@ -308,9 +308,9 @@ adjustCoreLinks = function(lunar_core_labels, anchor_array) {
     belowMid = anc.y > lab.y - lab.height / 2;
     left = anc.x < lab.x - lab.width / 2;
     right = anc.x > lab.x + lab.width / 2;
-    if (centered && aboveMid) {
+    if (centered && above) {
       return p[4];
-    } else if (centered && belowMid) {
+    } else if (centered && !above) {
       return p[1];
     } else if (above && left) {
       return p[3];
