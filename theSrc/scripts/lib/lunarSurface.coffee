@@ -137,7 +137,6 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('title', label.name)
                   .text label.name
                   .call(drag)
-    t.append('title').text(label.name)
     lunar_surface_labels.push t[0][0]
 
   adjustSurfaceLabelLength lunar_surface_labels, height, width

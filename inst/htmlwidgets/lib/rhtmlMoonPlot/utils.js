@@ -150,28 +150,26 @@ detectViewportCollision = function(surface_label, viewport_height, viewport_widt
 };
 
 condenseSurfaceLabel = function(surface_label, viewport_height, viewport_width) {
-  var innerHTML, tooltipText;
-  tooltipText = d3.select(surface_label).attr('title');
+  var innerHTML;
   while (detectViewportCollision(surface_label, viewport_height, viewport_width)) {
     innerHTML = d3.select(surface_label)[0][0].textContent;
     d3.select(surface_label).text(innerHTML.slice(0, -1));
   }
   innerHTML = d3.select(surface_label)[0][0].textContent;
-  d3.select(surface_label).text(innerHTML.slice(0, -3) + '...');
-  return d3.select(surface_label).append('title').text(tooltipText);
+  return d3.select(surface_label).text(innerHTML.slice(0, -3) + '...');
 };
 
 adjustSurfaceLabelLength = function(surface_labels, view_height, view_width) {
-  var k, len, results, surface_label;
+  var k, len, results, surface_label, tooltipText;
   extendFullLabelName(surface_labels);
   results = [];
   for (k = 0, len = surface_labels.length; k < len; k++) {
     surface_label = surface_labels[k];
     if (detectViewportCollision(surface_label, view_height, view_width)) {
-      results.push(condenseSurfaceLabel(surface_label, view_height, view_width));
-    } else {
-      results.push(void 0);
+      condenseSurfaceLabel(surface_label, view_height, view_width);
     }
+    tooltipText = d3.select(surface_label).attr('title');
+    results.push(d3.select(surface_label).append('title').text(tooltipText));
   }
   return results;
 };

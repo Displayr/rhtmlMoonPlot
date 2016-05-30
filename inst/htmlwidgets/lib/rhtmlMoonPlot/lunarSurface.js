@@ -72,7 +72,6 @@ drawLunarSurfaceLabels = function(lunarSurfaceLabels, svg, cx, cy, radius, heigh
     } else {
       t = svg.append('text').style('fill', textColor).attr('class', 'surface-label').attr('y', y).attr('x', x).attr('ox', x).attr('oy', y).attr('font-size', (label.size * label_size_const).toString() + 'px').attr('transform', 'rotate(' + (-label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'start').attr('cursor', 'all-scroll').style('font-family', 'Arial').attr('title', label.name).text(label.name).call(drag);
     }
-    t.append('title').text(label.name);
     lunar_surface_labels.push(t[0][0]);
   }
   return adjustSurfaceLabelLength(lunar_surface_labels, height, width);
