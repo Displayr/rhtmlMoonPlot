@@ -193,15 +193,13 @@ failsCoreLabelBoundaryRules = function(core_label, radius, cx, cy) {
 };
 
 condenseCoreLabel = function(core_label, radius, cx, cy) {
-  var innerHTML, tooltipText;
-  tooltipText = d3.select(core_label).attr('title');
+  var innerHTML;
   while (failsCoreLabelBoundaryRules(core_label, radius, cx, cy)) {
     innerHTML = d3.select(core_label)[0][0].textContent;
     d3.select(core_label).text(innerHTML.slice(0, -1));
   }
   innerHTML = d3.select(core_label)[0][0].textContent;
   d3.select(core_label).text(innerHTML.slice(0, -3) + '...');
-  d3.select(core_label).append('title').text(tooltipText);
   return d3.select(core_label).data()[0].width = core_label.getBBox().width;
 };
 
@@ -222,10 +220,9 @@ adjustCoreLabelLength = function(core_labels, radius, cx, cy) {
   for (k = 0, len = core_labels.length; k < len; k++) {
     core_label = core_labels[k];
     if (failsCoreLabelBoundaryRules(core_label, radius, cx, cy)) {
-      results.push(condenseCoreLabel(core_label, radius, cx, cy));
-    } else {
-      results.push(void 0);
+      condenseCoreLabel(core_label, radius, cx, cy);
     }
+    results.push(d3.select(core_label).append('title').text(d3.select(core_label).attr('title')));
   }
   return results;
 };

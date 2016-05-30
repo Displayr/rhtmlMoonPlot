@@ -154,13 +154,11 @@ failsCoreLabelBoundaryRules = (core_label, radius, cx, cy) ->
     coreLabelTooLong(core_label, radius)
 
 condenseCoreLabel = (core_label, radius, cx, cy) ->
-  tooltipText = d3.select(core_label).attr('title')
   while failsCoreLabelBoundaryRules(core_label, radius, cx, cy)
     innerHTML = d3.select(core_label)[0][0].textContent
     d3.select(core_label).text(innerHTML.slice(0, -1))
   innerHTML = d3.select(core_label)[0][0].textContent
   d3.select(core_label).text(innerHTML.slice(0, -3) + '...')
-  d3.select(core_label).append('title').text(tooltipText)
   d3.select(core_label).data()[0].width = core_label.getBBox().width
 
 extendFullLabelName = (labels) ->
@@ -172,6 +170,7 @@ adjustCoreLabelLength = (core_labels, radius, cx, cy) ->
   for core_label in core_labels
     if failsCoreLabelBoundaryRules(core_label, radius, cx, cy)
       condenseCoreLabel core_label, radius, cx, cy
+    d3.select(core_label).append('title').text(d3.select(core_label).attr('title'))
 
 distanceFromCenter = (x, y) ->
   Math.sqrt(Math.pow(x,2) + Math.pow(y, 2))
