@@ -19,10 +19,10 @@ d3.labeler = function() {
       rej = 0;
 
   // weights
-  var w_len = 9.0, // leader line length
+  var w_len = 5.0, // leader line length
       w_inter = 1.0, // leader line intersection
       w_lablink = 2.0, // leader line-label intersection
-      w_lab2 = 40.0, // label-label overlap
+      w_lab2 = 10.0, // label-label overlap
       w_lab_anc = 8.0; // label-anchor overlap
       w_orient = 0.5; // orientation bias
 
@@ -40,13 +40,19 @@ d3.labeler = function() {
           ener = 0,
           dx = lab[index].x + lab[index].width/2 - anc[index].x,
           dy = anc[index].y - lab[index].y,
+          dy2 = anc[index].y - (lab[index].y - lab[index].height),
           dist = Math.sqrt(dx * dx + dy * dy),
+          dist2 = Math.sqrt(dx * dx + dy2 * dy2),
           overlap = true,
           amount = 0
           theta = 0;
 
       // penalty for length of leader line
-      if (dist > 0) ener += dist * w_len;
+      if (dist < dist2) {
+        if (dist > 0) ener += dist * w_len;
+      } else {
+        if (dist2 > 0) ener += dist2 * w_len;
+      }
 
       // label orientation bias
       dx /= dist;
@@ -57,7 +63,7 @@ d3.labeler = function() {
       else { ener += 3 * w_orient; }
 
       var x21 = lab[index].x - lab[index].width/2,
-          y21 = lab[index].y - lab[index].height - 2.0,
+          y21 = lab[index].y - lab[index].height,
           x22 = lab[index].x + lab[index].width/2,
           y22 = lab[index].y;
       var x11, x12, y11, y12, x_overlap, y_overlap, overlap_area;
@@ -76,7 +82,7 @@ d3.labeler = function() {
           x12 = lab[i].x + lab[i].width/2;
           y12 = lab[i].y;
           x_overlap = Math.max(0, Math.min(x12,x22) - Math.max(x11,x21));
-          y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21));
+          y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21 + 2.0));
           overlap_area = x_overlap * y_overlap;
           ener += (overlap_area * w_lab2);
           }
@@ -158,7 +164,7 @@ d3.labeler = function() {
     asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
     asinangleB = Math.asin((lab[i].y - cy)/radius);
     investigate = null
-    // investigate = 5
+    // investigate = 4
 
 
     //right
