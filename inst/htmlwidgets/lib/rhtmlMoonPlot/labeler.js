@@ -19,11 +19,11 @@ d3.labeler = function() {
       rej = 0;
 
   // weights
-  var w_len = 10.0, // leader line length
+  var w_len = 9.0, // leader line length
       w_inter = 1.0, // leader line intersection
       w_lablink = 2.0, // leader line-label intersection
-      w_lab2 = 10.0, // label-label overlap
-      w_lab_anc = 50.0; // label-anchor overlap
+      w_lab2 = 40.0, // label-label overlap
+      w_lab_anc = 8.0; // label-anchor overlap
       w_orient = 0.5; // orientation bias
 
   // booleans for user defined functions
@@ -57,7 +57,7 @@ d3.labeler = function() {
       else { ener += 3 * w_orient; }
 
       var x21 = lab[index].x - lab[index].width/2,
-          y21 = lab[index].y - lab[index].height,
+          y21 = lab[index].y - lab[index].height - 2.0,
           x22 = lab[index].x + lab[index].width/2,
           y22 = lab[index].y;
       var x11, x12, y11, y12, x_overlap, y_overlap, overlap_area;
