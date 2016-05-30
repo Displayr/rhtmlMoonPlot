@@ -22,8 +22,8 @@ d3.labeler = function() {
   var w_len = 10.0, // leader line length
       w_inter = 1.0, // leader line intersection
       w_lablink = 2.0, // leader line-label intersection
-      w_lab2 = 30.0, // label-label overlap
-      w_lab_anc = 7.0; // label-anchor overlap
+      w_lab2 = 10.0, // label-label overlap
+      w_lab_anc = 50.0; // label-anchor overlap
       w_orient = 0.5; // orientation bias
 
   // booleans for user defined functions

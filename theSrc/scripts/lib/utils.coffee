@@ -229,8 +229,8 @@ adjustCoreLinks = (lunar_core_labels, anchor_array) ->
     centered = (anc.x > lab.x - lab.width/2) and (anc.x < lab.x + lab.width/2)
     above = anc.y < lab.y - lab.height - padding
     below = anc.y > lab.y + padding
-    left = anc.x < lab.x - lab.width/2 - padding
-    right = anc.x > lab.x + lab.width/2 + padding
+    left = anc.x < lab.x - lab.width/2
+    right = anc.x > lab.x + lab.width/2
 
     if centered and above
       return p[4]

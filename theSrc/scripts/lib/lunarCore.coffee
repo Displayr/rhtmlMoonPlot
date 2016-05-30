@@ -114,7 +114,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
     .radius(radius)
     .anchor(anchor_array)
     .label(lunar_core_labels)
-    .start(1000)
+    .start(500)
 
   n = 0
   lunar_core_labels_svg.transition()
