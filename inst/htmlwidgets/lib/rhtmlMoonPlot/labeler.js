@@ -23,7 +23,7 @@ d3.labeler = function() {
       w_inter = 1.0, // leader line intersection
       w_lablink = 2.0, // leader line-label intersection
       w_lab2 = 10.0, // label-label overlap
-      w_lab_anc = 8.0; // label-anchor overlap
+      w_lab_anc = 6.0; // label-anchor overlap
       w_orient = 0.5; // orientation bias
 
   // booleans for user defined functions
@@ -82,7 +82,7 @@ d3.labeler = function() {
           x12 = lab[i].x + lab[i].width/2;
           y12 = lab[i].y;
           x_overlap = Math.max(0, Math.min(x12,x22) - Math.max(x11,x21));
-          y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21 + 2.0));
+          y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21-2));
           overlap_area = x_overlap * y_overlap;
           ener += (overlap_area * w_lab2);
           }
