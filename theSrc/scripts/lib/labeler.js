@@ -19,8 +19,8 @@ d3.labeler = function() {
       rej = 0;
 
   // weights
-  var w_len = 0.2, // leader line length
-      w_inter = 10.0, // leader line intersection
+  var w_len = 80, // leader line length
+      w_inter = 5.0, // leader line intersection
       w_lablink = 10.0, // leader line-label intersection
       w_lab2 = 40.0, // label-label overlap
       w_lab_anc = 30.0; // label-anchor overlap
@@ -38,7 +38,7 @@ d3.labeler = function() {
 
       var m = lab.length,
           ener = 0,
-          dx = lab[index].x - anc[index].x,
+          dx = lab[index].x + lab[index].width/2 - anc[index].x,
           dy = anc[index].y - lab[index].y,
           dist = Math.sqrt(dx * dx + dy * dy),
           overlap = true,
@@ -106,15 +106,51 @@ d3.labeler = function() {
   };
 
   initLabBoundaries = function(lab, anc, i) {
+    boundaryBuffer = 5
+    if (lab[i].y - lab[i].height < cy - radius) { //top
+      lab[i].y = cy - radius + lab[i].height + boundaryBuffer;
+    }
+    else if (lab[i].y > cy + radius) { //bot
+      lab[i].y = cy + radius - boundaryBuffer;
+    }
+
+
     asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
     asinangleB = Math.asin((lab[i].y - cy)/radius);
+    investigate = null
+    investigate = 5
+
     //right
-    if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleT)) {
-      lab[i].x = cx + radius*Math.cos(asinangleB) - lab[i].width;
+    if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleT) ||
+        lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleB)) {
+      if (lab[i].y < cy) {
+        lab[i].x = cx + radius*Math.cos(asinangleT) - lab[i].width;
+      }
+      else {
+        lab[i].x = cx + radius*Math.cos(asinangleB) - lab[i].width;
+      }
+      // if (i==investigate) svg.append('rect').attr('x', lab[i].x)
+      //                   .attr('y', lab[i].y - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'yellow')
+      //                   .attr('fill-opacity', 0.1);
     }
     //left
-    else if (lab[i].x < cx - radius*Math.cos(asinangleT)) {
-      lab[i].x = cx - radius*Math.cos(asinangleB);
+    else if (lab[i].x < cx - radius*Math.cos(asinangleT) ||
+             lab[i].x < cx - radius*Math.cos(asinangleB)) {
+     if (lab[i].y < cy) {
+       lab[i].x = cx - radius*Math.cos(asinangleT);
+     }
+     else {
+       lab[i].x = cx - radius*Math.cos(asinangleB);
+     }
+    //  if (i==investigate) svg.append('rect').attr('x', lab[i].x)
+    //                    .attr('y', lab[i].y - lab[i].height)
+    //                    .attr('width', lab[i].width)
+    //                    .attr('height', lab[i].height)
+    //                    .attr('fill', 'blue')
+    //                    .attr('fill-opacity', 0.1);
     }
   }
 
@@ -122,7 +158,7 @@ d3.labeler = function() {
     asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
     asinangleB = Math.asin((lab[i].y - cy)/radius);
     investigate = null
-    // investigate = 26
+    // investigate = 5
 
 
     //right
@@ -134,18 +170,18 @@ d3.labeler = function() {
       else {
         lab[i].x = cx + radius*Math.cos(asinangleB) - lab[i].width;
       }
-      if (i==investigate) svg.append('rect').attr('x', lab[i].x)
-                        .attr('y', lab[i].y - lab[i].height)
-                        .attr('width', lab[i].width)
-                        .attr('height', lab[i].height)
-                        .attr('fill', 'yellow')
-                        .attr('fill-opacity', 0.1);
-      if (i==investigate) svg.append('rect').attr('x', x_old)
-                        .attr('y', lab[i].y - lab[i].height)
-                        .attr('width', lab[i].width)
-                        .attr('height', lab[i].height)
-                        .attr('fill', 'black')
-                        .attr('fill-opacity', 0.1);
+      // if (i==investigate) svg.append('rect').attr('x', lab[i].x)
+      //                   .attr('y', lab[i].y - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'yellow')
+      //                   .attr('fill-opacity', 0.1);
+      // if (i==investigate) svg.append('rect').attr('x', x_old)
+      //                   .attr('y', lab[i].y - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'black')
+      //                   .attr('fill-opacity', 0.1);
 
     }
     //left
@@ -217,6 +253,7 @@ d3.labeler = function() {
       var delta_energy = new_energy - old_energy;
 
       if (random.real(0,1) < Math.exp(-delta_energy / currT)) {
+      // if (delta_energy < 0) {
         acc += 1;
       } else {
         // move back to old coordinates
@@ -279,6 +316,7 @@ d3.labeler = function() {
       var delta_energy = new_energy - old_energy;
 
       if (random.real(0,1) < Math.exp(-delta_energy / currT)) {
+      // if (delta_energy < 0) {
         acc += 1;
         // svg.append('rect').attr('x', lab[i].x)
         //                   .attr('y', lab[i].y - lab[i].height)
