@@ -19,12 +19,12 @@ d3.labeler = function() {
       rej = 0;
 
   // weights
-  var w_len = 80, // leader line length
-      w_inter = 5.0, // leader line intersection
-      w_lablink = 10.0, // leader line-label intersection
-      w_lab2 = 40.0, // label-label overlap
-      w_lab_anc = 30.0; // label-anchor overlap
-      w_orient = 3.0; // orientation bias
+  var w_len = 10.0, // leader line length
+      w_inter = 1.0, // leader line intersection
+      w_lablink = 2.0, // leader line-label intersection
+      w_lab2 = 30.0, // label-label overlap
+      w_lab_anc = 7.0; // label-anchor overlap
+      w_orient = 0.5; // orientation bias
 
   // booleans for user defined functions
   var user_energy = false,
@@ -57,9 +57,9 @@ d3.labeler = function() {
       else { ener += 3 * w_orient; }
 
       var x21 = lab[index].x - lab[index].width/2,
-          y21 = lab[index].y - lab[index].height + 2.0,
+          y21 = lab[index].y - lab[index].height,
           x22 = lab[index].x + lab[index].width/2,
-          y22 = lab[index].y + 2.0;
+          y22 = lab[index].y;
       var x11, x12, y11, y12, x_overlap, y_overlap, overlap_area;
 
       for (var i = 0; i < m; i++) {
@@ -71,10 +71,10 @@ d3.labeler = function() {
           if (overlap) ener += w_inter;
 
           // penalty for label-label overlap
-          x11 = lab[i].x;
-          y11 = lab[i].y - lab[i].height + 2.0;
-          x12 = lab[i].x + lab[i].width;
-          y12 = lab[i].y + 2.0;
+          x11 = lab[i].x - lab[i].width/2;
+          y11 = lab[i].y - lab[i].height;
+          x12 = lab[i].x + lab[i].width/2;
+          y12 = lab[i].y;
           x_overlap = Math.max(0, Math.min(x12,x22) - Math.max(x11,x21));
           y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21));
           overlap_area = x_overlap * y_overlap;
@@ -416,6 +416,7 @@ d3.labeler = function() {
     lab = x;
     for(var i=0; i<lab.length;i++) {
       lab[i].x -= lab[i].width/2;
+      lab[i].y -= 5;
       // svg.append('rect').attr('x', lab[i].x)
       //                   .attr('y', lab[i].y - lab[i].height)
       //                   .attr('width', lab[i].width)

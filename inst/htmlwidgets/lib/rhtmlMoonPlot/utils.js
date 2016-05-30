@@ -297,18 +297,17 @@ calculateSurfaceLabelSizes = function(rawSurfaceNodes, scaleFactor, equalizeFact
 adjustCoreLinks = function(lunar_core_labels, anchor_array) {
   var j, newLinkPt, newPtOnLabelBorder, results;
   newPtOnLabelBorder = function(lab, anc) {
-    var above, aboveMid, below, belowMid, centered, left, p, right;
+    var above, below, centered, left, p, padding, right;
     p = [[lab.x - lab.width / 2, lab.y], [lab.x, lab.y], [lab.x + lab.width / 2, lab.y], [lab.x - lab.width / 2, lab.y - lab.height], [lab.x, lab.y - lab.height], [lab.x + lab.width / 2, lab.y - lab.height], [lab.x - lab.width / 2, lab.y - lab.height / 2], [lab.x + lab.width / 2, lab.y - lab.height / 2]];
+    padding = 8;
     centered = (anc.x > lab.x - lab.width / 2) && (anc.x < lab.x + lab.width / 2);
-    above = anc.y < lab.y - lab.height;
-    below = anc.y > lab.y;
-    aboveMid = anc.y < lab.y - lab.height / 2;
-    belowMid = anc.y > lab.y - lab.height / 2;
-    left = anc.x < lab.x - lab.width / 2;
-    right = anc.x > lab.x + lab.width / 2;
+    above = anc.y < lab.y - lab.height - padding;
+    below = anc.y > lab.y + padding;
+    left = anc.x < lab.x - lab.width / 2 - padding;
+    right = anc.x > lab.x + lab.width / 2 + padding;
     if (centered && above) {
       return p[4];
-    } else if (centered && !above) {
+    } else if (centered && below) {
       return p[1];
     } else if (above && left) {
       return p[3];
@@ -328,7 +327,9 @@ adjustCoreLinks = function(lunar_core_labels, anchor_array) {
   results = [];
   while (j < lunar_core_labels.length) {
     newLinkPt = newPtOnLabelBorder(lunar_core_labels[j], anchor_array[j]);
-    svg.append('line').attr('class', 'core-link').attr('x1', anchor_array[j].x).attr('y1', anchor_array[j].y).attr('x2', newLinkPt[0]).attr('y2', newLinkPt[1]).attr('stroke-width', 0.6).attr('stroke', 'gray');
+    if (newLinkPt != null) {
+      svg.append('line').attr('class', 'core-link').attr('x1', anchor_array[j].x).attr('y1', anchor_array[j].y).attr('x2', newLinkPt[0]).attr('y2', newLinkPt[1]).attr('stroke-width', 0.6).attr('stroke', 'gray');
+    }
     results.push(j++);
   }
   return results;

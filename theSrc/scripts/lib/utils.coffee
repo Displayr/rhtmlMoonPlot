@@ -225,17 +225,16 @@ adjustCoreLinks = (lunar_core_labels, anchor_array) ->
       [lab.x + lab.width/2,     lab.y - lab.height/2]
     ]
 
+    padding = 8
     centered = (anc.x > lab.x - lab.width/2) and (anc.x < lab.x + lab.width/2)
-    above = anc.y < lab.y - lab.height
-    below = anc.y > lab.y
-    aboveMid = anc.y < lab.y - lab.height/2
-    belowMid = anc.y > lab.y - lab.height/2
-    left = anc.x < lab.x - lab.width/2
-    right = anc.x > lab.x + lab.width/2
+    above = anc.y < lab.y - lab.height - padding
+    below = anc.y > lab.y + padding
+    left = anc.x < lab.x - lab.width/2 - padding
+    right = anc.x > lab.x + lab.width/2 + padding
 
     if centered and above
       return p[4]
-    else if centered and not above
+    else if centered and below
       return p[1]
     else if above and left
       return p[3]
@@ -260,12 +259,12 @@ adjustCoreLinks = (lunar_core_labels, anchor_array) ->
     #                     .attr('cy', newLinkPt[1])
     #                     .attr('r', 2)
     #                     .attr('stroke')
-
-    svg.append('line').attr('class', 'core-link')
-                   .attr('x1', anchor_array[j].x)
-                   .attr('y1', anchor_array[j].y)
-                   .attr('x2', newLinkPt[0])
-                   .attr('y2', newLinkPt[1])
-                   .attr('stroke-width', 0.6)
-                   .attr('stroke', 'gray')
+    if newLinkPt?
+      svg.append('line').attr('class', 'core-link')
+                     .attr('x1', anchor_array[j].x)
+                     .attr('y1', anchor_array[j].y)
+                     .attr('x2', newLinkPt[0])
+                     .attr('y2', newLinkPt[1])
+                     .attr('stroke-width', 0.6)
+                     .attr('stroke', 'gray')
     j++

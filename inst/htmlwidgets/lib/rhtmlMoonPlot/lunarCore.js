@@ -63,7 +63,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
     anchor_array.push({
       x: lunar_core_label.x,
       y: lunar_core_label.y,
-      r: 8,
+      r: 5,
       dr: 2
     });
   }
@@ -78,7 +78,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
   d3.selectAll('.moon-circle').moveToFront();
   d3.selectAll('.core-cross').moveToFront();
   d3.selectAll('.surface-label').moveToFront();
-  labeler = d3.labeler().svg(svg).cx(cx).cy(cy).radius(radius).label(lunar_core_labels).anchor(anchor_array).start(1000);
+  labeler = d3.labeler().svg(svg).cx(cx).cy(cy).radius(radius).anchor(anchor_array).label(lunar_core_labels).start(1000);
   n = 0;
   lunar_core_labels_svg.transition().duration(800).attr('x', function(d) {
     return d.x;
