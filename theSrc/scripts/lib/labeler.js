@@ -48,31 +48,41 @@ d3.labeler = function() {
           dist2 = Math.sqrt(dx * dx + dy2 * dy2),
           dist3 = Math.sqrt(dx2 * dx2 + dy3 * dy3),
           dist4 = Math.sqrt(dx3 * dx3 + dy3 * dy3),
+          dist5 = Math.sqrt(dx2 * dx2 + dy2 * dy2),
+          dist8 = Math.sqrt(dx2 * dx2 + dy * dy)
+          dist6 = Math.sqrt(dx3 * dx3 + dy * dy),
+          dist7 = Math.sqrt(dx3 * dx3 + dy2 * dy2),
           overlap = true,
           amount = 0
           theta = 0;
 
       // penalty for length of leader line
       minDist = Math.min(dist, dist2, dist3, dist4)
+      secondaryPerfectPenalty = 1.2;
+      tertiaryPerfectPenalty = 4;
       switch(minDist) {
         case dist:
           ener += dist * w_len;
           break;
         case dist2:
-          ener += dist2 * w_len;
+          ener += dist2 * w_len * secondaryPerfectPenalty;
           break;
         case dist3:
-          ener += dist3 * w_len * 3;
+          ener += dist3 * w_len * tertiaryPerfectPenalty;
           break;
         case dist4:
-          ener += dist4 * w_len * 3;
+          ener += dist4 * w_len * tertiaryPerfectPenalty;
+          break;
+        case dist5:
+          ener += dist5 * w_len * tertiaryPerfectPenalty;
+          break;
+        case dist6:
+          ener += dist6 * w_len * tertiaryPerfectPenalty;
+          break;
+        case dist7:
+          ener += dist7 * w_len * tertiaryPerfectPenalty;
           break;
       }
-      // if (dist < dist2) {  // closer to perfect
-      //   ener += dist * w_len;
-      // } else if (dist2 < dist) { // closer to second perfect
-      //   ener += dist2 * w_len;
-      // }
 
       // label orientation bias
       // dx /= dist;
@@ -82,9 +92,9 @@ d3.labeler = function() {
       // else if (dx < 0 && dy < 0) { ener += 2 * w_orient; }
       // else { ener += 3 * w_orient; }
 
-      var x21 = lab[index].x - lab[index].width/2,
+      var x21 = lab[index].x,
           y21 = lab[index].y - lab[index].height,
-          x22 = lab[index].x + lab[index].width/2,
+          x22 = lab[index].x + lab[index].width,
           y22 = lab[index].y;
       var x11, x12, y11, y12, x_overlap, y_overlap, overlap_area;
 
@@ -97,9 +107,9 @@ d3.labeler = function() {
           if (overlap) ener += w_inter;
 
           // penalty for label-label overlap
-          x11 = lab[i].x - lab[i].width/2;
+          x11 = lab[i].x;
           y11 = lab[i].y - lab[i].height;
-          x12 = lab[i].x + lab[i].width/2;
+          x12 = lab[i].x + lab[i].width;
           y12 = lab[i].y;
           x_overlap = Math.max(0, Math.min(x12,x22) - Math.max(x11,x21));
           y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21));
