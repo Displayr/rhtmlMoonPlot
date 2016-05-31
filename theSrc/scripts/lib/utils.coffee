@@ -137,14 +137,17 @@ adjustSurfaceLabelLength = (surface_labels, view_height, view_width) ->
 # Detect collisions with lunar core labels and moon surface
 detectCoreLabelBoundaryCollision = (core_label, radius, cx, cy) ->
   core_label_bb = core_label.getBBox()
-  y_right = core_label_bb.y
+  y_rightB = core_label_bb.y
+  y_rightT = core_label_bb.y + core_label_bb.height
   x_right = core_label_bb.x + core_label_bb.width
 
   # Calculate circle boundary using parametric eq for circle
-  angle = Math.asin((y_right - cy)/radius)
-  circle_boundary_right = cx + radius*Math.cos(angle)
+  angleB = Math.asin((y_rightB - cy)/radius)
+  angleT = Math.asin((y_rightT - cy)/radius)
+  circle_boundary_rightB = cx + radius*Math.cos(angleB)
+  circle_boundary_rightT = cx + radius*Math.cos(angleT)
 
-  circle_boundary_right < x_right
+  circle_boundary_rightB < x_right or circle_boundary_rightT < x_right
 
 coreLabelTooLong = (core_label, radius) ->
   core_label.getBBox().width > radius

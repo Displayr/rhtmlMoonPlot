@@ -175,13 +175,16 @@ adjustSurfaceLabelLength = function(surface_labels, view_height, view_width) {
 };
 
 detectCoreLabelBoundaryCollision = function(core_label, radius, cx, cy) {
-  var angle, circle_boundary_right, core_label_bb, x_right, y_right;
+  var angleB, angleT, circle_boundary_rightB, circle_boundary_rightT, core_label_bb, x_right, y_rightB, y_rightT;
   core_label_bb = core_label.getBBox();
-  y_right = core_label_bb.y;
+  y_rightB = core_label_bb.y;
+  y_rightT = core_label_bb.y + core_label_bb.height;
   x_right = core_label_bb.x + core_label_bb.width;
-  angle = Math.asin((y_right - cy) / radius);
-  circle_boundary_right = cx + radius * Math.cos(angle);
-  return circle_boundary_right < x_right;
+  angleB = Math.asin((y_rightB - cy) / radius);
+  angleT = Math.asin((y_rightT - cy) / radius);
+  circle_boundary_rightB = cx + radius * Math.cos(angleB);
+  circle_boundary_rightT = cx + radius * Math.cos(angleT);
+  return circle_boundary_rightB < x_right || circle_boundary_rightT < x_right;
 };
 
 coreLabelTooLong = function(core_label, radius) {
