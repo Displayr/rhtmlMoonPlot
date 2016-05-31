@@ -291,7 +291,7 @@ calculateSurfaceLabelSizes = function(rawSurfaceNodes, scaleFactor, equalizeFact
   });
 };
 
-adjustCoreLinks = function(lunar_core_labels, anchor_array) {
+adjustCoreLinks = function(lunar_core_labels, anchor_array, link_width) {
   var j, newLinkPt, newPtOnLabelBorder, results;
   newPtOnLabelBorder = function(lab, anc) {
     var above, aboveMid, abovePadded, ambiguityFactor, ancNearby, below, belowMid, belowPadded, centered, k, left, leftPadded, len, p, padB, padL, padR, padT, paddedCenter, padding, right, rightPadded;
@@ -366,7 +366,7 @@ adjustCoreLinks = function(lunar_core_labels, anchor_array) {
   while (j < lunar_core_labels.length) {
     newLinkPt = newPtOnLabelBorder(lunar_core_labels[j], anchor_array[j]);
     if (newLinkPt != null) {
-      svg.append('line').attr('class', 'core-link').attr('x1', anchor_array[j].x).attr('y1', anchor_array[j].y).attr('x2', newLinkPt[0]).attr('y2', newLinkPt[1]).attr('stroke-width', 0.6).attr('stroke', 'gray');
+      svg.append('line').attr('class', 'core-link').attr('x1', anchor_array[j].x).attr('y1', anchor_array[j].y).attr('x2', newLinkPt[0]).attr('y2', newLinkPt[1]).attr('stroke-width', link_width).attr('stroke', 'gray');
     }
     results.push(j++);
   }

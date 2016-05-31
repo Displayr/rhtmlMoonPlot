@@ -15,11 +15,12 @@ class MoonPlot
     @textColor = '#333333'
     @circleColor = '#042a4b'
     @crossColor = 'grey'
+    @linkWidth = 1
 
     drawCircle(@data, svg, xCenter, yCenter, radius, @height, @width, @circleColor, @crossColor, @textColor)
 
     drawLunarCoreLabels(@data.lunarCoreLabels, svg,
-                        xCenter,yCenter,radius, @textColor)
+                        xCenter,yCenter,radius, @textColor, @linkWidth)
     drawLunarSurfaceLabels(@data.lunarSurfaceLabels,svg,
                           xCenter,yCenter,radius,@height,@width, @textColor, 14)
 

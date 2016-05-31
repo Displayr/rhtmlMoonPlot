@@ -3,7 +3,8 @@ drawLunarCoreLabels = (lunarCoreLabels,
                        cx,
                        cy,
                        radius,
-                       textColor) ->
+                       textColor,
+                       link_width) ->
 
   drawLabels = (label_data, drag) ->
     labels = svg.selectAll('.core-label')
@@ -36,7 +37,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
                    .attr('y1', (d) -> d.y)
                    .attr('x2', (d) -> d.x)
                    .attr('y2', (d) -> d.y)
-                   .attr('stroke-width', 0.6)
+                   .attr('stroke-width', link_width)
                    .attr('stroke', 'gray')
 
   lunar_core_labels_svg = []
@@ -130,7 +131,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
   endAll = () ->
     svg.selectAll('.init-core-link').remove()
     # adjustCoreLabelLength(lunar_core_labels_svg[0], radius, cx, cy)
-    adjustCoreLinks(lunar_core_labels, anchor_array)
+    adjustCoreLinks(lunar_core_labels, anchor_array, link_width)
 
   lunar_core_links_svg.transition()
     .duration(800)

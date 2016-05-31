@@ -16,8 +16,9 @@ MoonPlot = (function() {
     this.textColor = '#333333';
     this.circleColor = '#042a4b';
     this.crossColor = 'grey';
+    this.linkWidth = 1;
     drawCircle(this.data, svg, xCenter, yCenter, radius, this.height, this.width, this.circleColor, this.crossColor, this.textColor);
-    drawLunarCoreLabels(this.data.lunarCoreLabels, svg, xCenter, yCenter, radius, this.textColor);
+    drawLunarCoreLabels(this.data.lunarCoreLabels, svg, xCenter, yCenter, radius, this.textColor, this.linkWidth);
     return drawLunarSurfaceLabels(this.data.lunarSurfaceLabels, svg, xCenter, yCenter, radius, this.height, this.width, this.textColor, 14);
   };
 

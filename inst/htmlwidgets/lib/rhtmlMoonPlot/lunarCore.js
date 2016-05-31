@@ -1,6 +1,6 @@
 var drawLunarCoreLabels;
 
-drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) {
+drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor, link_width) {
   var anchor, anchor_array, drag, drawLabels, drawLinks, endAll, i, j, k, l, label, labeler, len, len1, len2, lunar_core_label, lunar_core_labels, lunar_core_labels_svg, lunar_core_links_svg, n, x, y;
   drawLabels = function(label_data, drag) {
     var labels;
@@ -30,7 +30,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
       return d.x;
     }).attr('y2', function(d) {
       return d.y;
-    }).attr('stroke-width', 0.6).attr('stroke', 'gray');
+    }).attr('stroke-width', link_width).attr('stroke', 'gray');
   };
   lunar_core_labels_svg = [];
   lunar_core_labels = [];
@@ -94,7 +94,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor) 
   });
   endAll = function() {
     svg.selectAll('.init-core-link').remove();
-    return adjustCoreLinks(lunar_core_labels, anchor_array);
+    return adjustCoreLinks(lunar_core_labels, anchor_array, link_width);
   };
   return lunar_core_links_svg.transition().duration(800).attr('x2', function(d) {
     return d.x;

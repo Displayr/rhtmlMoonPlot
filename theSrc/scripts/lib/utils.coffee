@@ -211,7 +211,7 @@ calculateSurfaceLabelSizes = (rawSurfaceNodes, scaleFactor, equalizeFactor) ->
   _.map lunarSurfaceSizes, (s) -> scaleFactor * Math.pow((s / maxSize), equalizeFactor)
 
 
-adjustCoreLinks = (lunar_core_labels, anchor_array) ->
+adjustCoreLinks = (lunar_core_labels, anchor_array, link_width) ->
   newPtOnLabelBorder = (lab, anc) ->
     p = [
       [lab.x - lab.width/2,     lab.y]                   # botL - 0
@@ -302,6 +302,6 @@ adjustCoreLinks = (lunar_core_labels, anchor_array) ->
                      .attr('y1', anchor_array[j].y)
                      .attr('x2', newLinkPt[0])
                      .attr('y2', newLinkPt[1])
-                     .attr('stroke-width', 0.6)
+                     .attr('stroke-width', link_width)
                      .attr('stroke', 'gray')
     j++
