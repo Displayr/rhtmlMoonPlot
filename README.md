@@ -55,7 +55,5 @@ This should load a browser window, where a list of links to examples will be dis
 
 
 # To do
-- Surface ellipsis top rotation boundary?
-- Add penalty for
 - Text colouring
 - Add regression tests in Q

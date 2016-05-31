@@ -140,13 +140,35 @@ calculateLabelRotation = function(angle_rad) {
 };
 
 detectViewportCollision = function(surface_label, viewport_height, viewport_width) {
-  var box;
+  var box, collideB, collideL, collideR, collideT, ctm, getScreenCoords, transformedCoords;
+  getScreenCoords = function(x, y, ctm) {
+    var xn, yn;
+    xn = ctm.e + x * ctm.a + y * ctm.c;
+    yn = ctm.f + x * ctm.b + y * ctm.d;
+    return {
+      x: xn,
+      y: yn
+    };
+  };
+  if (d3.select(surface_label)[0][0].textContent === "") {
+    return false;
+  }
   box = surface_label.getBBox();
-  box.right = box.x + box.width;
-  box.left = box.x;
-  box.top = box.y;
-  box.bottom = box.y + box.width;
-  return box.left < 0 || box.bottom > viewport_height || box.right > viewport_width || box.top < 0;
+  ctm = surface_label.getCTM();
+  transformedCoords = getScreenCoords(box.x, box.y, ctm);
+  box.right = transformedCoords.x + box.width;
+  box.left = transformedCoords.x;
+  box.top = transformedCoords.y;
+  box.bottom = transformedCoords.y + box.height;
+  collideL = box.left < 0;
+  collideR = box.right > viewport_width;
+  collideT = false;
+  collideB = false;
+  if (box.x < viewport_width / 2) {
+    collideT = box.top < 0;
+    collideB = box.bottom > viewport_height;
+  }
+  return collideL || collideR || collideT || collideB;
 };
 
 condenseSurfaceLabel = function(surface_label, viewport_height, viewport_width) {

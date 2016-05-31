@@ -111,12 +111,31 @@ calculateLabelRotation = (angle_rad) ->
   angle_rad / 2 / Math.PI * 360
 
 detectViewportCollision = (surface_label, viewport_height, viewport_width) ->
+  getScreenCoords = (x, y, ctm) ->
+    xn = ctm.e + x*ctm.a + y*ctm.c
+    yn = ctm.f + x*ctm.b + y*ctm.d
+    { x: xn, y: yn }
+
+  # Pass if there is no more text to condense
+  if d3.select(surface_label)[0][0].textContent == ""
+    return false
+
   box = surface_label.getBBox()
-  box.right = box.x + box.width
-  box.left = box.x
-  box.top = box.y
-  box.bottom = box.y + box.width
-  box.left < 0 or box.bottom > viewport_height or box.right > viewport_width or box.top < 0
+  ctm = surface_label.getCTM()
+  transformedCoords = getScreenCoords box.x, box.y, ctm
+  box.right = transformedCoords.x + box.width
+  box.left = transformedCoords.x
+  box.top = transformedCoords.y
+  box.bottom = transformedCoords.y + box.height
+
+  collideL = box.left < 0
+  collideR = box.right > viewport_width
+  collideT = false
+  collideB = false
+  if box.x < viewport_width/2 # only need to condense text on left half
+    collideT = box.top < 0
+    collideB = box.bottom > viewport_height
+  collideL or collideR or collideT or collideB
 
 condenseSurfaceLabel = (surface_label, viewport_height, viewport_width) ->
   # Throw away chars one at a time and check if still collides w/viewport
