@@ -117,7 +117,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('transform', 'rotate(' + (180 - label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                   .attr('text-anchor', 'end')
                   .attr('cursor', 'all-scroll')
-                  .style('font-family', 'Arial')
+                  .style('font-family', 'Arial Narrow')
                   .attr('title', label.name)
                   .text label.name
                   .call(drag)
@@ -133,7 +133,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('transform', 'rotate(' + (-label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                   .attr('text-anchor', 'start')
                   .attr('cursor', 'all-scroll')
-                  .style('font-family', 'Arial')
+                  .style('font-family', 'Arial Narrow')
                   .attr('title', label.name)
                   .text label.name
                   .call(drag)
