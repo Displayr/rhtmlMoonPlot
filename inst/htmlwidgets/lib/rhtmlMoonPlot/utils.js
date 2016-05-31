@@ -294,15 +294,17 @@ calculateSurfaceLabelSizes = function(rawSurfaceNodes, scaleFactor, equalizeFact
 adjustCoreLinks = function(lunar_core_labels, anchor_array) {
   var j, newLinkPt, newPtOnLabelBorder, results;
   newPtOnLabelBorder = function(lab, anc) {
-    var above, abovePadded, below, belowPadded, centered, left, leftPadded, p, paddedCenter, padding, right, rightPadded;
+    var above, aboveMid, abovePadded, ambiguityFactor, ancNearby, below, belowMid, belowPadded, centered, k, left, leftPadded, len, p, padB, padL, padR, padT, paddedCenter, padding, right, rightPadded;
     p = [[lab.x - lab.width / 2, lab.y], [lab.x, lab.y], [lab.x + lab.width / 2, lab.y], [lab.x - lab.width / 2, lab.y - lab.height + 2], [lab.x, lab.y - lab.height + 2], [lab.x + lab.width / 2, lab.y - lab.height + 2], [lab.x - lab.width / 2, lab.y - lab.height / 2], [lab.x + lab.width / 2, lab.y - lab.height / 2]];
     padding = 10;
     centered = (anc.x > lab.x - lab.width / 2) && (anc.x < lab.x + lab.width / 2);
     paddedCenter = (anc.x > lab.x - lab.width / 2 - padding) && (anc.x < lab.x + lab.width / 2 + padding);
     abovePadded = anc.y < lab.y - lab.height - padding;
     above = anc.y < lab.y - lab.height;
+    aboveMid = anc.y < lab.y - lab.height / 2;
     belowPadded = anc.y > lab.y + padding;
     below = anc.y > lab.y;
+    belowMid = anc.y >= lab.y - lab.height / 2;
     left = anc.x < lab.x - lab.width / 2;
     right = anc.x > lab.x + lab.width / 2;
     leftPadded = anc.x < lab.x - lab.width / 2 - padding;
@@ -323,6 +325,40 @@ adjustCoreLinks = function(lunar_core_labels, anchor_array) {
       return p[6];
     } else if (rightPadded) {
       return p[7];
+    } else {
+      ambiguityFactor = 15;
+      padL = p[3][0] - ambiguityFactor;
+      padR = p[5][0] + ambiguityFactor;
+      padT = p[3][1] - ambiguityFactor;
+      padB = p[2][1] + ambiguityFactor;
+      ancNearby = 0;
+      for (k = 0, len = anchor_array.length; k < len; k++) {
+        anc = anchor_array[k];
+        if ((anc.x > padL && anc.x < padR) && (anc.y > padT && anc.y < padB)) {
+          ancNearby++;
+        }
+      }
+      if (ancNearby > 1) {
+        if (!left && !right && !above && !below) {
+          return p[1];
+        } else if (centered && above) {
+          return p[4];
+        } else if (centered && below) {
+          return p[1];
+        } else if (left && above) {
+          return p[3];
+        } else if (left && below) {
+          return p[0];
+        } else if (right && above) {
+          return p[5];
+        } else if (right && below) {
+          return p[2];
+        } else if (left) {
+          return p[6];
+        } else if (right) {
+          return p[7];
+        }
+      }
     }
   };
   j = 0;

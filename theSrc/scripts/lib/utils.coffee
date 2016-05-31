@@ -214,14 +214,14 @@ calculateSurfaceLabelSizes = (rawSurfaceNodes, scaleFactor, equalizeFactor) ->
 adjustCoreLinks = (lunar_core_labels, anchor_array) ->
   newPtOnLabelBorder = (lab, anc) ->
     p = [
-      [lab.x - lab.width/2,     lab.y]
-      [lab.x,                   lab.y]
-      [lab.x + lab.width/2,     lab.y]
-      [lab.x - lab.width/2,     lab.y - lab.height + 2]
-      [lab.x,                   lab.y - lab.height + 2]
-      [lab.x + lab.width/2,     lab.y - lab.height + 2]
-      [lab.x - lab.width/2,     lab.y - lab.height/2]
-      [lab.x + lab.width/2,     lab.y - lab.height/2]
+      [lab.x - lab.width/2,     lab.y]                   # botL - 0
+      [lab.x,                   lab.y]                   # botC - 1
+      [lab.x + lab.width/2,     lab.y]                   # botR - 2
+      [lab.x - lab.width/2,     lab.y - lab.height + 2]  # topL - 3
+      [lab.x,                   lab.y - lab.height + 2]  # topC - 4
+      [lab.x + lab.width/2,     lab.y - lab.height + 2]  # topR - 5
+      [lab.x - lab.width/2,     lab.y - lab.height/2]    # midL - 6
+      [lab.x + lab.width/2,     lab.y - lab.height/2]    # midR - 7
     ]
 
     padding = 10
@@ -229,8 +229,10 @@ adjustCoreLinks = (lunar_core_labels, anchor_array) ->
     paddedCenter = (anc.x > lab.x - lab.width/2 - padding) and (anc.x < lab.x + lab.width/2 + padding)
     abovePadded = anc.y < lab.y - lab.height - padding
     above = anc.y < lab.y - lab.height
+    aboveMid = anc.y < lab.y - lab.height/2
     belowPadded = anc.y > lab.y + padding
     below = anc.y > lab.y
+    belowMid = anc.y >= lab.y - lab.height/2
     left = anc.x < lab.x - lab.width/2
     right = anc.x > lab.x + lab.width/2
     leftPadded = anc.x < lab.x - lab.width/2 - padding
@@ -252,6 +254,39 @@ adjustCoreLinks = (lunar_core_labels, anchor_array) ->
       return p[6]
     else if rightPadded
       return p[7]
+    else
+      # Draw the link if there are any anc nearby
+      ambiguityFactor = 15
+      padL = p[3][0] - ambiguityFactor
+      padR = p[5][0] + ambiguityFactor
+      padT = p[3][1] - ambiguityFactor
+      padB = p[2][1] + ambiguityFactor
+      ancNearby = 0
+      for anc in anchor_array
+        if (anc.x > padL and anc.x < padR) and (anc.y > padT and anc.y < padB)
+          ancNearby++
+      if ancNearby > 1
+        if not left and not right and not above and not below
+          return p[1]
+        else if centered and above
+          return p[4]
+        else if centered and below
+          return p[1]
+        else if left and above
+          return p[3]
+        else if left and below
+          return p[0]
+        else if right and above
+          return p[5]
+        else if right and below
+          return p[2]
+        else if left
+          return p[6]
+        else if right
+          return p[7]
+
+
+
 
   j = 0
   while j < lunar_core_labels.length
