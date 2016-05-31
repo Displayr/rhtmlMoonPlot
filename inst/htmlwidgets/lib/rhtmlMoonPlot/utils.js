@@ -1,4 +1,4 @@
-var adjustCoreLabelLength, adjustCoreLinks, adjustSurfaceLabelLength, calculateLabelRotation, calculateSurfaceLabelSizes, calculateSurfaceNodePositions, cartesianCoord, cartesianCoords, condenseCoreLabel, condenseSurfaceLabel, coreLabelTooLong, detectCoreLabelBoundaryCollision, detectSurfaceCollisions, detectViewportCollision, distanceFromCenter, extendFullLabelName, failsCoreLabelBoundaryRules, moveSurfaceCollsions, normalizeCoreNodes, polarCoord, polarCoords, positionAlongLine;
+var adjustCoreLabelLength, adjustCoreLinks, adjustSurfaceLabelLength, calculateLabelRotation, calculateSurfaceLabelSizes, calculateSurfaceNodePositions, cartesianCoord, cartesianCoords, condenseCoreLabel, condenseSurfaceLabel, detectCoreLabelBoundaryCollision, detectSurfaceCollisions, detectViewportCollision, distanceFromCenter, extendFullLabelName, failsCoreLabelBoundaryRules, moveSurfaceCollsions, normalizeCoreNodes, polarCoord, polarCoords, positionAlongLine;
 
 detectSurfaceCollisions = function(polar_coords, length_of_line) {
   var collisions, error_allowed, i, j, p1, p1l, p1r, p2, p2l, p2r;
@@ -209,12 +209,8 @@ detectCoreLabelBoundaryCollision = function(core_label, radius, cx, cy) {
   return circle_boundary_rightB < x_right || circle_boundary_rightT < x_right;
 };
 
-coreLabelTooLong = function(core_label, radius) {
-  return core_label.getBBox().width > radius;
-};
-
 failsCoreLabelBoundaryRules = function(core_label, radius, cx, cy) {
-  return detectCoreLabelBoundaryCollision(core_label, radius, cx, cy) || coreLabelTooLong(core_label, radius);
+  return detectCoreLabelBoundaryCollision(core_label, radius, cx, cy);
 };
 
 condenseCoreLabel = function(core_label, radius, cx, cy) {

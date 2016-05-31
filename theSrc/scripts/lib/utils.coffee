@@ -168,12 +168,8 @@ detectCoreLabelBoundaryCollision = (core_label, radius, cx, cy) ->
 
   circle_boundary_rightB < x_right or circle_boundary_rightT < x_right
 
-coreLabelTooLong = (core_label, radius) ->
-  core_label.getBBox().width > radius
-
 failsCoreLabelBoundaryRules = (core_label, radius, cx, cy) ->
-  detectCoreLabelBoundaryCollision(core_label, radius, cx, cy) or
-    coreLabelTooLong(core_label, radius)
+  detectCoreLabelBoundaryCollision(core_label, radius, cx, cy)
 
 condenseCoreLabel = (core_label, radius, cx, cy) ->
   while failsCoreLabelBoundaryRules(core_label, radius, cx, cy)
