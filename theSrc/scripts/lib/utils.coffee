@@ -256,7 +256,7 @@ adjustCoreLinks = (lunar_core_labels, anchor_array) ->
       return p[7]
     else
       # Draw the link if there are any anc nearby
-      ambiguityFactor = 15
+      ambiguityFactor = 10
       padL = p[3][0] - ambiguityFactor
       padR = p[5][0] + ambiguityFactor
       padT = p[3][1] - ambiguityFactor
@@ -284,8 +284,6 @@ adjustCoreLinks = (lunar_core_labels, anchor_array) ->
           return p[6]
         else if right
           return p[7]
-
-
 
 
   j = 0

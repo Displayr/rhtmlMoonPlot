@@ -326,7 +326,7 @@ adjustCoreLinks = function(lunar_core_labels, anchor_array) {
     } else if (rightPadded) {
       return p[7];
     } else {
-      ambiguityFactor = 15;
+      ambiguityFactor = 10;
       padL = p[3][0] - ambiguityFactor;
       padR = p[5][0] + ambiguityFactor;
       padT = p[3][1] - ambiguityFactor;
