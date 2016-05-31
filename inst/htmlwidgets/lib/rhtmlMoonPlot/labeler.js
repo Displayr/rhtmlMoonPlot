@@ -22,8 +22,8 @@ d3.labeler = function() {
   var w_len = 5.0, // leader line length
       w_inter = 1.0, // leader line intersection
       w_lablink = 2.0, // leader line-label intersection
-      w_lab2 = 10.0, // label-label overlap
-      w_lab_anc = 6.0; // label-anchor overlap
+      w_lab2 = 12.0, // label-label overlap
+      w_lab_anc = 8; // label-anchor overlap
       w_orient = 0.5; // orientation bias
 
   // booleans for user defined functions
@@ -39,28 +39,48 @@ d3.labeler = function() {
       var m = lab.length,
           ener = 0,
           dx = lab[index].x + lab[index].width/2 - anc[index].x,
+          dx2 = lab[index].x - anc[index].x - 4,
+          dx3 = lab[index].x + lab[index].width + 4 - anc[index].x,
           dy = anc[index].y - lab[index].y,
-          dy2 = anc[index].y - (lab[index].y - lab[index].height),
+          dy2 = anc[index].y - (lab[index].y - lab[index].height - 2),
+          dy3 = anc[index].y - (lab[index].y - lab[index].height/2),
           dist = Math.sqrt(dx * dx + dy * dy),
           dist2 = Math.sqrt(dx * dx + dy2 * dy2),
+          dist3 = Math.sqrt(dx2 * dx2 + dy3 * dy3),
+          dist4 = Math.sqrt(dx3 * dx3 + dy3 * dy3),
           overlap = true,
           amount = 0
           theta = 0;
 
       // penalty for length of leader line
-      if (dist < dist2) {
-        ener += dist * w_len;
-      } else if (dist2 < dist) {
-        ener += dist2 * w_len;
+      minDist = Math.min(dist, dist2, dist3, dist4)
+      switch(minDist) {
+        case dist:
+          ener += dist * w_len;
+          break;
+        case dist2:
+          ener += dist2 * w_len;
+          break;
+        case dist3:
+          ener += dist3 * w_len * 3;
+          break;
+        case dist4:
+          ener += dist4 * w_len * 3;
+          break;
       }
+      // if (dist < dist2) {  // closer to perfect
+      //   ener += dist * w_len;
+      // } else if (dist2 < dist) { // closer to second perfect
+      //   ener += dist2 * w_len;
+      // }
 
       // label orientation bias
-      dx /= dist;
-      dy /= dist;
-      if (dx > 0 && dy > 0) { ener += 0 * w_orient; }
-      else if (dx < 0 && dy > 0) { ener += 1 * w_orient; }
-      else if (dx < 0 && dy < 0) { ener += 2 * w_orient; }
-      else { ener += 3 * w_orient; }
+      // dx /= dist;
+      // dy /= dist;
+      // if (dx > 0 && dy > 0) { ener += 0 * w_orient; }
+      // else if (dx < 0 && dy > 0) { ener += 1 * w_orient; }
+      // else if (dx < 0 && dy < 0) { ener += 2 * w_orient; }
+      // else { ener += 3 * w_orient; }
 
       var x21 = lab[index].x - lab[index].width/2,
           y21 = lab[index].y - lab[index].height,
@@ -82,7 +102,7 @@ d3.labeler = function() {
           x12 = lab[i].x + lab[i].width/2;
           y12 = lab[i].y;
           x_overlap = Math.max(0, Math.min(x12,x22) - Math.max(x11,x21));
-          y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21-2));
+          y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21));
           overlap_area = x_overlap * y_overlap;
           ener += (overlap_area * w_lab2);
           }
