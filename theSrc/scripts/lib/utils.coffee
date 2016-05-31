@@ -138,7 +138,7 @@ adjustSurfaceLabelLength = (surface_labels, view_height, view_width) ->
 detectCoreLabelBoundaryCollision = (core_label, radius, cx, cy) ->
   core_label_bb = core_label.getBBox()
   y_rightB = core_label_bb.y
-  y_rightT = core_label_bb.y + core_label_bb.height
+  y_rightT = core_label_bb.y + core_label_bb.height/2
   x_right = core_label_bb.x + core_label_bb.width
 
   # Calculate circle boundary using parametric eq for circle

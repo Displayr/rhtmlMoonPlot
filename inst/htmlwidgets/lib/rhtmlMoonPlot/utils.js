@@ -178,7 +178,7 @@ detectCoreLabelBoundaryCollision = function(core_label, radius, cx, cy) {
   var angleB, angleT, circle_boundary_rightB, circle_boundary_rightT, core_label_bb, x_right, y_rightB, y_rightT;
   core_label_bb = core_label.getBBox();
   y_rightB = core_label_bb.y;
-  y_rightT = core_label_bb.y + core_label_bb.height;
+  y_rightT = core_label_bb.y + core_label_bb.height / 2;
   x_right = core_label_bb.x + core_label_bb.width;
   angleB = Math.asin((y_rightB - cy) / radius);
   angleT = Math.asin((y_rightT - cy) / radius);
