@@ -8,4 +8,4 @@ Depends:
     R (>= 3.2.2)
 License: MIT
 LazyData: true
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 5.0.1
