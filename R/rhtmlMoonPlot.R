@@ -4,7 +4,7 @@
 #'
 #' @author Po Liu <pliu0771@uni.sydney.edu>
 #'
-#' @source https://github.com/NumbersInternational/rhtmlMoonPlot
+#' @source https://github.com/Displayr/rhtmlMoonPlot
 #'
 #' @param coreNodes Coordinates of nodes in the center of the moon
 #' @param surfaceNodes Coordinates of nodes outside of the moon
