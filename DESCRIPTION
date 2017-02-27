@@ -1,11 +1,11 @@
 Package: rhtmlMoonPlot
 Title: Draw a MoonPlot from a correspondence analysis
 Version: 1.0
-Date: 2016-05-03
-Authors@R: person("Po", "Liu", email = "pliu0771@uni.sydney.edu.au", role = c("aut", "cre"))
+Author: Displayr <opensource@displayr.com>
+Maintainer: Displayr <opensource@displayr.com>
 Description: Drawing MoonPlots from the results of a correspondence analysis.
 Depends:
     R (>= 3.2.2)
-License: MIT
+License: GPL-3
 LazyData: true
 RoxygenNote: 5.0.1
