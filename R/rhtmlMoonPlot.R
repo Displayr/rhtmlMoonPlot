@@ -2,7 +2,7 @@
 #'
 #' Uses correspondence analysis to create a Moon Plot
 #'
-#' @author Po Liu <pliu0771@uni.sydney.edu>
+#' @author Po Liu <po.liu@displayr.com>
 #'
 #' @source https://github.com/Displayr/rhtmlMoonPlot
 #'

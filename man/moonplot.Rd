@@ -4,7 +4,7 @@
 \alias{moonplot}
 \title{rhtmlMoonPlot}
 \source{
-https://github.com/NumbersInternational/rhtmlMoonPlot
+https://github.com/Displayr/rhtmlMoonPlot
 }
 \usage{
 moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
@@ -23,6 +23,5 @@ moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
 Uses correspondence analysis to create a Moon Plot
 }
 \author{
-Po Liu <pliu0771@uni.sydney.edu>
+Po Liu <po.liu@displayr.com>
 }
-
