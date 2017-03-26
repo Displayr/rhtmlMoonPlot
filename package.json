@@ -44,7 +44,9 @@
   },
   "dependencies": {
     "d3-extended": "^1.2.10",
+    "fobject": "0.0.4",
     "lodash": "^4.6.1",
-    "random-js": "^1.0.8"
+    "random-js": "^1.0.8",
+    "vinyl-fs": "^2.4.4"
   }
 }
