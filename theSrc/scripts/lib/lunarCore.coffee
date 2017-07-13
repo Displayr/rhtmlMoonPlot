@@ -28,6 +28,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
 
 
   drawLinks = (label_data) ->
+    d3.selectAll('.init-core-link').remove()
     svg.append('g').selectAll('.init-core-link')
                    .data(label_data)
                    .enter()
@@ -89,6 +90,7 @@ drawLunarCoreLabels = (lunarCoreLabels,
       })
 
   # Lay the anchor
+  d3.selectAll('.core-anchor').remove()
   for anchor in anchor_array
     d3.select('svg').append('circle')
                     .attr('stroke-width', 3)
