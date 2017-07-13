@@ -2,6 +2,7 @@ class MoonPlot
   constructor: (@width, @height) ->
 
   draw: (@data, el) ->
+    d3.selectAll('.moonplot-container').remove()
     svg = d3.select(el)
             .append('svg')
             .attr('width', @width)

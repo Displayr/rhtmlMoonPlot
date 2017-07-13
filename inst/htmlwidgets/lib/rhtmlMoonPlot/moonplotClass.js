@@ -9,6 +9,7 @@ MoonPlot = (function() {
   MoonPlot.prototype.draw = function(data, el) {
     var radius, svg, xCenter, yCenter;
     this.data = data;
+    d3.selectAll('.moonplot-container').remove();
     svg = d3.select(el).append('svg').attr('width', this.width).attr('height', this.height).attr('class', 'moonplot-container');
     xCenter = this.width / 2;
     yCenter = this.height / 2;

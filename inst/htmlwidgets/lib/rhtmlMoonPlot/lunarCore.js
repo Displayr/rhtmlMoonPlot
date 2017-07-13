@@ -22,6 +22,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor, 
     return svg.selectAll('.core-label');
   };
   drawLinks = function(label_data) {
+    d3.selectAll('.init-core-link').remove();
     return svg.append('g').selectAll('.init-core-link').data(label_data).enter().append('line').attr('class', 'init-core-link').attr('x1', function(d) {
       return d.x;
     }).attr('y1', function(d) {
@@ -67,6 +68,7 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor, 
       dr: 2
     });
   }
+  d3.selectAll('.core-anchor').remove();
   for (l = 0, len2 = anchor_array.length; l < len2; l++) {
     anchor = anchor_array[l];
     d3.select('svg').append('circle').attr('stroke-width', 3).attr('class', 'core-anchor').attr('fill', 'black').attr('cx', anchor.x).attr('cy', anchor.y).attr('r', anchor.dr);

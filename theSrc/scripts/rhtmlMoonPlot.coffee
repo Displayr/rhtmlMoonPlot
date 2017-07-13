@@ -4,19 +4,20 @@ HTMLWidgets.widget
   name: 'rhtmlMoonPlot'
   type: 'output'
   initialize: (el, width, height) ->
-    console.log 'Initialized'
-    console.log "Given width #{width}"
-    console.log "Given height #{height}"
+    console.log 'rhtmlMoonPlot: Initialized'
+    console.log "rhtmlMoonPlot: Given width #{width}"
+    console.log "rhtmlMoonPlot: Given height #{height}"
 
     return new MoonPlot(width, height)
 
   resize: (el, width, height, instance) ->
-    console.log 'Resized'
+    console.log 'rhtmlMoonPlot: Resized'
     instance.redraw(width, height, el)
     return instance
 
   renderValue: (el, params, instance) ->
-    console.log 'RenderValue called'
+    console.log 'rhtmlMoonPlot: RenderValue called'
+#    console.log params
 
     # setting the test data, for debugging
     unless params.lunarCoreLabels
