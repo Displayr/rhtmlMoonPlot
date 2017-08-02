@@ -17,11 +17,11 @@ HTMLWidgets.widget
 
   renderValue: (el, params, instance) ->
     console.log 'rhtmlMoonPlot: RenderValue called'
-#    console.log params
+#    console.log JSON.stringify params
 
     # setting the test data, for debugging
     unless params.lunarCoreLabels
-      params = testData2
+      params = testData1
 
     # process raw input data
     normalizeCoreNodes params.lunarCoreNodes
