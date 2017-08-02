@@ -12,9 +12,9 @@ drawLunarSurfaceLabels = function(lunarSurfaceLabels, svg, cx, cy, radius, heigh
     x = label.x * radius * 0.7 + cx;
     y = -label.y * radius * 0.7 + cy;
     if (label.x < 0) {
-      t = svg.append('text').attr('class', 'surface-label').attr('x', x).attr('y', y).attr('font-size', (label.size * 20).toString() + 'px').attr('text-anchor', 'end').style('font-family', 'Arial').text(label.name);
+      t = svg.append('text').attr('class', 'surface-label').attr('x', x).attr('y', y).attr('font-size', (label.size * 20).toString() + 'px').attr('text-anchor', 'end').attr('alignment-baseline', 'middle').style('font-family', 'Arial').text(label.name);
     } else {
-      t = svg.append('text').attr('class', 'surface-label').attr('x', x).attr('y', y).attr('font-size', (label.size * 20).toString() + 'px').attr('text-anchor', 'start').style('font-family', 'Arial').text(label.name);
+      t = svg.append('text').attr('class', 'surface-label').attr('x', x).attr('y', y).attr('font-size', (label.size * 20).toString() + 'px').attr('text-anchor', 'start').attr('alignment-baseline', 'middle').style('font-family', 'Arial').text(label.name);
     }
     cart_coords.push({
       x: label.x,
@@ -27,13 +27,11 @@ drawLunarSurfaceLabels = function(lunarSurfaceLabels, svg, cx, cy, radius, heigh
   length_of_line = radius * 2 * Math.PI;
   moveSurfaceCollsions(polar_coords, length_of_line, radius);
   cart_coords = cartesianCoords(polar_coords);
-  i = 0;
-  for (k = 0, len1 = lunarSurfaceLabels.length; k < len1; k++) {
-    label = lunarSurfaceLabels[k];
+  for (i = k = 0, len1 = lunarSurfaceLabels.length; k < len1; i = ++k) {
+    label = lunarSurfaceLabels[i];
     label.newX = cart_coords[i].x;
     label.newY = cart_coords[i].y;
     label.rotation = calculateLabelRotation(polarCoord(cart_coords[i]).a);
-    i++;
   }
   for (m = 0, len2 = polar_coords.length; m < len2; m++) {
     pc = polar_coords[m];
@@ -68,9 +66,9 @@ drawLunarSurfaceLabels = function(lunarSurfaceLabels, svg, cx, cy, radius, heigh
     x = label.newX + cx;
     y = -label.newY + cy;
     if (label.newX < 0) {
-      t = svg.append('text').style('fill', textColor).attr('class', 'surface-label').attr('x', x).attr('y', y).attr('ox', x).attr('oy', y).attr('font-size', (label.size * label_size_const).toString() + 'px').attr('transform', 'rotate(' + (180 - label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'end').attr('cursor', 'all-scroll').style('font-family', 'Arial Narrow').attr('title', label.name).text(label.name).call(drag);
+      t = svg.append('text').style('fill', textColor).attr('class', 'surface-label').attr('x', x).attr('y', y).attr('ox', x).attr('oy', y).attr('font-size', (label.size * label_size_const).toString() + 'px').attr('transform', 'rotate(' + (180 - label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'end').attr('alignment-baseline', 'middle').attr('cursor', 'all-scroll').style('font-family', 'Arial Narrow').attr('title', label.name).text(label.name).call(drag);
     } else {
-      t = svg.append('text').style('fill', textColor).attr('class', 'surface-label').attr('y', y).attr('x', x).attr('ox', x).attr('oy', y).attr('font-size', (label.size * label_size_const).toString() + 'px').attr('transform', 'rotate(' + (-label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'start').attr('cursor', 'all-scroll').style('font-family', 'Arial Narrow').attr('title', label.name).text(label.name).call(drag);
+      t = svg.append('text').style('fill', textColor).attr('class', 'surface-label').attr('y', y).attr('x', x).attr('ox', x).attr('oy', y).attr('font-size', (label.size * label_size_const).toString() + 'px').attr('transform', 'rotate(' + (-label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')').attr('text-anchor', 'start').attr('alignment-baseline', 'middle').attr('cursor', 'all-scroll').style('font-family', 'Arial Narrow').attr('title', label.name).text(label.name).call(drag);
     }
     lunar_surface_labels.push(t[0][0]);
   }

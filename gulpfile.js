@@ -39,6 +39,10 @@ gulp.task('compile-coffee', function () {
     .pipe(gulp_coffee({ bare: true }))
     .pipe(gulp.dest('browser/scripts'))
     .pipe(gulp.dest('inst/htmlwidgets/'));
+  
+  gulp.src('theSrc/scripts/data/*.coffee')
+    .pipe(gulp_coffee({ bare: true }))
+    .pipe(gulp.dest('browser/scripts'));
 
   gulp.src('theSrc/scripts/lib/*.coffee')
     .pipe(gulp_coffee({ bare: true }))

@@ -32,6 +32,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('y', y)
                   .attr('font-size', (label.size * 20).toString() + 'px')
                   .attr('text-anchor', 'end')
+                  .attr('alignment-baseline', 'middle')
                   .style('font-family', 'Arial')
                   .text label.name
     else
@@ -41,6 +42,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('y', y)
                   .attr('font-size', (label.size * 20).toString() + 'px')
                   .attr('text-anchor', 'start')
+                  .attr('alignment-baseline', 'middle')
                   .style('font-family', 'Arial')
                   .text label.name
 
@@ -57,13 +59,10 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
   cart_coords = cartesianCoords polar_coords
 
   # Load the new cartesian coordinates into lunarSurfaceLabels array
-  i = 0
-  for label in lunarSurfaceLabels
+  for label, i in lunarSurfaceLabels
     label.newX = cart_coords[i].x
     label.newY = cart_coords[i].y
     label.rotation = calculateLabelRotation(polarCoord(cart_coords[i]).a)
-    i++
-
 
   # Plot the surface links
   for pc in polar_coords
@@ -116,6 +115,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('font-size', (label.size * label_size_const).toString() + 'px')
                   .attr('transform', 'rotate(' + (180 - label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                   .attr('text-anchor', 'end')
+                  .attr('alignment-baseline', 'middle')
                   .attr('cursor', 'all-scroll')
                   .style('font-family', 'Arial Narrow')
                   .attr('title', label.name)
@@ -132,6 +132,7 @@ drawLunarSurfaceLabels = (lunarSurfaceLabels
                   .attr('font-size', (label.size * label_size_const).toString() + 'px')
                   .attr('transform', 'rotate(' + (-label.rotation).toString() + ',' + x.toString() + ', ' + y.toString() + ')')
                   .attr('text-anchor', 'start')
+                  .attr('alignment-baseline', 'middle')
                   .attr('cursor', 'all-scroll')
                   .style('font-family', 'Arial Narrow')
                   .attr('title', label.name)
