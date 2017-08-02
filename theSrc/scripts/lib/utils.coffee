@@ -205,12 +205,8 @@ normalizeCoreNodes = (rawCoreNodes) ->
     min = node[1] if node[1] < min
 
   for node in rawCoreNodes
-    squareX = -1 + (node[0]-min)*(2)/(max-min)
-    squareY = -1 + (node[1]-min)*(2)/(max-min)
-
-    # map square values into circular moon
-    node[0] = (1-threshold) * squareX * Math.sqrt(1 - 0.5 * Math.pow(squareY,2))
-    node[1] = (1-threshold) * squareY * Math.sqrt(1 - 0.5 * Math.pow(squareX,2))
+    node[0] = -(1 - threshold) + (node[0]-min)/(max-min)*(2 - 2*threshold)
+    node[1] = -(1 - threshold) + (node[1]-min)/(max-min)*(2 - 2*threshold)
 
 calculateSurfaceNodePositions = (rawSurfaceNodes) ->
   for node in rawSurfaceNodes
