@@ -1,7 +1,7 @@
 var drawLunarCoreLabels;
 
 drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor, link_width) {
-  var anchor, anchor_array, drag, drawLabels, drawLinks, endAll, i, j, k, l, label, labeler, len, len1, len2, lunar_core_label, lunar_core_labels, lunar_core_labels_svg, lunar_core_links_svg, n, x, y;
+  var anchor_array, drag, drawLabels, drawLinks, endAll, i, j, k, label, labeler, len, len1, lunar_core_label, lunar_core_labels, lunar_core_labels_svg, lunar_core_links_svg, n, radius_thres, threshold, x, x_sign, y, y_sign;
   drawLabels = function(label_data, drag) {
     var labels;
     labels = svg.selectAll('.core-label').data(label_data).enter().append('text').style('fill', textColor).attr('class', 'core-label').attr('x', function(d) {
@@ -39,8 +39,17 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor, 
   drag = setupLunarCoreDragAndDrop(svg, lunar_core_labels, anchor_array, radius, cx, cy, textColor);
   for (j = 0, len = lunarCoreLabels.length; j < len; j++) {
     label = lunarCoreLabels[j];
-    x = label.x * radius + cx;
-    y = -label.y * radius + cy;
+    if (Math.abs(label.y) + Math.abs(label.x) > 1) {
+      threshold = 0.1;
+      radius_thres = radius * (1 - threshold);
+      x_sign = Math.sign(label.x);
+      y_sign = Math.sign(-label.y);
+      x = x_sign * radius_thres * Math.cos(Math.atan(-label.y / label.x)) + cx;
+      y = y_sign * radius_thres * Math.sin(Math.abs(Math.atan(-label.y / label.x))) + cy;
+    } else {
+      x = (label.x * radius) + cx;
+      y = (-label.y * radius) + cy;
+    }
     lunar_core_labels.push({
       x: x,
       y: y,
@@ -69,10 +78,13 @@ drawLunarCoreLabels = function(lunarCoreLabels, svg, cx, cy, radius, textColor, 
     });
   }
   d3.selectAll('.core-anchor').remove();
-  for (l = 0, len2 = anchor_array.length; l < len2; l++) {
-    anchor = anchor_array[l];
-    d3.select('svg').append('circle').attr('stroke-width', 3).attr('class', 'core-anchor').attr('fill', 'black').attr('cx', anchor.x).attr('cy', anchor.y).attr('r', anchor.dr);
-  }
+  svg.selectAll('.core-anchor').data(anchor_array).enter().append('circle').attr('stroke-width', 3).attr('class', 'core-anchor').attr('fill', 'black').attr('cx', function(a) {
+    return a.x;
+  }).attr('cy', function(a) {
+    return a.y;
+  }).attr('r', function(a) {
+    return a.dr;
+  });
   lunar_core_links_svg = drawLinks(lunar_core_labels);
   lunar_core_links_svg.moveToBack();
   lunar_core_labels_svg.moveToFront();

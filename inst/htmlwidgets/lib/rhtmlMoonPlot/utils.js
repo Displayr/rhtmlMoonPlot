@@ -253,7 +253,7 @@ distanceFromCenter = function(x, y) {
 };
 
 normalizeCoreNodes = function(rawCoreNodes) {
-  var k, l, len, len1, max, min, node, results, squareX, squareY, threshold;
+  var k, l, len, len1, max, min, node, results, threshold;
   threshold = 0.1;
   max = -Infinity;
   min = Infinity;
@@ -275,10 +275,8 @@ normalizeCoreNodes = function(rawCoreNodes) {
   results = [];
   for (l = 0, len1 = rawCoreNodes.length; l < len1; l++) {
     node = rawCoreNodes[l];
-    squareX = -1 + (node[0] - min) * 2. / (max - min);
-    squareY = -1 + (node[1] - min) * 2. / (max - min);
-    node[0] = (1 - threshold) * squareX * Math.sqrt(1 - 0.5 * Math.pow(squareY, 2));
-    results.push(node[1] = (1 - threshold) * squareY * Math.sqrt(1 - 0.5 * Math.pow(squareX, 2)));
+    node[0] = -(1 - threshold) + (node[0] - min) / (max - min) * (2 - 2 * threshold);
+    results.push(node[1] = -(1 - threshold) + (node[1] - min) / (max - min) * (2 - 2 * threshold));
   }
   return results;
 };
