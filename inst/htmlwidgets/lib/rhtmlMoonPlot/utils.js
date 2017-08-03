@@ -253,30 +253,24 @@ distanceFromCenter = function(x, y) {
 };
 
 normalizeCoreNodes = function(rawCoreNodes) {
-  var k, l, len, len1, max, min, node, results, threshold;
+  var k, l, len, len1, magnitude, max, node, results, threshold;
   threshold = 0.1;
   max = -Infinity;
-  min = Infinity;
   for (k = 0, len = rawCoreNodes.length; k < len; k++) {
     node = rawCoreNodes[k];
-    if (node[0] > max) {
-      max = node[0];
+    if (Math.abs(node[0]) > max) {
+      max = Math.abs(node[0]);
     }
-    if (node[1] > max) {
-      max = node[1];
-    }
-    if (node[0] < min) {
-      min = node[0];
-    }
-    if (node[1] < min) {
-      min = node[1];
+    if (Math.abs(node[1]) > max) {
+      max = Math.abs(node[1]);
     }
   }
+  magnitude = Math.sqrt(Math.pow(max, 2) + Math.pow(max, 2)) * (1 + threshold);
   results = [];
   for (l = 0, len1 = rawCoreNodes.length; l < len1; l++) {
     node = rawCoreNodes[l];
-    node[0] = -(1 - threshold) + (node[0] - min) / (max - min) * (2 - 2 * threshold);
-    results.push(node[1] = -(1 - threshold) + (node[1] - min) / (max - min) * (2 - 2 * threshold));
+    node[0] = node[0] / magnitude;
+    results.push(node[1] = node[1] / magnitude);
   }
   return results;
 };

@@ -53,18 +53,8 @@ drawLunarCoreLabels = (lunarCoreLabels,
                           textColor)
   # prevent labels from escaping moon surface
   for label in lunarCoreLabels
-    # Prevent core labels (which are positioned inside a square) from escaping the circle
-    if Math.abs(label.y) + Math.abs(label.x) > 1
-      threshold = 0.1
-      radius_thres = radius*(1-threshold)
-      x_sign = Math.sign(label.x)
-      y_sign = Math.sign(-label.y)
-
-      x = x_sign * radius_thres * Math.cos(Math.atan(-label.y/label.x))  + cx
-      y = y_sign * radius_thres * Math.sin(Math.abs(Math.atan(-label.y/label.x))) + cy
-    else
-      x = (label.x * radius) + cx
-      y = (-label.y * radius) + cy
+    x = (label.x * radius) + cx
+    y = (-label.y * radius) + cy
 
     lunar_core_labels.push({
       x: x
