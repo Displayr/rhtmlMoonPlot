@@ -196,15 +196,16 @@ distanceFromCenter = (x, y) ->
 normalizeCoreNodes = (rawCoreNodes) ->
   # normalization between -1 and 1 (padded by threshold)
   threshold = 0.1
-  max = -Infinity
+  maxMag = -Infinity
   for node in rawCoreNodes
-    max = Math.abs(node[0]) if Math.abs(node[0]) > max
-    max = Math.abs(node[1]) if Math.abs(node[1]) > max
+    magnitude = Math.sqrt(Math.pow(node[0], 2) + Math.pow(node[1], 2))
+    maxMag = magnitude if magnitude > maxMag
 
-  magnitude = Math.sqrt(Math.pow(max, 2) + Math.pow(max, 2)) * (1 + threshold)
+  maxMag *= 1 + threshold
   for node in rawCoreNodes
-    node[0] = node[0]/magnitude
-    node[1] = node[1]/magnitude
+    node[0] = node[0]/maxMag
+    node[1] = node[1]/maxMag
+  return
 
 calculateSurfaceNodePositions = (rawSurfaceNodes) ->
   for node in rawSurfaceNodes

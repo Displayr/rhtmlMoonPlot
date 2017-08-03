@@ -253,26 +253,22 @@ distanceFromCenter = function(x, y) {
 };
 
 normalizeCoreNodes = function(rawCoreNodes) {
-  var k, l, len, len1, magnitude, max, node, results, threshold;
+  var k, l, len, len1, magnitude, maxMag, node, threshold;
   threshold = 0.1;
-  max = -Infinity;
+  maxMag = -Infinity;
   for (k = 0, len = rawCoreNodes.length; k < len; k++) {
     node = rawCoreNodes[k];
-    if (Math.abs(node[0]) > max) {
-      max = Math.abs(node[0]);
-    }
-    if (Math.abs(node[1]) > max) {
-      max = Math.abs(node[1]);
+    magnitude = Math.sqrt(Math.pow(node[0], 2) + Math.pow(node[1], 2));
+    if (magnitude > maxMag) {
+      maxMag = magnitude;
     }
   }
-  magnitude = Math.sqrt(Math.pow(max, 2) + Math.pow(max, 2)) * (1 + threshold);
-  results = [];
+  maxMag *= 1 + threshold;
   for (l = 0, len1 = rawCoreNodes.length; l < len1; l++) {
     node = rawCoreNodes[l];
-    node[0] = node[0] / magnitude;
-    results.push(node[1] = node[1] / magnitude);
+    node[0] = node[0] / maxMag;
+    node[1] = node[1] / maxMag;
   }
-  return results;
 };
 
 calculateSurfaceNodePositions = function(rawSurfaceNodes) {
