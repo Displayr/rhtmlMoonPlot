@@ -44,10 +44,6 @@ dependencies:
     version: 1.0.0
     src: htmlwidgets/lib/rhtmlMoonPlot
     script: lunarSurface.js
-  - name: moonplot-testData
-    version: 1.0.0
-    src: htmlwidgets/lib/rhtmlMoonPlot
-    script: testData.js
   - name: moonplot-utils
     version: 1.0.0
     src: htmlwidgets/lib/rhtmlMoonPlot
