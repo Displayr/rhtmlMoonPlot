@@ -53,3 +53,11 @@ Prerequisites: Chrome installed (tested on OSX only, should work in Windows/Linu
 
 This should load a browser window, where a list of links to examples will be displayed. Choose an example or add another example to [R file](src/R/index.html). When changes to the [widget definition](theSrc/scripts/moonplot.coffee) or any other file are saved, the browser will automatically reload.
 
+# Examples
+
+```
+library(rhtmlMoonPlot)
+xx <- cbind(x=1, y=-3:3)
+rownames(xx) <- LETTERS[1:7]
+print(moonplot(xx, xx))
+```
