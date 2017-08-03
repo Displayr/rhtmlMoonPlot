@@ -197,16 +197,14 @@ normalizeCoreNodes = (rawCoreNodes) ->
   # normalization between -1 and 1 (padded by threshold)
   threshold = 0.1
   max = -Infinity
-  min = Infinity
   for node in rawCoreNodes
-    max = node[0] if node[0] > max
-    max = node[1] if node[1] > max
-    min = node[0] if node[0] < min
-    min = node[1] if node[1] < min
+    max = Math.abs(node[0]) if Math.abs(node[0]) > max
+    max = Math.abs(node[1]) if Math.abs(node[1]) > max
 
+  magnitude = Math.sqrt(Math.pow(max, 2) + Math.pow(max, 2)) * (1 + threshold)
   for node in rawCoreNodes
-    node[0] = -(1 - threshold) + (node[0]-min)/(max-min)*(2 - 2*threshold)
-    node[1] = -(1 - threshold) + (node[1]-min)/(max-min)*(2 - 2*threshold)
+    node[0] = node[0]/magnitude
+    node[1] = node[1]/magnitude
 
 calculateSurfaceNodePositions = (rawSurfaceNodes) ->
   for node in rawSurfaceNodes
