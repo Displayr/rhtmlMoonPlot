@@ -195,7 +195,7 @@ distanceFromCenter = (x, y) ->
 
 normalizeCoreNodes = (rawCoreNodes) ->
   # normalization between -1 and 1 (padded by threshold)
-  threshold = 0.2
+  threshold = 0.1
   maxMag = -Infinity
   for node in rawCoreNodes
     magnitude = Math.sqrt(Math.pow(node[0], 2) + Math.pow(node[1], 2))

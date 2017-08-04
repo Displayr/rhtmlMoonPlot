@@ -254,7 +254,7 @@ distanceFromCenter = function(x, y) {
 
 normalizeCoreNodes = function(rawCoreNodes) {
   var k, l, len, len1, magnitude, maxMag, node, threshold;
-  threshold = 0.2;
+  threshold = 0.1;
   maxMag = -Infinity;
   for (k = 0, len = rawCoreNodes.length; k < len; k++) {
     node = rawCoreNodes[k];
