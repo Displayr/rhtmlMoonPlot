@@ -35,52 +35,60 @@ d3.labeler = function() {
 
   energy = function(index) {
   // energy function, tailored for label placement
-
+  
+      var labelTopPadding = 5;
+    
+      var currLab = lab[index];
+      var currAnc = anc[index];
       var m = lab.length,
           ener = 0,
-          dx = lab[index].x + lab[index].width/2 - anc[index].x,
-          dx2 = lab[index].x - anc[index].x - 4,
-          dx3 = lab[index].x + lab[index].width + 4 - anc[index].x,
-          dy = anc[index].y - lab[index].y,
-          dy2 = anc[index].y - (lab[index].y - lab[index].height - 2),
-          dy3 = anc[index].y - (lab[index].y - lab[index].height/2),
+          dx = currLab.x - currAnc.x,
+          dx2 = currLab.x - 4 - currLab.width/2 - currAnc.x,
+          dx3 = currLab.x + 4 + currLab.width/2 - currAnc.x,
+          dy = currAnc.y - (currLab.y - 5),
+          dy2 = (currLab.y - (currLab.height - labelTopPadding)) - currAnc.y,
+          dy3 = (currLab.y - currLab.height/2) - currAnc.y,
           dist = Math.sqrt(dx * dx + dy * dy),
           dist2 = Math.sqrt(dx * dx + dy2 * dy2),
           dist3 = Math.sqrt(dx2 * dx2 + dy3 * dy3),
           dist4 = Math.sqrt(dx3 * dx3 + dy3 * dy3),
           dist5 = Math.sqrt(dx2 * dx2 + dy2 * dy2),
-          dist8 = Math.sqrt(dx2 * dx2 + dy * dy),
           dist6 = Math.sqrt(dx3 * dx3 + dy * dy),
           dist7 = Math.sqrt(dx3 * dx3 + dy2 * dy2),
+          dist8 = Math.sqrt(dx2 * dx2 + dy * dy),
           overlap = true,
           amount = 0,
           theta = 0;
 
       // penalty for length of leader line
-      minDist = Math.min(dist, dist2, dist3, dist4)
-      secondaryPerfectPenalty = 1.2;
-      tertiaryPerfectPenalty = 4;
+      var minDist = Math.min(dist, dist2, dist3, dist4, dist5, dist6, dist7, dist8);
+      var perfect2Penalty = 1.5;
+      var perfect3Penalty = 8;
+      var perfect4Penalty = 15;
       switch(minDist) {
         case dist:
           ener += dist * w_len;
           break;
         case dist2:
-          ener += dist2 * w_len * secondaryPerfectPenalty;
+          ener += dist2 * w_len * perfect2Penalty;
           break;
         case dist3:
-          ener += dist3 * w_len * tertiaryPerfectPenalty;
+          ener += dist3 * w_len * perfect3Penalty;
           break;
         case dist4:
-          ener += dist4 * w_len * tertiaryPerfectPenalty;
+          ener += dist4 * w_len * perfect3Penalty;
           break;
         case dist5:
-          ener += dist5 * w_len * tertiaryPerfectPenalty;
+          ener += dist5 * w_len * perfect4Penalty;
           break;
         case dist6:
-          ener += dist6 * w_len * tertiaryPerfectPenalty;
+          ener += dist6 * w_len * perfect4Penalty;
           break;
         case dist7:
-          ener += dist7 * w_len * tertiaryPerfectPenalty;
+          ener += dist7 * w_len * perfect4Penalty;
+          break;
+        case dist8:
+          ener += dist8 * w_len * perfect4Penalty;
           break;
       }
 
@@ -92,18 +100,18 @@ d3.labeler = function() {
       // else if (dx < 0 && dy < 0) { ener += 2 * w_orient; }
       // else { ener += 3 * w_orient; }
 
-      var x21 = lab[index].x,
-          y21 = lab[index].y - lab[index].height,
-          x22 = lab[index].x + lab[index].width,
-          y22 = lab[index].y;
+      var x21 = currLab.x - currLab.width / 2,
+          y21 = currLab.y - (currLab.height - labelTopPadding),
+          x22 = currLab.x + currLab.width / 2,
+          y22 = currLab.y;
       var x11, x12, y11, y12, x_overlap, y_overlap, overlap_area;
 
       for (var i = 0; i < m; i++) {
         if (i != index) {
 
           // penalty for intersection of leader lines
-          overlap = intersect(anc[index].x, lab[index].x + lab[index].width/2, anc[i].x, lab[i].x + lab[i].width/2,
-                          anc[index].y, lab[index].y, anc[i].y, lab[i].y);
+          overlap = intersect(currAnc.x, currLab.x + currLab.width/2, anc[i].x, lab[i].x + lab[i].width/2,
+                          currAnc.y, currLab.y, anc[i].y, lab[i].y);
           if (overlap) ener += w_inter;
 
           // penalty for label-label overlap
@@ -128,12 +136,12 @@ d3.labeler = function() {
           ener += (overlap_area * w_lab_anc);
 
           // penalty for label-leader line intersection
-          var intersecBottom = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width,
-                                   lab[index].y, lab[index].y, anc[i].y, lab[i].y
+          var intersecBottom = intersect(currLab.x, currLab.x + currLab.width, anc[i].x, lab[i].x + lab[i].width,
+                                   currLab.y, currLab.y, anc[i].y, lab[i].y
                                   );
 
-          var intersecTop = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width,
-                               lab[index].y-lab[index].height, lab[index].y-lab[index].height, anc[i].y, lab[i].y
+          var intersecTop = intersect(currLab.x, currLab.x + currLab.width, anc[i].x, lab[i].x + lab[i].width,
+                               currLab.y-currLab.height, currLab.y-currLab.height, anc[i].y, lab[i].y
                              );
           if (intersecBottom) ener += w_lablink;
           if (intersecTop) ener += w_lablink;
@@ -453,13 +461,13 @@ d3.labeler = function() {
     for(var i=0; i<lab.length;i++) {
       lab[i].x -= lab[i].width/2;
       lab[i].y -= 5;
-      // svg.append('rect').attr('x', lab[i].x)
-      //                   .attr('y', lab[i].y - lab[i].height)
-      //                   .attr('width', lab[i].width)
-      //                   .attr('height', lab[i].height)
-      //                   .attr('fill', 'yellow')
-      //                   .attr('stroke', 'blue')
-      //                   .attr('opacity', 0.1);
+      svg.append('rect').attr('x', lab[i].x)
+                        .attr('y', lab[i].y - lab[i].height)
+                        .attr('width', lab[i].width)
+                        .attr('height', lab[i].height)
+                        .attr('fill', 'yellow')
+                        .attr('stroke', 'blue')
+                        .attr('opacity', 0.1);
     }
     return labeler;
   };
