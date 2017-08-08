@@ -17,7 +17,7 @@ HTMLWidgets.widget({
     var i, lunarCoreLabels, lunarSurfaceLabels, lunarSurfaceSizes;
     console.log('rhtmlMoonPlot: RenderValue called');
     if (!params.lunarCoreLabels) {
-      params = testData1;
+      params = testData;
     }
     normalizeCoreNodes(params.lunarCoreNodes);
     lunarSurfaceSizes = calculateSurfaceLabelSizes(params.lunarSurfaceNodes, 1.5, 0.5);
