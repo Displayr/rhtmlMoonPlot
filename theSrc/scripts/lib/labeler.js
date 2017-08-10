@@ -19,7 +19,7 @@ d3.labeler = function() {
       rej = 0;
 
   // weights
-  var w_len = 5.0, // leader line length
+  var w_len = 10.0, // leader line length
       w_inter = 1.0, // leader line intersection
       w_lablink = 2.0, // leader line-label intersection
       w_lab2 = 12.0, // label-label overlap
@@ -35,52 +35,58 @@ d3.labeler = function() {
 
   energy = function(index) {
   // energy function, tailored for label placement
-
+  
+      var labelTopPadding = 5;
+    
+      var currLab = lab[index];
+      var currAnc = anc[index];
       var m = lab.length,
           ener = 0,
-          dx = lab[index].x + lab[index].width/2 - anc[index].x,
-          dx2 = lab[index].x - anc[index].x - 4,
-          dx3 = lab[index].x + lab[index].width + 4 - anc[index].x,
-          dy = anc[index].y - lab[index].y,
-          dy2 = anc[index].y - (lab[index].y - lab[index].height - 2),
-          dy3 = anc[index].y - (lab[index].y - lab[index].height/2),
+          dx = currLab.x - currAnc.x,
+          dx2 = currLab.x - 4 - currLab.width/2 - currAnc.x,
+          dx3 = currLab.x + 4 + currLab.width/2 - currAnc.x,
+          dy = currLab.y - (currAnc.y - 5),
+          dy2 = (currLab.y - (currLab.height + labelTopPadding)) - currAnc.y,
+          dy3 = (currLab.y - currLab.height/2) - currAnc.y,
           dist = Math.sqrt(dx * dx + dy * dy),
           dist2 = Math.sqrt(dx * dx + dy2 * dy2),
           dist3 = Math.sqrt(dx2 * dx2 + dy3 * dy3),
           dist4 = Math.sqrt(dx3 * dx3 + dy3 * dy3),
           dist5 = Math.sqrt(dx2 * dx2 + dy2 * dy2),
-          dist8 = Math.sqrt(dx2 * dx2 + dy * dy),
           dist6 = Math.sqrt(dx3 * dx3 + dy * dy),
           dist7 = Math.sqrt(dx3 * dx3 + dy2 * dy2),
-          overlap = true,
-          amount = 0,
-          theta = 0;
+          dist8 = Math.sqrt(dx2 * dx2 + dy * dy),
+          overlap = true;
 
       // penalty for length of leader line
-      minDist = Math.min(dist, dist2, dist3, dist4)
-      secondaryPerfectPenalty = 1.2;
-      tertiaryPerfectPenalty = 4;
+      var minDist = Math.min(dist, dist2, dist3, dist4, dist5, dist6, dist7, dist8);
+      var perfect2Penalty = 1.5;
+      var perfect3Penalty = 8;
+      var perfect4Penalty = 15;
       switch(minDist) {
         case dist:
           ener += dist * w_len;
           break;
         case dist2:
-          ener += dist2 * w_len * secondaryPerfectPenalty;
+          ener += dist2 * w_len * perfect2Penalty;
           break;
         case dist3:
-          ener += dist3 * w_len * tertiaryPerfectPenalty;
+          ener += dist3 * w_len * perfect3Penalty;
           break;
         case dist4:
-          ener += dist4 * w_len * tertiaryPerfectPenalty;
+          ener += dist4 * w_len * perfect3Penalty;
           break;
         case dist5:
-          ener += dist5 * w_len * tertiaryPerfectPenalty;
+          ener += dist5 * w_len * perfect4Penalty;
           break;
         case dist6:
-          ener += dist6 * w_len * tertiaryPerfectPenalty;
+          ener += dist6 * w_len * perfect4Penalty;
           break;
         case dist7:
-          ener += dist7 * w_len * tertiaryPerfectPenalty;
+          ener += dist7 * w_len * perfect4Penalty;
+          break;
+        case dist8:
+          ener += dist8 * w_len * perfect4Penalty;
           break;
       }
 
@@ -92,24 +98,24 @@ d3.labeler = function() {
       // else if (dx < 0 && dy < 0) { ener += 2 * w_orient; }
       // else { ener += 3 * w_orient; }
 
-      var x21 = lab[index].x,
-          y21 = lab[index].y - lab[index].height,
-          x22 = lab[index].x + lab[index].width,
-          y22 = lab[index].y;
+      var x21 = currLab.x - currLab.width / 2,
+          y21 = currLab.y - (currLab.height + labelTopPadding),
+          x22 = currLab.x + currLab.width / 2,
+          y22 = currLab.y;
       var x11, x12, y11, y12, x_overlap, y_overlap, overlap_area;
 
       for (var i = 0; i < m; i++) {
-        if (i != index) {
+        if (i !== index) {
 
           // penalty for intersection of leader lines
-          overlap = intersect(anc[index].x, lab[index].x + lab[index].width/2, anc[i].x, lab[i].x + lab[i].width/2,
-                          anc[index].y, lab[index].y, anc[i].y, lab[i].y);
+          overlap = intersect(currAnc.x, currLab.x + currLab.width/2, anc[i].x, lab[i].x + lab[i].width/2,
+                          currAnc.y, currLab.y, anc[i].y, lab[i].y);
           if (overlap) ener += w_inter;
 
           // penalty for label-label overlap
-          x11 = lab[i].x;
-          y11 = lab[i].y - lab[i].height;
-          x12 = lab[i].x + lab[i].width;
+          x11 = lab[i].x - lab[i].width / 2;
+          y11 = lab[i].y - (lab[i].height + labelTopPadding);
+          x12 = lab[i].x + lab[i].width / 2;
           y12 = lab[i].y;
           x_overlap = Math.max(0, Math.min(x12,x22) - Math.max(x11,x21));
           y_overlap = Math.max(0, Math.min(y12,y22) - Math.max(y11,y21));
@@ -128,78 +134,29 @@ d3.labeler = function() {
           ener += (overlap_area * w_lab_anc);
 
           // penalty for label-leader line intersection
-          var intersecBottom = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width,
-                                   lab[index].y, lab[index].y, anc[i].y, lab[i].y
+          var intersecBottom = intersect(currLab.x, currLab.x + currLab.width, anc[i].x, lab[i].x + lab[i].width,
+                                   currLab.y, currLab.y, anc[i].y, lab[i].y
                                   );
 
-          var intersecTop = intersect(lab[index].x, lab[index].x + lab[index].width, anc[i].x, lab[i].x + lab[i].width,
-                               lab[index].y-lab[index].height, lab[index].y-lab[index].height, anc[i].y, lab[i].y
+          var intersecTop = intersect(currLab.x, currLab.x + currLab.width, anc[i].x, lab[i].x + lab[i].width,
+                               currLab.y-currLab.height, currLab.y-currLab.height, anc[i].y, lab[i].y
                              );
           if (intersecBottom) ener += w_lablink;
           if (intersecTop) ener += w_lablink;
       }
       return ener;
   };
-
-  initLabBoundaries = function(lab, anc, i) {
-    boundaryBuffer = 5;
-    if (lab[i].y - lab[i].height < cy - radius) { //top
-      lab[i].y = cy - radius + lab[i].height + boundaryBuffer;
-    }
-    else if (lab[i].y > cy + radius) { //bot
-      lab[i].y = cy + radius - boundaryBuffer;
-    }
-
-
-    asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
-    asinangleB = Math.asin((lab[i].y - cy)/radius);
-    investigate = null;
-    investigate = 5;
-
-    //right
-    if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleT) ||
-        lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleB)) {
-      if (lab[i].y < cy) {
-        lab[i].x = cx + radius*Math.cos(asinangleT) - lab[i].width;
-      }
-      else {
-        lab[i].x = cx + radius*Math.cos(asinangleB) - lab[i].width;
-      }
-      // if (i==investigate) svg.append('rect').attr('x', lab[i].x)
-      //                   .attr('y', lab[i].y - lab[i].height)
-      //                   .attr('width', lab[i].width)
-      //                   .attr('height', lab[i].height)
-      //                   .attr('fill', 'yellow')
-      //                   .attr('fill-opacity', 0.1);
-    }
-    //left
-    else if (lab[i].x < cx - radius*Math.cos(asinangleT) ||
-             lab[i].x < cx - radius*Math.cos(asinangleB)) {
-     if (lab[i].y < cy) {
-       lab[i].x = cx - radius*Math.cos(asinangleT);
-     }
-     else {
-       lab[i].x = cx - radius*Math.cos(asinangleB);
-     }
-    //  if (i==investigate) svg.append('rect').attr('x', lab[i].x)
-    //                    .attr('y', lab[i].y - lab[i].height)
-    //                    .attr('width', lab[i].width)
-    //                    .attr('height', lab[i].height)
-    //                    .attr('fill', 'blue')
-    //                    .attr('fill-opacity', 0.1);
-    }
-  }
-
-  adjustForBoundaries = function(lab, anc, i, x_old, y_old) {
-    asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
-    asinangleB = Math.asin((lab[i].y - cy)/radius);
-    investigate = null;
+  
+  var adjustForBoundaries = function(lab, anc, i, x_old, y_old) {
+    var asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius);
+    var asinangleB = Math.asin((lab[i].y - cy)/radius);
+    // var investigate = null;
     // investigate = 4
 
 
     //right
-    if (lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleT) ||
-        lab[i].x + lab[i].width > cx + radius*Math.cos(asinangleB)) {
+    if (lab[i].x + lab[i].width/2 > cx + radius*Math.cos(asinangleT) ||
+        lab[i].x + lab[i].width/2 > cx + radius*Math.cos(asinangleB)) {
       if (lab[i].y < cy) {
         lab[i].x = cx + radius*Math.cos(asinangleT) - lab[i].width;
       }
@@ -221,35 +178,36 @@ d3.labeler = function() {
 
     }
     //left
-    if (lab[i].x < cx - radius*Math.cos(asinangleT) || lab[i].x < cx - radius*Math.cos(asinangleB)) {
-      if (i==investigate) svg.append('rect').attr('x', lab[i].x)
-                        .attr('y', lab[i].y - lab[i].height)
-                        .attr('width', lab[i].width)
-                        .attr('height', lab[i].height)
-                        .attr('fill', 'green')
-                        .attr('fill-opacity', 0.1);
+    if (lab[i].x - lab[i].width/2 < cx - radius*Math.cos(asinangleT) ||
+        lab[i].x - lab[i].width/2 < cx - radius*Math.cos(asinangleB)) {
+      // if (i==investigate) svg.append('rect').attr('x', lab[i].x)
+      //                   .attr('y', lab[i].y - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'green')
+      //                   .attr('fill-opacity', 0.1);
       if (lab[i].y < cy) {
-        lab[i].x = cx - radius*Math.cos(asinangleT);
+        lab[i].x = cx - radius*Math.cos(asinangleT) + lab[i].width/2;
       }
       else {
-        lab[i].x = cx - radius*Math.cos(asinangleB);
+        lab[i].x = cx - radius*Math.cos(asinangleB) + lab[i].width/2;
       }
 
 
-      if (i==investigate) svg.append('rect').attr('x', x_old)
-                        .attr('y', y_old - lab[i].height)
-                        .attr('width', lab[i].width)
-                        .attr('height', lab[i].height)
-                        .attr('fill', 'red')
-                        .attr('fill-opacity', 0.1);
-      if (i==investigate) svg.append('rect').attr('x', lab[i].x)
-                        .attr('y', lab[i].y - lab[i].height)
-                        .attr('width', lab[i].width)
-                        .attr('height', lab[i].height)
-                        .attr('fill', 'blue')
-                        .attr('fill-opacity', 0.1);
+      // if (i==investigate) svg.append('rect').attr('x', x_old)
+      //                   .attr('y', y_old - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'red')
+      //                   .attr('fill-opacity', 0.1);
+      // if (i==investigate) svg.append('rect').attr('x', lab[i].x)
+      //                   .attr('y', lab[i].y - lab[i].height)
+      //                   .attr('width', lab[i].width)
+      //                   .attr('height', lab[i].height)
+      //                   .attr('fill', 'blue')
+      //                   .attr('fill-opacity', 0.1);
     }
-  }
+  };
 
   mcmove = function(currT) {
   // Monte Carlo translation move
@@ -334,7 +292,7 @@ d3.labeler = function() {
       lab[i].y = y_new + anc[i].y;
 
       // hard wall boundaries
-      boundaryBuffer = 5;
+      var boundaryBuffer = 5;
       if (lab[i].y < cy - radius + lab[i].height) {
         lab[i].y = cy - radius + lab[i].height + boundaryBuffer;
       }
@@ -376,7 +334,7 @@ d3.labeler = function() {
 
   };
 
-  intersect = function(x1, x2, x3, x4, y1, y2, y3, y4) {
+  var intersect = function(x1, x2, x3, x4, y1, y2, y3, y4) {
   // returns true if two lines intersect, else false
   // from http://paulbourke.net/geometry/lineline2d/
 
@@ -394,16 +352,16 @@ d3.labeler = function() {
         return true;
     }
     return false;
-  }
+  };
 
-  cooling_schedule = function(currT, initialT, nsweeps) {
+  var cooling_schedule = function(currT, initialT, nsweeps) {
   // linear cooling
     return (currT - (initialT / nsweeps));
-  }
+  };
 
   labeler.start = function(nsweeps) {
     for (var i = 0; i < lab.length; i++) {
-      initLabBoundaries(lab, anc, i);
+      adjustForBoundaries(lab, anc, i);
     }
 
     // main simulated annealing function
@@ -413,13 +371,10 @@ d3.labeler = function() {
 
       for (var i = 0; i < nsweeps; i++) {
         for (var j = 0; j < m; j++) {
-          if (random.real(0,1) < 0.5) { mcmove(currT); }
+          if (random.real(0,1) < 0.8) { mcmove(currT); }
           else { mcrotate(currT); }
         }
         currT = cooling_schedule(currT, initialT, nsweeps);
-      }
-      for(var i=0; i<lab.length;i++) {
-        lab[i].x += lab[i].width/2;
       }
   };
 
@@ -427,32 +382,31 @@ d3.labeler = function() {
     if(!arguments.length) return cx;
     cx = x;
     return labeler;
-  }
+  };
 
   labeler.svg = function(x) {
     svg = x;
     return labeler;
-  }
+  };
 
   labeler.cy = function(x) {
     if(!arguments.length) return cy;
     cy = x;
     return labeler;
-  }
+  };
 
   labeler.radius = function(x) {
     if(!arguments.length) return radius;
     radius = x;
     return labeler;
-  }
+  };
 
   labeler.label = function(x) {
   // users insert label positions
     if (!arguments.length) return lab;
     lab = x;
     for(var i=0; i<lab.length;i++) {
-      lab[i].x -= lab[i].width/2;
-      lab[i].y -= 5;
+      // lab[i].y -= 5;
       // svg.append('rect').attr('x', lab[i].x)
       //                   .attr('y', lab[i].y - lab[i].height)
       //                   .attr('width', lab[i].width)
