@@ -1,0 +1,10 @@
+{
+  "widgetEntryPoint": "theSrc/scripts/rhtmlMoonPlot.js",
+  "widgetFactory": "theSrc/scripts/rhtmlMoonPlot.factory.js",
+  "widgetName": "rhtmlMoonPlot",
+  "visualRegressionSuite": {
+    "applitools": {
+      "defaultMatchTimeout": 2
+    }
+  }
+}
