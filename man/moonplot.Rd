@@ -8,16 +8,53 @@ https://github.com/Displayr/rhtmlMoonPlot
 }
 \usage{
 moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
-  height = NULL)
+  height = NULL, core.font.family = "sans-serif", core.font.size = 14,
+  core.font.color = "#333333", core.font.selected.color = "#0000dd",
+  core.label.minimumDistance = 7, surface.font.family = "sans-serif",
+  surface.font.baseSize = 14, surface.font.color = "#333333",
+  surface.font.selected.color = "#0000dd",
+  surface.label.minimumDistance = 15, surface.label.radialPadding = 3,
+  circle.width = 1, circle.color = "#042a4b", circle.cross.color = "grey",
+  circle.drag.area.width = 8, link.color = "grey", link.width = 1)
 }
 \arguments{
-\item{coreNodes}{Coordinates of nodes in the center of the moon}
+\item{coreNodes}{: Coordinates of nodes in the center of the moon (assumes coreNodes is transformed output of MASS::corresp then $rscore[, 1:2])}
 
-\item{surfaceNodes}{Coordinates of nodes outside of the moon}
+\item{surfaceNodes}{: Coordinates of nodes outside of the moon (assumes surfaceNodes is transformed output of MASS::corresp then $cscore[, 1:2])}
 
-\item{width}{Width of the viewer window}
+\item{core.font.family}{: Font family for core labels}
 
-\item{height}{Height of viewer window}
+\item{core.font.size}{: Font size for core labels}
+
+\item{core.font.color}{: Font color for core labels}
+
+\item{core.font.selected.color}{: Font color for core labels while it is being moved}
+
+\item{core.label.minimumDistance}{: Relative minimum distance between core labels. Larger numbers, more minimum distance}
+
+\item{surface.font.family}{: Font family for surface labels}
+
+\item{surface.font.baseSize}{: Base font size for surface labels. Actual font size is a multiplier applied to this base.}
+
+\item{surface.font.color}{: Font color for surface labels}
+
+\item{surface.font.selected.color}{: Font color for surface labels while it is being moved}
+
+\item{surface.label.minimumDistance}{: Relative minimum distance between surface labels. Larger numbers, more minimum distance}
+
+\item{surface.label.radialPadding}{: Padding between the circle and the surface label}
+
+\item{circle.width}{: The width of the circle circumference line}
+
+\item{circle.color}{: The color of the circle circumference line}
+
+\item{circle.cross.color}{: The color of the crosshairs that mark the center of the circle}
+
+\item{circle.drag.area.width}{: How close to the circle do you need to click to start drag. Higher means larger click area, easier to click}
+
+\item{link.color}{: The color of the label links}
+
+\item{link.width}{: The width of the label links}
 }
 \description{
 Uses correspondence analysis to create a Moon Plot

@@ -1,0 +1,14 @@
+version: 1
+tests:
+  - data_directory: "data/real_data"
+    width: 500
+    height: 500
+    type: for_each_data_in_directory
+    use_config_as_title: true
+    comments:
+      - location: busy-core-labels
+        text: looks bad
+        status: yellow
+      - location: busy-surface-labels
+        text: surface labeller links are going through circle
+        status: red

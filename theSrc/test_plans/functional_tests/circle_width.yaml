@@ -1,0 +1,17 @@
+version: 1
+tests:
+  - title: vary link width
+    general_comments:
+      - 'Variables to test: [linkWidth].'
+    width: 500
+    height: 500
+    rowSize: 2
+    type: single_page_one_example_per_config
+    comments: []
+    data: data.functional_tests.minimal
+    config:
+      - '{ "circleStrokeWidth": 1}'
+      - '{ "circleStrokeWidth": 2}'
+      - '{ "circleStrokeWidth": 4}'
+      - '{ "circleStrokeWidth": 8}'
+

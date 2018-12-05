@@ -1,0 +1,14 @@
+{
+  "coreNodes": [
+    [ 0.5, 0.5]
+  ],
+  "coreLabels": [
+    "C1"
+  ],
+  "surfaceNodes": [
+    [-0.5,-0.5]
+  ],
+  "surfaceLabels": [
+    "S1"
+  ]
+}
