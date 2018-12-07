@@ -1,6 +1,6 @@
- // TEMPLATE! - update the method signature here
- //  -You will need to update most of this file, as this is where all the specific widget stuff goes
- //  -Consider reusing this._manipulateRootElementSize() and this._addRootSvgToRootElement()
+// TEMPLATE! - update the method signature here
+//  -You will need to update most of this file, as this is where all the specific widget stuff goes
+//  -Consider reusing this._manipulateRootElementSize() and this._addRootSvgToRootElement()
 
  /* global document */
 
@@ -209,7 +209,6 @@ class MoonPlot {
         [ '1.965506694775000000000000000000',
           '-0.229969450459200000000000000000' ]
       ],
-  
       'lunarSurfaceNodes': [
         [ '-0.089228875276690000000000000',
           '-1.495366049410000000000000000' ],
@@ -242,7 +241,6 @@ class MoonPlot {
         [ '1.601830460378000000000000000',
           '-0.575895421910000000000000000' ]
       ],
-  
       'lunarCoreLabels': [
         'Porsche',
         'Nike athletic shoes',
@@ -287,7 +285,6 @@ class MoonPlot {
         'Kmart',
         'Campbell\'s soup'
       ],
-  
       'lunarSurfaceLabels': [
         'Charming',
         'Cheerful',

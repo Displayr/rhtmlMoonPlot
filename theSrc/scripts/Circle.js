@@ -1,13 +1,10 @@
-import {Drag} from "./Drag"
+import {Drag} from './Drag'
 
 class Circle {
+  static drawCircle (data, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor) {
+    this.drawCross(svg, cx, cy, crossColor)
 
-  constructor() {}
-
-  static drawCircle(data, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor) {
-    this.drawCross(svg, cx, cy, crossColor);
-
-    const moonDrag = Drag.setupMoonResize(data, svg, cx, cy, height, width, radius, textColor);
+    const moonDrag = Drag.setupMoonResize(data, svg, cx, cy, height, width, radius, textColor)
 
     let moon = svg.append('circle')
                   .attr('cx', cx)
@@ -24,10 +21,10 @@ class Circle {
     return moon
   }
 
-  static drawCross(svg, x, y, crossColor) {
-    const crossSize = 6;
-    const crossWidth = 1;
-    const centralCross = svg.append('g');
+  static drawCross (svg, x, y, crossColor) {
+    const crossSize = 6
+    const crossWidth = 1
+    const centralCross = svg.append('g')
     centralCross.append('line')
                 .attr('x1', x - crossSize)
                 .attr('y1', y)
@@ -35,7 +32,7 @@ class Circle {
                 .attr('y2', y)
                 .attr('stroke-width', crossWidth)
                 .attr('stroke', crossColor)
-                .attr('class', 'core-cross');
+                .attr('class', 'core-cross')
     centralCross.append('line')
                 .attr('x1', x)
                 .attr('y1', y - crossSize)
@@ -43,7 +40,7 @@ class Circle {
                 .attr('y2', y + crossSize)
                 .attr('stroke-width', crossWidth)
                 .attr('stroke', crossColor)
-                .attr('class', 'core-cross');
+                .attr('class', 'core-cross')
   }
 }
 

@@ -1,46 +1,47 @@
+/* eslint-disable */
 import Random from 'random-js'
 
-const labeler = function() {
+const labeler = function () {
   // Use Mersenne Twister seeded random number generator
-  var random = new Random(Random.engines.mt19937().seed(1))
-  // var random = new Random()
+  let random = new Random(Random.engines.mt19937().seed(1))
+  // let random = new Random()
 
-  let lab = [],
-    anc = [],
-    cx = 1
+  let lab = []
+  let anc = []
+  let cx = 1
   let cy = 1
   let radius = 1
   let labeler = {}
   let svg = {}
 
-  var max_move = 5.0
-  var max_angle = 2*3.1415
-  var acc = 0
-  var rej = 0
+  let max_move = 5.0
+  let max_angle = 2*3.1415
+  let acc = 0
+  let rej = 0
 
   // weights
-  var w_len = 10.0, // leader line length
-    w_inter = 1.0, // leader line intersection
-    w_lablink = 2.0, // leader line-label intersection
-    w_lab2 = 12.0, // label-label overlap
-    w_lab_anc = 8 // label-anchor overlap
-  // w_orient = 0.5 // orientation bias
+  let w_len = 10.0 // leader line length
+  let w_inter = 1.0 // leader line intersection
+  let w_lablink = 2.0 // leader line-label intersection
+  let w_lab2 = 12.0 // label-label overlap
+  let w_lab_anc = 8 // label-anchor overlap
+  // let w_orient = 0.5 // orientation bias
 
   // booleans for user defined functions
-  var user_energy = false,
-    user_schedule = false
+  let user_energy = false
+  let user_schedule = false
 
-  var user_defined_energy,
-    user_defined_schedule
+  let user_defined_energy
+  let user_defined_schedule
 
   let energy = function(index) {
     // energy function, tailored for label placement
     
-    var labelTopPadding = 5
+    let labelTopPadding = 5
     
-    var currLab = lab[index]
-    var currAnc = anc[index]
-    var m = lab.length,
+    let currLab = lab[index]
+    let currAnc = anc[index]
+    let m = lab.length,
       ener = 0,
       dx = currLab.x - currAnc.x,
       dx2 = currLab.x - 4 - currLab.width/2 - currAnc.x,
@@ -59,10 +60,10 @@ const labeler = function() {
       overlap = true
     
     // penalty for length of leader line
-    var minDist = Math.min(dist, dist2, dist3, dist4, dist5, dist6, dist7, dist8)
-    var perfect2Penalty = 1.5
-    var perfect3Penalty = 8
-    var perfect4Penalty = 15
+    let minDist = Math.min(dist, dist2, dist3, dist4, dist5, dist6, dist7, dist8)
+    let perfect2Penalty = 1.5
+    let perfect3Penalty = 8
+    let perfect4Penalty = 15
     switch(minDist) {
       case dist:
         ener += dist * w_len
@@ -98,13 +99,13 @@ const labeler = function() {
     // else if (dx < 0 && dy < 0) { ener += 2 * w_orient }
     // else { ener += 3 * w_orient }
     
-    var x21 = currLab.x - currLab.width / 2,
+    let x21 = currLab.x - currLab.width / 2,
       y21 = currLab.y - (currLab.height + labelTopPadding),
       x22 = currLab.x + currLab.width / 2,
       y22 = currLab.y
-    var x11, x12, y11, y12, x_overlap, y_overlap, overlap_area
+    let x11, x12, y11, y12, x_overlap, y_overlap, overlap_area
     
-    for (var i = 0; i < m; i++) {
+    for (let i = 0; i < m; i++) {
       if (i !== index) {
         
         // penalty for intersection of leader lines
@@ -134,11 +135,11 @@ const labeler = function() {
       ener += (overlap_area * w_lab_anc)
       
       // penalty for label-leader line intersection
-      var intersecBottom = intersect(currLab.x, currLab.x + currLab.width, anc[i].x, lab[i].x + lab[i].width,
+      let intersecBottom = intersect(currLab.x, currLab.x + currLab.width, anc[i].x, lab[i].x + lab[i].width,
         currLab.y, currLab.y, anc[i].y, lab[i].y
       )
       
-      var intersecTop = intersect(currLab.x, currLab.x + currLab.width, anc[i].x, lab[i].x + lab[i].width,
+      let intersecTop = intersect(currLab.x, currLab.x + currLab.width, anc[i].x, lab[i].x + lab[i].width,
         currLab.y-currLab.height, currLab.y-currLab.height, anc[i].y, lab[i].y
       )
       if (intersecBottom) ener += w_lablink
@@ -147,10 +148,10 @@ const labeler = function() {
     return ener
   }
   
-  var adjustForBoundaries = function(lab, anc, i, x_old, y_old) {
-    var asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius)
-    var asinangleB = Math.asin((lab[i].y - cy)/radius)
-    // var investigate = null
+  let adjustForBoundaries = function(lab, anc, i, x_old, y_old) {
+    let asinangleT = Math.asin((lab[i].y - cy - lab[i].height)/radius)
+    let asinangleB = Math.asin((lab[i].y - cy)/radius)
+    // let investigate = null
     // investigate = 4
     
     
@@ -213,14 +214,14 @@ const labeler = function() {
     // Monte Carlo translation move
     
     // select a random label
-    var i = Math.floor(random.real(0,1) * lab.length)
+    let i = Math.floor(random.real(0,1) * lab.length)
     
     // save old coordinates
-    var x_old = lab[i].x
-    var y_old = lab[i].y
+    let x_old = lab[i].x
+    let y_old = lab[i].y
     
     // old energy
-    var old_energy
+    let old_energy
     if (user_energy) {old_energy = user_defined_energy(i, lab, anc)}
     else {old_energy = energy(i)}
     
@@ -239,12 +240,12 @@ const labeler = function() {
     adjustForBoundaries(lab, anc, i, x_old, y_old)
     
     // new energy
-    var new_energy
+    let new_energy
     if (user_energy) {new_energy = user_defined_energy(i, lab, anc)}
     else {new_energy = energy(i)}
     
     // delta E
-    var delta_energy = new_energy - old_energy
+    let delta_energy = new_energy - old_energy
     
     if (random.real(0,1) < Math.exp(-delta_energy / currT)) {
       // if (delta_energy < 0) {
@@ -262,29 +263,29 @@ const labeler = function() {
     // Monte Carlo rotation move
     
     // select a random label
-    var i = Math.floor(random.real(0,1) * lab.length)
+    let i = Math.floor(random.real(0,1) * lab.length)
     
     // save old coordinates
-    var x_old = lab[i].x
-    var y_old = lab[i].y
+    let x_old = lab[i].x
+    let y_old = lab[i].y
     
     // old energy
-    var old_energy
+    let old_energy
     if (user_energy) {old_energy = user_defined_energy(i, lab, anc)}
     else {old_energy = energy(i)}
     
     // random angle
-    var angle = (random.real(0,1) - 0.5) * max_angle
+    let angle = (random.real(0,1) - 0.5) * max_angle
     
-    var s = Math.sin(angle)
-    var c = Math.cos(angle)
+    let s = Math.sin(angle)
+    let c = Math.cos(angle)
     
     // translate label (relative to anchor at origin):
     lab[i].x -= anc[i].x
     lab[i].y -= anc[i].y
     
     // rotate label
-    var x_new = lab[i].x * c - lab[i].y * s,
+    let x_new = lab[i].x * c - lab[i].y * s,
       y_new = lab[i].x * s + lab[i].y * c
     
     // translate label back
@@ -292,7 +293,7 @@ const labeler = function() {
     lab[i].y = y_new + anc[i].y
     
     // hard wall boundaries
-    var boundaryBuffer = 5
+    let boundaryBuffer = 5
     if (lab[i].y < cy - radius + lab[i].height) {
       lab[i].y = cy - radius + lab[i].height + boundaryBuffer
     }
@@ -302,12 +303,12 @@ const labeler = function() {
     adjustForBoundaries(lab, anc, i, x_old, y_old)
     
     // new energy
-    var new_energy
+    let new_energy
     if (user_energy) {new_energy = user_defined_energy(i, lab, anc)}
     else {new_energy = energy(i)}
     
     // delta E
-    var delta_energy = new_energy - old_energy
+    let delta_energy = new_energy - old_energy
     
     if (random.real(0,1) < Math.exp(-delta_energy / currT)) {
       // if (delta_energy < 0) {
@@ -334,12 +335,12 @@ const labeler = function() {
     
   }
   
-  var intersect = function(x1, x2, x3, x4, y1, y2, y3, y4) {
+  let intersect = function(x1, x2, x3, x4, y1, y2, y3, y4) {
     // returns true if two lines intersect, else false
     // from http://paulbourke.net/geometry/lineline2d/
     
-    var mua, mub
-    var denom, numera, numerb
+    let mua, mub
+    let denom, numera, numerb
     
     denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1)
     numera = (x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)
@@ -354,23 +355,23 @@ const labeler = function() {
     return false
   }
   
-  var cooling_schedule = function(currT, initialT, nsweeps) {
+  let cooling_schedule = function(currT, initialT, nsweeps) {
     // linear cooling
     return (currT - (initialT / nsweeps))
   }
 
   labeler.start = function(nsweeps) {
-    for (var i = 0; i < lab.length; i++) {
+    for (let i = 0; i < lab.length; i++) {
       adjustForBoundaries(lab, anc, i)
     }
     
     // main simulated annealing function
-    var m = lab.length,
+    let m = lab.length,
       currT = 1.0,
       initialT = 1.0
     
-    for (var i = 0; i < nsweeps; i++) {
-      for (var j = 0; j < m; j++) {
+    for (let i = 0; i < nsweeps; i++) {
+      for (let j = 0; j < m; j++) {
         if (random.real(0,1) < 0.8) { mcmove(currT) }
         else { mcrotate(currT) }
       }
@@ -405,7 +406,7 @@ const labeler = function() {
     // users insert label positions
     if (!arguments.length) return lab
     lab = x
-    for(var i=0; i<lab.length;i++) {
+    for(let i=0; i<lab.length;i++) {
       // lab[i].y -= 5
       // svg.append('rect').attr('x', lab[i].x)
       //                   .attr('y', lab[i].y - lab[i].height)
@@ -445,3 +446,4 @@ const labeler = function() {
 }
 
 module.exports = labeler
+/* eslint-enable */
