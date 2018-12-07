@@ -3,6 +3,7 @@
 .RData
 .DSStore
 .idea
+.keys
 bower_components
 node_modules
 browser
