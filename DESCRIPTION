@@ -1,4 +1,4 @@
-Package: rhtmlTemplate
+Package: rhtmlMoonPlot
 Type: Package
 Title: An opinionated template for the creation of html widget repositories using ES6
 Version: 0.1.0

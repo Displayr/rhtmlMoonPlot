@@ -1,8 +1,6 @@
-# TEMPLATE! - update the method descriptions.
-
-#' rhtmlTemplate HTML Widget
+#' rhtmlMoonPlot HTML Widget
 #'
-#' @description A HTMLWidget that ...
+#' @description A HTMLWidget that renders moonplots
 #'
 #' @section Usage Scenarios:
 #'
@@ -12,19 +10,18 @@
 #'
 #' @examples
 #'
-#' rhtmlTemplate::template('{}')
+#' rhtmlMoonPlot::moonplot('{}')
 #'
-#' @author First Last <first.last@gmail.com>
+#' @author Displayr <opensource@displayr.com>
 #'
-#' @source https://github.com/Displayr/rhtmlTemplate
+#' @source https://github.com/Displayr/rhtmlMoonPlot
 #'
 #' @import htmlwidgets
 #'
 #' @export
 #'
 
-# TEMPLATE! - update the function name
-moonPlot <- function(settingsJsonString = '{}') {
+moonplot <- function(settingsJsonString = '{}') {
 
   DEFAULT_WIDGET_WIDTH <- 600
   DEFAULT_WIDGET_HEIGHT <- 600
@@ -53,7 +50,6 @@ moonPlot <- function(settingsJsonString = '{}') {
   }
 
   htmlwidgets::createWidget(
-    # TEMPLATE! - update the name here
     name = 'rhtmlMoonPlot',
     settingsJsonString,
     width = width,
@@ -65,7 +61,6 @@ moonPlot <- function(settingsJsonString = '{}') {
       viewer.fill = TRUE,
       padding = 0
     ),
-    # TEMPLATE! - update the name here
     package = 'rhtmlMoonPlot'
   )
 }

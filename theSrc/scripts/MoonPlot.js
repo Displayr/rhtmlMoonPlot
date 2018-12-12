@@ -57,7 +57,6 @@ class MoonPlot {
 
   setConfig (config) {
     this.config = config
-    console.log('setConfig. Change this function in your rhtmlWidget')
     console.log(this.config)
 
     if (_.has(this.config, 'lunarCoreNodes') && _.has(this.config, 'lunarSurfaceNodes') && _.has(this.config, 'lunarCoreLabels') && _.has(this.config, 'lunarSurfaceLabels')) {
@@ -125,7 +124,6 @@ class MoonPlot {
   }
 
   _draw () {
-    console.log('_draw. Change this function in your rhtmlWidget')
     console.log('the outer SVG has already been created and added to the DOM. You should do things with it')
     const data = this.config
     this.plot.draw(data, this.rootElement)
