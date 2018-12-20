@@ -6,7 +6,7 @@ import 'babel-polyfill'
 import widgetFactory from './rhtmlMoonPlot.factory'
 
 HTMLWidgets.widget({
-  name: 'rhtmlTemplate',
+  name: 'rhtmlMoonPlot',
   type: 'output',
   factory: widgetFactory
 })
