@@ -4,7 +4,7 @@ class Circle {
   static drawCircle (data, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor) {
     this.drawCross(svg, cx, cy, crossColor)
 
-    // const moonDrag = Drag.setupMoonResize(data, svg, cx, cy, height, width, radius, textColor)
+    const moonDrag = Drag.setupMoonResize(data, svg, cx, cy, height, width, radius, textColor)
 
     let moon = svg.append('circle')
                   .attr('cx', cx)
@@ -16,7 +16,7 @@ class Circle {
                   .style('fill', 'none')
                   .style('stroke', circleColor)
                   .style('fill-opacity', 0.2)
-                  // .call(moonDrag)
+                  .call(moonDrag)
 
     return moon
   }
