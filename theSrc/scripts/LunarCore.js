@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import 'd3-transition'
 import {Drag} from './Drag'
 import labeler from './labeler'
 
@@ -27,7 +28,7 @@ export class LunarCore {
          .style('font-family', 'Arial')
          .attr('title', d => d.name)
          .text(d => d.name)
-         // .call(drag2)
+         .call(drag2)
          .append('title').text(d => d.name)
       return svg.selectAll('.core-label')
     }
@@ -50,14 +51,15 @@ export class LunarCore {
     let lunarCoreLabelsSvg = []
     const lunarCoreLabels = []
     const anchorArray = []
-    const lunarCoreDrag = null
-    // const lunarCoreDrag = Drag.setupLunarCoreDragAndDrop(svg,
-    //                                                        lunarCoreLabels,
-    //                                                        anchorArray,
-    //                                                        radius,
-    //                                                        cx,
-    //                                                        cy,
-    //                                                        textColor)
+    const lunarCoreDrag = Drag.setupLunarCoreDragAndDrop(
+      svg,
+      lunarCoreLabels,
+      anchorArray,
+      radius,
+      cx,
+      cy,
+      textColor
+    )
 
     // prevent labels from escaping moon surface
     for (let label of Array.from(lunarCoreLabelsData)) {
@@ -146,11 +148,12 @@ export class LunarCore {
      .start(500)
 
     let n = 0
-    // lunarCoreLabelsSvg.transition()
-    //                      .duration(800)
-    //                      .attr('x', d => d.x)
-    //                      .attr('y', d => d.y)
-    //                      .each(() => n++)
+
+    lunarCoreLabelsSvg.transition()
+                         .duration(800)
+                         .attr('x', d => d.x)
+                         .attr('y', d => d.y)
+                         .each(() => n++)
 
                          // ALREADY OFF
                          // .each('end', function() {
@@ -165,9 +168,9 @@ export class LunarCore {
     //   return Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray, linkWidth)
     // }
 
-    // lunarCoreLinksSvg.transition()
-    //                  .duration(800)
-    //                  .attr('x2', d => d.x)
-    //                  .attr('y2', d => d.y)
+    lunarCoreLinksSvg.transition()
+                     .duration(800)
+                     .attr('x2', d => d.x)
+                     .attr('y2', d => d.y)
   }
 }
