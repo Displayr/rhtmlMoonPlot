@@ -55,7 +55,7 @@ class MoonPlotClass {
 
     Circle.drawCircle(this.data, baseSvg, xCenter, yCenter, radius, this.height, this.width, this.circleColor, this.crossColor, this.textColor)
     LunarCore.drawLunarCoreLabels(this.data.lunarCoreLabels, baseSvg, xCenter, yCenter, radius, this.textColor, this.linkWidth)
-    // LunarSurface.drawLunarSurfaceLabels(this.data.lunarSurfaceLabels, baseSvg, xCenter, yCenter, radius, this.height, this.width, this.textColor, 14)
+    LunarSurface.drawLunarSurfaceLabels(this.data.lunarSurfaceLabels, baseSvg, xCenter, yCenter, radius, this.height, this.width, this.textColor, 14)
   }
 }
 
