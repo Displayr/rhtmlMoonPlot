@@ -2,34 +2,53 @@ import _ from 'lodash'
 import MoonPlot from './MoonPlot'
 import DisplayError from './DisplayError'
 
-module.exports = function (element, width, height, stateChangedCallback) {
-  // TEMPLATE! - update the class name below to the name of your main class
-  const instance = new MoonPlot(element, width, height, stateChangedCallback)
+// TODO: finish porting this to match "no resize just redo" style
+
+module.exports = function (element, w, h, stateChangedFn) {
+  const stateChangedFnPresent = (typeof stateChangedFn === 'function') ? 'present' : 'absent'
+
+  let configCopy = null
+  let stateCopy = null
+
+  const moonplot = new MoonPlot()
+
+  function doRenderValue (config, state) {
+    try {
+      element.innerHTML = ''
+      moonplot.reset()
+      moonplot.setConfig(config)
+      moonplot.setUserState(state)
+
+      // if (stateChangedFnPresent) {
+      //   moonplot.addStateListener(stateChangedFn)
+      // }
+      // if (state && moonplot.checkState(state)) {
+      //   moonplot.restoreState(state)
+      // } else {
+      //   moonplot.resetState()
+      // }
+      //
+      // moonplot.addStateListener(newState => { stateCopy = newState })
+
+      return moonplot.draw(element)
+    } catch (err) {
+      _showError(err, element)
+    }
+  }
+
   return {
-    resize (newWidth, newHeight) {
-      instance.resize(newWidth, newHeight)
+    resize () {
+      doRenderValue(configCopy, stateCopy)
     },
 
-    renderValue (inputConfig, userState) {
-      let config = null
+    renderValue (inputConfig, state) {
       try {
-        config = _parseConfig(inputConfig)
+        const config = _parseConfig(inputConfig)
+        configCopy = _.cloneDeep(config)
+        doRenderValue(config, state)
       } catch (err) {
         const readableError = new Error(`MoonPlot error : Cannot parse 'settingsJsonString': ${err}`)
         _showError(readableError, element)
-      }
-
-      // @TODO for now ignore the width height that come through from config and use the ones passed to constructor
-      // @TODO need to change this to match rhtmlPictograph
-      delete config.width
-      delete config.height
-
-      try {
-        instance.setConfig(config)
-        instance.setUserState(userState)
-        return instance.draw()
-      } catch (err) {
-        _showError(err, element)
       }
     }
   }
@@ -49,3 +68,5 @@ function _showError (error, element) {
   errorHandler.draw()
   throw new Error(error)
 }
+
+

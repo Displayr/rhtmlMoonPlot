@@ -11,12 +11,14 @@ class MoonPlotClass {
     this.id = id
   }
 
-  draw (data, el) {
+  draw (data, baseSvg) {
     Utils.normalizeCoreNodes(data.lunarCoreNodes)
     const lunarSurfaceSizes = Utils.calculateSurfaceLabelSizes(data.lunarSurfaceNodes, 1.5, 0.5)
     Utils.calculateSurfaceNodePositions(data.lunarSurfaceNodes)
     const lunarCoreLabels = []
     const lunarSurfaceLabels = []
+
+    // TODO unwhile this. Maybe move to build config
     let i = 0
     while (i < data.lunarCoreLabels.length) {
       lunarCoreLabels.push({
@@ -41,14 +43,6 @@ class MoonPlotClass {
       lunarCoreLabels: lunarCoreLabels
     }
 
-    // ----------------------------------------------
-    // d3.selectAll(`#${this.id}`).remove()
-    // const svg = d3.select(el)
-    //               .append('svg')
-    //               .attr('width', this.width)
-    //               .attr('height', this.height)
-    //               .attr('class', 'moonplot-container')
-    const svg = d3.select(`#${this.id}`)
     const xCenter = this.width / 2
     const yCenter = this.height / 2
     const radius = Math.min(this.height, this.width) / 3
@@ -59,16 +53,9 @@ class MoonPlotClass {
     this.crossColor = 'grey'
     this.linkWidth = 1
 
-    Circle.drawCircle(this.data, svg, xCenter, yCenter, radius, this.height, this.width, this.circleColor, this.crossColor, this.textColor)
-    LunarCore.drawLunarCoreLabels(this.data.lunarCoreLabels, svg, xCenter, yCenter, radius, this.textColor, this.linkWidth)
-    LunarSurface.drawLunarSurfaceLabels(this.data.lunarSurfaceLabels, svg, xCenter, yCenter, radius, this.height, this.width, this.textColor, 14)
-  }
-
-  redraw (width, height, el) {
-    this.width = width
-    this.height = height
-    d3.select('.moonplot-container').remove()
-    return this.draw(this.data, el)
+    Circle.drawCircle(this.data, baseSvg, xCenter, yCenter, radius, this.height, this.width, this.circleColor, this.crossColor, this.textColor)
+    // LunarCore.drawLunarCoreLabels(this.data.lunarCoreLabels, baseSvg, xCenter, yCenter, radius, this.textColor, this.linkWidth)
+    // LunarSurface.drawLunarSurfaceLabels(this.data.lunarSurfaceLabels, baseSvg, xCenter, yCenter, radius, this.height, this.width, this.textColor, 14)
   }
 }
 
