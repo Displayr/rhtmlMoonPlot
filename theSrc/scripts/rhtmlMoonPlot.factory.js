@@ -19,16 +19,16 @@ module.exports = function (element, w, h, stateChangedFn) {
       moonplot.setConfig(config)
       moonplot.setUserState(state)
 
-      // if (stateChangedFnPresent) {
-      //   moonplot.addStateListener(stateChangedFn)
-      // }
-      // if (state && moonplot.checkState(state)) {
-      //   moonplot.restoreState(state)
-      // } else {
-      //   moonplot.resetState()
-      // }
-      //
-      // moonplot.addStateListener(newState => { stateCopy = newState })
+      if (stateChangedFnPresent) {
+        moonplot.addStateListener(stateChangedFn)
+      }
+      if (state && moonplot.checkState(state)) {
+        moonplot.restoreState(state)
+      } else {
+        moonplot.resetState()
+      }
+
+      moonplot.addStateListener(newState => { stateCopy = newState })
 
       return moonplot.draw(element)
     } catch (err) {
@@ -68,5 +68,3 @@ function _showError (error, element) {
   errorHandler.draw()
   throw new Error(error)
 }
-
-

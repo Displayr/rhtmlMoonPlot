@@ -5,8 +5,6 @@ import * as d3 from 'd3'
 import MoonPlotClass from './MoonPlotClass'
 import buildConfig from './buildConfig'
 
-
-
 class MoonPlot {
   static initClass () {
     this.widgetIndex = 0
@@ -69,7 +67,7 @@ MoonPlot.initClass()
 module.exports = MoonPlot
 
 // TODO to utils
-function getContainerDimensions(rootElement) {
+function getContainerDimensions (rootElement) {
   try {
     return rootElement.getBoundingClientRect()
   } catch (err) {

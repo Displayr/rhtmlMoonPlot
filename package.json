@@ -19,6 +19,8 @@
     "es6-promise": "3.2.1",
     "jquery": "2.2.2",
     "lodash": "4.6.1",
-    "random-js": "1.0.8"
+    "mustache": "^3.0.1",
+    "random-js": "1.0.8",
+    "recursive-readdir": "^2.2.2"
   }
 }

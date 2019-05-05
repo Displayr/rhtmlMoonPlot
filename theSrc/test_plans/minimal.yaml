@@ -1,0 +1,9 @@
+version: 1
+tests:
+  - type: single_widget_single_page
+    general_comments:
+      - 'this is the minimal example of a moon plot'
+    comments: []
+    width: 600
+    height: 400
+    data: data.functional_tests.minimal

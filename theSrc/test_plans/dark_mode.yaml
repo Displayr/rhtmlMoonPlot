@@ -1,0 +1,9 @@
+version: 1
+tests:
+  - type: single_widget_single_page
+    general_comments:
+      - 'NOT SUPPORTED. TODO : this demonstrates all color changes required to support dark mode'
+    comments: []
+    width: 600
+    height: 300
+    data: data.functional_tests.minimal

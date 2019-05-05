@@ -1,0 +1,10 @@
+version: 1
+tests:
+  - type: single_widget_single_page
+    comments:
+      - location: 0
+        text: left most tree , left side frond is clipped
+        status: yellow
+    width: 1000
+    height: 1000
+    data: data.real_data.soft_drink_word_association
