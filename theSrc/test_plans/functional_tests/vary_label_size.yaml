@@ -1,0 +1,19 @@
+version: 1
+tests:
+  - title: vary outer label size
+    general_comments:
+      - 'Variables to test: [labelSizeConst].'
+    width: 500
+    height: 500
+    rowSize: 4
+    type: single_page_one_example_per_config
+    comments: []
+    data: data.functional_tests.minimal
+    config:
+      - '{ "labelSizeConst": 4}'
+      - '{ "labelSizeConst": 8}'
+      - '{ "labelSizeConst": 12}'
+      - '{ "labelSizeConst": 16}'
+      - '{ "labelSizeConst": 20}'
+      - '{ "labelSizeConst": 24}'
+

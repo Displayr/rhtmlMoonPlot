@@ -10,34 +10,34 @@ class MoonPlotClass {
     this.id = id
   }
 
-  draw (data, baseSvg) {
-    Utils.normalizeCoreNodes(data.lunarCoreNodes)
-    const lunarSurfaceSizes = Utils.calculateSurfaceLabelSizes(data.lunarSurfaceNodes, 1.5, 0.5)
-    Utils.calculateSurfaceNodePositions(data.lunarSurfaceNodes)
+  draw (config, baseSvg) {
+    Utils.normalizeCoreNodes(config.lunarCoreNodes)
+    const lunarSurfaceSizes = Utils.calculateSurfaceLabelSizes(config.lunarSurfaceNodes, 1.5, 0.5)
+    Utils.calculateSurfaceNodePositions(config.lunarSurfaceNodes)
     const lunarCoreLabels = []
     const lunarSurfaceLabels = []
 
     // TODO unwhile this. Maybe move to build config
     let i = 0
-    while (i < data.lunarCoreLabels.length) {
+    while (i < config.lunarCoreLabels.length) {
       lunarCoreLabels.push({
-        name: data.lunarCoreLabels[i],
-        x: data.lunarCoreNodes[i][0],
-        y: data.lunarCoreNodes[i][1]
+        name: config.lunarCoreLabels[i],
+        x: config.lunarCoreNodes[i][0],
+        y: config.lunarCoreNodes[i][1]
       })
       i++
     }
     i = 0
-    while (i < data.lunarSurfaceLabels.length) {
+    while (i < config.lunarSurfaceLabels.length) {
       lunarSurfaceLabels.push({
-        name: data.lunarSurfaceLabels[i],
-        x: data.lunarSurfaceNodes[i][0],
-        y: data.lunarSurfaceNodes[i][1],
+        name: config.lunarSurfaceLabels[i],
+        x: config.lunarSurfaceNodes[i][0],
+        y: config.lunarSurfaceNodes[i][1],
         size: lunarSurfaceSizes[i]
       })
       i++
     }
-    this.data = {
+    const data = {
       lunarSurfaceLabels: lunarSurfaceLabels,
       lunarCoreLabels: lunarCoreLabels
     }
@@ -46,15 +46,9 @@ class MoonPlotClass {
     const yCenter = this.height / 2
     const radius = Math.min(this.height, this.width) / 3
 
-    // Styling
-    this.textColor = '#333333'
-    this.circleColor = '#042a4b'
-    this.crossColor = 'grey'
-    this.linkWidth = 1
-
-    Circle.drawCircle(this.data, baseSvg, xCenter, yCenter, radius, this.height, this.width, this.circleColor, this.crossColor, this.textColor)
-    LunarCore.drawLunarCoreLabels(this.data.lunarCoreLabels, baseSvg, xCenter, yCenter, radius, this.textColor, this.linkWidth)
-    LunarSurface.drawLunarSurfaceLabels(this.data.lunarSurfaceLabels, baseSvg, xCenter, yCenter, radius, this.height, this.width, this.textColor, 14)
+    Circle.drawCircle(data, baseSvg, xCenter, yCenter, radius, this.height, this.width, config.circleColor, config.crossColor, config.textColor)
+    LunarCore.drawLunarCoreLabels(data.lunarCoreLabels, baseSvg, xCenter, yCenter, radius, config.textColor, config.linkWidth)
+    LunarSurface.drawLunarSurfaceLabels(data.lunarSurfaceLabels, baseSvg, xCenter, yCenter, radius, this.height, this.width, config.textColor, config.labelSizeConst)
   }
 }
 

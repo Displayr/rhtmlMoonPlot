@@ -4,7 +4,12 @@ const defaultConfig = {
   lunarCoreNodes: [],
   lunarSurfaceNodes: [],
   lunarCoreLabels: [],
-  lunarSurfaceLabels: []
+  lunarSurfaceLabels: [],
+  textColor: '#333333',
+  circleColor: '#042a4b',
+  crossColor: 'grey',
+  linkWidth: 1,
+  labelSizeConst: 14
 }
 
 // TODO check array length matches surface(node v label) core(node v label)

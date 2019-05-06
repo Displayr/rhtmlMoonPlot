@@ -1,0 +1,6 @@
+version: 1
+tests:
+  - type: single_widget_single_page
+    width: 600
+    height: 400
+    data: data.functional_tests.minimal|config.red
