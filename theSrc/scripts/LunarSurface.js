@@ -105,7 +105,7 @@ export class LunarSurface {
 
     t = null
 
-    _(lunarSurfaceLabelsData).each((label,i) => {
+    _(lunarSurfaceLabelsData).each((label, i) => {
       x =  label.newX + cx
       y = -label.newY + cy
 

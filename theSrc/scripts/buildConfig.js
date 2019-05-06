@@ -18,7 +18,6 @@ const defaultConfig = {
 const configArrayFields = ['lunarCoreNodes', 'lunarSurfaceNodes', 'lunarCoreLabels', 'lunarSurfaceLabels']
 
 function buildConfig (userConfig) {
-
   _(configArrayFields).each(requiredArray => {
     if (!_.has(userConfig, requiredArray)) { throw new Error(`Invalid config. Missing ${requiredArray}`) }
     if (!_.isArray(userConfig[requiredArray])) { throw new Error(`Invalid config. ${requiredArray} must be array`) }
