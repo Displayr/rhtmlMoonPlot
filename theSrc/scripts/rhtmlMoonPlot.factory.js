@@ -10,14 +10,13 @@ module.exports = function (element, w, h, stateChangedFn) {
   let configCopy = null
   let stateCopy = null
 
-  const moonplot = new MoonPlot()
+  const moonplot = new MoonPlot(element)
 
   function doRenderValue (config, state) {
     try {
       element.innerHTML = ''
       moonplot.reset()
       moonplot.setConfig(config)
-      moonplot.setUserState(state)
 
       if (stateChangedFnPresent) {
         moonplot.addStateListener(stateChangedFn)

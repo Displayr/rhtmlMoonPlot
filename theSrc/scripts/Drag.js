@@ -10,7 +10,8 @@ export class Drag {
                             radius,
                             xCenter,
                             yCenter,
-                            textColor) {
+                            textColor,
+                            onDragEnd) {
     const dragStart = function () {
       svg.selectAll('.core-link').remove()
       return d3.select(this).style('fill', 'red')
@@ -37,11 +38,23 @@ export class Drag {
       })()
     }
 
-    const dragEnd = function () {
+    const dragEnd = function (d) {
       d3.select(this).style('fill', textColor)
       const coreLabels = d3.selectAll('.core-label').nodes()
       Utils.adjustCoreLabelLength(coreLabels, radius, xCenter, yCenter)
-      return Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray)
+      Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray)
+
+      console.log('d')
+      console.log(JSON.stringify(d, {}, 2))
+
+      console.log('d3.event.x')
+      console.log(JSON.stringify(d3.event.x, {}, 2))
+
+      console.log('d3.event.y')
+      console.log(JSON.stringify(d3.event.y, {}, 2))
+
+
+      onDragEnd()
     }
 
     return d3.drag()

@@ -2,10 +2,11 @@
 
 import _ from 'lodash'
 import * as d3 from 'd3'
+
+import PlotState from './plotState'
 import {LunarSurface} from './LunarSurface'
 import {LunarCore} from './LunarCore'
 import Circle from './Circle'
-
 import buildConfig from './buildConfig'
 
 class MoonPlot {
@@ -16,42 +17,60 @@ class MoonPlot {
 
   constructor () {
     this.id = `${MoonPlot.widgetName}-${MoonPlot.widgetIndex++}`
+    this.registeredStateListeners = []
     this.init()
   }
 
   init () {
-    this.state = {}
+    this.plotState = new PlotState()
   }
 
   reset () {
+    this.registeredStateListeners.forEach(dergisterFn => dergisterFn())
     this.init()
   }
 
   setConfig (config) {
     this.config = buildConfig(config)
-    console.log(this.config)
   }
 
-  setUserState (userState = {}) {
-    if (_.isUndefined(userState) || _.isNull(userState)) {
-      this.state = {}
-    } else {
-      this.state = userState
-    }
+  static defaultState () {
+    return _.cloneDeep({
+      lunarCoreLabels: [],
+      lunarSurfaceLabels: [],
+      plotSize: { width: null, height: null },
+      circleRadius: null,
+      labelPositioning: {
+        surface: {},
+        code: {},
+      },
+    })
   }
 
-  addStateListener () {
-    console.log('addStateListener not implemented')
+  addStateListener (listener) {
+    this.registeredStateListeners.push(this.plotState.addListener(listener))
   }
 
-  checkState () {
-    console.log('checkState not implemented')
+  checkState (previousUserState) {
+    const stateIsValid = !_.isNull(previousUserState) &&
+      _.isEqual(previousUserState.lunarSurfaceLabels, this.config.lunarSurfaceLabels) &&
+      _.isEqual(previousUserState.lunarCoreLabels, this.config.lunarCoreLabels) &&
+      _.has(previousUserState, 'plotSize') &&
+      _.has(previousUserState, 'circleRadius') &&
+      _.has(previousUserState, 'labelPositioning')
+
+    return stateIsValid
   }
-  restoreState () {
-    console.log('restoreState not implemented')
+
+  restoreState (previousUserState) {
+    this.plotState.initialiseState(previousUserState)
   }
+
   resetState () {
-    console.log('resetState not implemented')
+    this.plotState.setState(_.merge({},MoonPlot.defaultState(), {
+      lunarSurfaceLabels: this.config.lunarSurfaceLabels,
+      lunarCoreLabels: this.config.lunarCoreLabels
+    }))
   }
 
   draw (rootElement) {
@@ -67,9 +86,9 @@ class MoonPlot {
     const radius = Math.min(height, width) / 3 // TODO move to config
     const {lunarCoreLabels, lunarSurfaceLabels, circleColor, crossColor, textColor, linkWidth, labelSizeConst} = this.config
 
-    Circle.drawCircle({lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor})
-    LunarCore.drawLunarCoreLabels({lunarCoreLabelsData: lunarCoreLabels, svg, cx, cy, radius, textColor, linkWidth}) // TODO remove need for lunarCoreLabelsData
-    LunarSurface.drawLunarSurfaceLabels({lunarSurfaceLabelsData: lunarSurfaceLabels, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) // TODO remove need for lunarSurfaceLabelsData
+    Circle.drawCircle({plotState: this.plotState, lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor})
+    LunarCore.drawLunarCoreLabels({plotState: this.plotState, lunarCoreLabelsData: lunarCoreLabels, svg, cx, cy, radius, textColor, linkWidth}) // TODO remove need for lunarCoreLabelsData
+    LunarSurface.drawLunarSurfaceLabels({plotState: this.plotState, lunarSurfaceLabelsData: lunarSurfaceLabels, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) // TODO remove need for lunarSurfaceLabelsData
   }
 }
 MoonPlot.initClass()

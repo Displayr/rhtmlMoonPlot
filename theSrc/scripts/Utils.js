@@ -344,6 +344,7 @@ class Utils {
         //                     .attr('r', 2)
         //                     .attr('stroke')
         if (newLinkPt != null) {
+          console.log('adding core link')
           svg.append('line').attr('class', 'core-link')
           .attr('x1', anchorArray[j].x)
           .attr('y1', anchorArray[j].y)

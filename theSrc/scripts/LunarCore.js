@@ -2,9 +2,10 @@ import * as d3 from 'd3'
 import 'd3-transition'
 import {Drag} from './Drag'
 import labeler from './labeler'
+import Utils from './Utils'
 
 export class LunarCore {
-  static drawLunarCoreLabels ({lunarCoreLabelsData, svg, cx, cy, radius, textColor, linkWidth}) {
+  static drawLunarCoreLabels ({plotState, lunarCoreLabelsData, svg, cx, cy, radius, textColor, linkWidth}) {
     let x, y
     const drawLabels = function (labelData, drag2) {
       svg.selectAll('.core-label')
@@ -44,6 +45,10 @@ export class LunarCore {
       .attr('stroke', 'gray')
     }
 
+    const onDragEnd = (id, coord) => {
+      console.log(`onDragEnd(${id}, ${coord})`)
+    }
+
     let lunarCoreLabelsSvg = []
     const lunarCoreLabels = []
     const anchorArray = []
@@ -54,7 +59,8 @@ export class LunarCore {
       radius,
       cx,
       cy,
-      textColor
+      textColor,
+      onDragEnd
     )
 
     // prevent labels from escaping moon surface
@@ -143,30 +149,20 @@ export class LunarCore {
      .label(lunarCoreLabels)
      .start(500)
 
-    let n = 0
-
     lunarCoreLabelsSvg.transition()
-                         .duration(800)
-                         .attr('x', d => d.x)
-                         .attr('y', d => d.y)
-                         .each(() => n++)
+      .duration(800)
+      .attr('x', d => d.x)
+      .attr('y', d => d.y)
+      .on('end', () => {
+        svg.selectAll('.init-core-link').remove()
+        // adjustCoreLabelLength(lunarCoreLabelsSvg.node(), radius, cx, cy)
+        Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray, linkWidth)
+      })
 
-                         // ALREADY OFF
-                         // .each('end', function() {
-                         //   n--
-                         //   if (!n) { return endAll() }
-                         // })
-
-    // ALREADY OFF
-    // var endAll = function() {
-    //   svg.selectAll('.init-core-link').remove()
-    //   // adjustCoreLabelLength(lunarCoreLabelsSvg.node(), radius, cx, cy)
-    //   return Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray, linkWidth)
-    // }
 
     lunarCoreLinksSvg.transition()
-                     .duration(800)
-                     .attr('x2', d => d.x)
-                     .attr('y2', d => d.y)
+      .duration(800)
+      .attr('x2', d => d.x)
+      .attr('y2', d => d.y)
   }
 }
