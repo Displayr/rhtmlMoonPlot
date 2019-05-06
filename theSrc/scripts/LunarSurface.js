@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import Utils from './Utils'
 import {Drag} from './Drag'
 
@@ -104,14 +105,18 @@ export class LunarSurface {
 
     t = null
 
-    for (label of Array.from(lunarSurfaceLabelsData)) {
+    _(lunarSurfaceLabelsData).each((label,i) => {
       x =  label.newX + cx
       y = -label.newY + cy
+
+      console.log(`i: ${i}`)
 
       if (label.newX < 0) {
         t = svg.append('text')
         .style('fill', textColor)
         .attr('class', 'surface-label')
+        .attr('data-index', i)
+        .attr('data-label', label.name)
         .attr('x', x)
         .attr('y', y)
         .attr('ox', x)
@@ -129,6 +134,8 @@ export class LunarSurface {
         t = svg.append('text')
         .style('fill', textColor)
         .attr('class', 'surface-label')
+        .attr('data-index', i)
+        .attr('data-label', label.name)
         .attr('y', y)
         .attr('x', x)
         .attr('ox', x)
@@ -144,7 +151,7 @@ export class LunarSurface {
         .call(drag)
       }
       lunarSurfaceLabels.push(t.node())
-    }
+    })
     return Utils.adjustSurfaceLabelLength(lunarSurfaceLabels, height, width)
   }
 }

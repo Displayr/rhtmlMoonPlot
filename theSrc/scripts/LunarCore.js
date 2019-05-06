@@ -13,6 +13,8 @@ export class LunarCore {
          .append('text')
          .style('fill', textColor)
          .attr('class', 'core-label')
+         .attr('data-index', (d,i) => i)
+         .attr('data-label', d => d.name)
          .attr('x', d => d.x)
          .attr('y', d => d.y)
          .attr('ox', d => d.x)
