@@ -128,7 +128,7 @@ export class Drag {
              .on('end', dragEnd)
   }
 
-  static setupMoonResize (data, svg, cx, cy, height, width, radius, textColor) {
+  static setupMoonResize (lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, radius, textColor) {
     const drag = function () {
       const findDistance = (cx, cy, x, y) => Math.sqrt(Math.pow((x - cx), 2) + Math.pow((y - cy), 2))
       const mouseX = d3.mouse(this)[0]
@@ -148,13 +148,13 @@ export class Drag {
 
     const dragEnd = function () {
       console.log(`Moon resized to r=${radius}`)
-      LunarCore.drawLunarCoreLabels(data.lunarCoreLabels, svg,
+      LunarCore.drawLunarCoreLabels(lunarCoreLabels, svg,
         cx,
         cy,
         radius,
         textColor)
 
-      LunarSurface.drawLunarSurfaceLabels(data.lunarSurfaceLabels, svg,
+      LunarSurface.drawLunarSurfaceLabels(lunarSurfaceLabels, svg,
         cx,
         cy,
         radius,

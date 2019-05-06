@@ -57,18 +57,19 @@ class MoonPlot {
   draw (rootElement) {
     const { width, height } = getContainerDimensions(_.has(rootElement, 'length') ? rootElement[0] : rootElement)
 
-    const baseSvg = d3.select(rootElement).append('svg')
+    const svg = d3.select(rootElement).append('svg')
       .attr('class', 'svgContent')
       .attr('width', width)
       .attr('height', height)
 
-    const xCenter = width / 2
-    const yCenter = height / 2
+    const cx = width / 2
+    const cy = height / 2
     const radius = Math.min(height, width) / 3 // TODO move to config
+    const {lunarCoreLabels, lunarSurfaceLabels, circleColor, crossColor, textColor, linkWidth, labelSizeConst} = this.config
 
-    Circle.drawCircle(this.config, baseSvg, xCenter, yCenter, radius, height, width, this.config.circleColor, this.config.crossColor, this.config.textColor)
-    LunarCore.drawLunarCoreLabels(this.config.lunarCoreLabels, baseSvg, xCenter, yCenter, radius, this.config.textColor, this.config.linkWidth)
-    LunarSurface.drawLunarSurfaceLabels(this.config.lunarSurfaceLabels, baseSvg, xCenter, yCenter, radius, height, width, this.config.textColor, this.config.labelSizeConst)
+    Circle.drawCircle({lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor})
+    LunarCore.drawLunarCoreLabels({lunarCoreLabelsData: lunarCoreLabels, svg, cx, cy, radius, textColor, linkWidth}) // TODO remove need for lunarCoreLabelsData
+    LunarSurface.drawLunarSurfaceLabels({lunarSurfaceLabelsData: lunarSurfaceLabels, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) // TODO remove need for lunarSurfaceLabelsData
   }
 }
 MoonPlot.initClass()

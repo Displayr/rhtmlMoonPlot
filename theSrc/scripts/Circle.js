@@ -1,10 +1,10 @@
 import {Drag} from './Drag'
 
 class Circle {
-  static drawCircle (data, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor) {
+  static drawCircle ({lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor}) {
     this.drawCross(svg, cx, cy, crossColor)
 
-    const moonDrag = Drag.setupMoonResize(data, svg, cx, cy, height, width, radius, textColor)
+    const moonDrag = Drag.setupMoonResize(lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, radius, textColor)
 
     let moon = svg.append('circle')
                   .attr('cx', cx)

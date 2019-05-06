@@ -4,13 +4,7 @@ import {Drag} from './Drag'
 import labeler from './labeler'
 
 export class LunarCore {
-  static drawLunarCoreLabels (lunarCoreLabelsData,
-                             svg,
-                             cx,
-                             cy,
-                             radius,
-                             textColor,
-                             linkWidth) {
+  static drawLunarCoreLabels ({lunarCoreLabelsData, svg, cx, cy, radius, textColor, linkWidth}) {
     let x, y
     const drawLabels = function (labelData, drag2) {
       svg.selectAll('.core-label')

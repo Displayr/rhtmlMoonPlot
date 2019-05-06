@@ -2,15 +2,7 @@ import Utils from './Utils'
 import {Drag} from './Drag'
 
 export class LunarSurface {
-  static drawLunarSurfaceLabels (lunarSurfaceLabelsData,
-                         svg,
-                         cx,
-                         cy,
-                         radius,
-                         height,
-                         width,
-                         textColor,
-                         labelSizeConst) {
+  static drawLunarSurfaceLabels ({lunarSurfaceLabelsData, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) {
     let x, y
     const lunarSurfaceLinks = []
     const lunarSurfaceLabels = []
