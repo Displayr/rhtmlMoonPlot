@@ -251,44 +251,6 @@ class Utils {
     return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
   }
 
-  static normalizeCoreNodes (rawCoreNodes) {
-    // normalization between -1 and 1 (padded by threshold)
-    const threshold = 0.1
-    let maxMag = -Infinity
-    for (var node of Array.from(rawCoreNodes)) {
-      const magnitude = Math.sqrt(Math.pow(node[0], 2) + Math.pow(node[1], 2))
-      if (magnitude > maxMag) { maxMag = magnitude }
-    }
-
-    maxMag *= 1 + threshold
-    for (node of Array.from(rawCoreNodes)) {
-      node[0] = node[0] / maxMag
-      node[1] = node[1] / maxMag
-    }
-  }
-
-  static calculateSurfaceNodePositions (rawSurfaceNodes) {
-    const result = []
-    for (let node of Array.from(rawSurfaceNodes)) {
-      const angle = Math.atan2(node[1], node[0])
-      node[0] = Math.cos(angle)
-      result.push(node[1] = Math.sin(angle))
-    }
-    return result
-  }
-
-  static calculateSurfaceLabelSizes (rawSurfaceNodes, scaleFactor, equalizeFactor) {
-    const lunarSurfaceSizes = []
-    let maxSize = -Infinity
-    for (let node of Array.from(rawSurfaceNodes)) {
-      const size = this.distanceFromCenter(node[0], node[1])
-      if (size > maxSize) { maxSize = size }
-      lunarSurfaceSizes.push(size)
-    }
-
-    return _.map(lunarSurfaceSizes, s => scaleFactor * Math.pow((s / maxSize), equalizeFactor))
-  }
-
   static adjustCoreLinks (svg, lunarCoreLabels, anchorArray, linkWidth) {
     const newPtOnLabelBorder = function (lab, anc) {
       const p = [

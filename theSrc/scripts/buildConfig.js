@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import buildLabelObjectsFromConfig from './math/buildLabelObjectsFromConfig'
 
 const defaultConfig = {
   lunarCoreNodes: [],
@@ -14,30 +15,24 @@ const defaultConfig = {
 
 // TODO check array length matches surface(node v label) core(node v label)
 
+const configArrayFields = ['lunarCoreNodes', 'lunarSurfaceNodes', 'lunarCoreLabels', 'lunarSurfaceLabels']
+
 function buildConfig (userConfig) {
-  const config = _.merge({}, defaultConfig, userConfig)
 
-  if (_.has(config, 'lunarCoreNodes') && _.has(config, 'lunarSurfaceNodes') && _.has(config, 'lunarCoreLabels') && _.has(config, 'lunarSurfaceLabels')) {
-    if (!_.isArray(config.lunarCoreNodes)) {
-      throw new Error('Invalid config. \'lunarCoreNodes\' must be array')
-    }
+  _(configArrayFields).each(requiredArray => {
+    if (!_.has(userConfig, requiredArray)) { throw new Error(`Invalid config. Missing ${requiredArray}`) }
+    if (!_.isArray(userConfig[requiredArray])) { throw new Error(`Invalid config. ${requiredArray} must be array`) }
+  })
 
-    if (!_.isArray(config.lunarSurfaceNodes)) {
-      throw new Error('Invalid config. \'lunarSurfaceNodes\' must be array')
-    }
-
-    if (!_.isArray(config.lunarCoreLabels)) {
-      throw new Error('Invalid config. \'lunarCoreLabels\' must be array')
-    }
-
-    if (!_.isArray(config.lunarSurfaceLabels)) {
-      throw new Error('Invalid config. \'lunarSurfaceLabels\' must be array')
-    }
-  } else {
-    throw new Error('Invalid config. Missing data array')
+  if (userConfig.lunarCoreNodes.length !== userConfig.lunarCoreLabels.length) {
+    throw new Error('Invalid config. length(lunarCoreNodes) != length(lunarCoreLabels)')
   }
 
-  return config
+  if (userConfig.lunarSurfaceNodes.length !== userConfig.lunarSurfaceLabels.length) {
+    throw new Error('Invalid config. length(lunarSurfaceNodes) != length(lunarSurfaceLabels)')
+  }
+
+  return _.merge({}, defaultConfig, _.omit(userConfig, configArrayFields), buildLabelObjectsFromConfig(userConfig))
 }
 
 module.exports = buildConfig

@@ -2,7 +2,10 @@
 
 import _ from 'lodash'
 import * as d3 from 'd3'
-import MoonPlotClass from './MoonPlotClass'
+import {LunarSurface} from './LunarSurface'
+import {LunarCore} from './LunarCore'
+import Circle from './Circle'
+
 import buildConfig from './buildConfig'
 
 class MoonPlot {
@@ -54,13 +57,18 @@ class MoonPlot {
   draw (rootElement) {
     const { width, height } = getContainerDimensions(_.has(rootElement, 'length') ? rootElement[0] : rootElement)
 
-    this.baseSvg = d3.select(rootElement).append('svg')
+    const baseSvg = d3.select(rootElement).append('svg')
       .attr('class', 'svgContent')
       .attr('width', width)
       .attr('height', height)
 
-    this.plot = new MoonPlotClass(this.id, width, height)
-    this.plot.draw(this.config, this.baseSvg)
+    const xCenter = width / 2
+    const yCenter = height / 2
+    const radius = Math.min(height, width) / 3 // TODO move to config
+
+    Circle.drawCircle(this.config, baseSvg, xCenter, yCenter, radius, height, width, this.config.circleColor, this.config.crossColor, this.config.textColor)
+    LunarCore.drawLunarCoreLabels(this.config.lunarCoreLabels, baseSvg, xCenter, yCenter, radius, this.config.textColor, this.config.linkWidth)
+    LunarSurface.drawLunarSurfaceLabels(this.config.lunarSurfaceLabels, baseSvg, xCenter, yCenter, radius, height, width, this.config.textColor, this.config.labelSizeConst)
   }
 }
 MoonPlot.initClass()
