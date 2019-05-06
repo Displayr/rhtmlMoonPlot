@@ -8,6 +8,7 @@ module.exports = (config) => {
 
   const lunarCoreLabels = _(normalizedCoreNodes)
     .map((node, i) => ({
+      id: i,
       name: config.lunarCoreLabels[i],
       x: node[0],
       y: node[1]
@@ -16,6 +17,7 @@ module.exports = (config) => {
 
   const lunarSurfaceLabels = _(surfaceNodePositions)
     .map((node, i) => ({
+      id: i,
       name: config.lunarSurfaceLabels[i],
       x: node[0],
       y: node[1],
