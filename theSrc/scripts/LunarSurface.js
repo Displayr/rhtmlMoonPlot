@@ -134,8 +134,7 @@ export class LunarSurface {
       .text(d => d.name)
       .call(drag)
 
-    const lunarLabelSvgNodes = []
-    lunarSurfaceLabels.each(function () { lunarLabelSvgNodes.push(d3.select(this).node()) })
+    const lunarLabelSvgNodes = lunarSurfaceLabels.nodes()
 
     return Utils.adjustSurfaceLabelLength(lunarLabelSvgNodes, height, width)
   }
