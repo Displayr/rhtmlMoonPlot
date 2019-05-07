@@ -3,6 +3,10 @@ import _ from 'lodash'
 class PlotState {
 
   constructor () {
+    this.moveCoreLabel = this.moveCoreLabel.bind(this)
+    this.moveSurfaceLabel = this.moveSurfaceLabel.bind(this)
+    this.setPlotSize = this.setPlotSize.bind(this)
+    this.setCircleRadius = this.setCircleRadius.bind(this)
     this.init()
   }
 
@@ -40,13 +44,13 @@ class PlotState {
     return deregisterListener
   }
 
-  moveSurfaceLabel (id, coord) {
-    this.state.labelPositioning.surface[id] = coord
+  moveCoreLabel (id, coord) {
+    this.state.labelPositioning.core[id] = coord
     this.callListeners()
   }
 
-  moveCoreLabelLabel (id, coord) {
-    this.state.labelPositioning.core[id] = coord
+  moveSurfaceLabel (id, coord) {
+    this.state.labelPositioning.surface[id] = coord
     this.callListeners()
   }
 

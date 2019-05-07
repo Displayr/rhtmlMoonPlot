@@ -42,7 +42,7 @@ class MoonPlot {
       circleRadius: null,
       labelPositioning: {
         surface: {},
-        code: {},
+        core: {},
       },
     })
   }

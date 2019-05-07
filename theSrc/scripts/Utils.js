@@ -145,13 +145,16 @@ class Utils {
   }
 
   static detectViewportCollision (surfaceLabel, viewportHeight, viewportWidth) {
+    console.log('detectViewportCollision')
     const getScreenCoords = function (x, y, ctm) {
       const xn = ctm.e + (x * ctm.a) + (y * ctm.c)
       const yn = ctm.f + (x * ctm.b) + (y * ctm.d)
       return { x: xn, y: yn }
     }
 
-    // Pass if there is no more text to condense
+    console.log('d3.select(surfaceLabel).node()')
+    console.log(JSON.stringify(d3.select(surfaceLabel).node(), {}, 2))
+
     if (d3.select(surfaceLabel).node().textContent === '') {
       return false
     }
@@ -187,16 +190,17 @@ class Utils {
   }
 
   static adjustSurfaceLabelLength (surfaceLabels, viewHeight, viewWidth) {
+    console.log('adjustSurfaceLabelLength')
     this.extendFullLabelName(surfaceLabels)
-    const result = []
-    for (let surfaceLabel of Array.from(surfaceLabels)) {
+    surfaceLabels.forEach(surfaceLabel => {
+      console.log('looping')
       if (this.detectViewportCollision(surfaceLabel, viewHeight, viewWidth)) {
+        console.log('this.detectViewportCollision')
         this.condenseSurfaceLabel(surfaceLabel, viewHeight, viewWidth)
       }
       const tooltipText = d3.select(surfaceLabel).attr('title')
-      result.push(d3.select(surfaceLabel).append('title').text(tooltipText))
-    }
-    return result
+      d3.select(surfaceLabel).append('title').text(tooltipText)
+    })
   }
 
   // Detect collisions with lunar core labels and moon surface
@@ -230,6 +234,7 @@ class Utils {
     d3.select(coreLabel).data()[0].width = coreLabel.getBBox().width
   }
 
+  // TODO probably not working any more
   static extendFullLabelName (labels) {
     return Array.from(labels).map((label) =>
       d3.select(label).text(d3.select(label).attr('title')))

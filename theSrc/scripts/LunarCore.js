@@ -45,10 +45,6 @@ export class LunarCore {
       .attr('stroke', 'gray')
     }
 
-    const onDragEnd = (id, coord) => {
-      console.log(`onDragEnd(${id}, ${coord})`)
-    }
-
     let lunarCoreLabelsSvg = []
     const lunarCoreLabels = []
     const anchorArray = []
@@ -60,7 +56,7 @@ export class LunarCore {
       cx,
       cy,
       textColor,
-      onDragEnd
+      plotState.moveCoreLabel
     )
 
     // prevent labels from escaping moon surface
@@ -72,7 +68,7 @@ export class LunarCore {
         x,
         y,
         name: label.name,
-        id: label.name,
+        id: label.id,
         ox: x,
         oy: y
       })

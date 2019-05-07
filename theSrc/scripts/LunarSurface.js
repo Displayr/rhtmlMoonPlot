@@ -1,12 +1,13 @@
 import _ from 'lodash'
 import Utils from './Utils'
 import {Drag} from './Drag'
+import * as d3 from 'd3'
 
 export class LunarSurface {
-  static drawLunarSurfaceLabels ({lunarSurfaceLabelsData, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) {
+  static drawLunarSurfaceLabels ({plotState, lunarSurfaceLabelsData, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) {
     let x, y
     const lunarSurfaceLinks = []
-    const lunarSurfaceLabels = []
+    let lunarSurfaceLabels = []
     const drag = Drag.setupLunarSurfaceDragAndDrop(svg,
       lunarSurfaceLabels,
       lunarSurfaceLinks,
@@ -15,7 +16,9 @@ export class LunarSurface {
       cy,
       height,
       width,
-      textColor)
+      textColor,
+      plotState.moveSurfaceLabel)
+
     let cartCoords = []
     let t = null
     for (var label of Array.from(lunarSurfaceLabelsData)) {
@@ -103,55 +106,37 @@ export class LunarSurface {
       })
     }
 
-    t = null
+    lunarSurfaceLabels = svg.selectAll('.surface-label')
+      .data(lunarSurfaceLabelsData)
+      .enter()
+      .append('text')
+      .style('fill', textColor)
+      .attr('class', 'surface-label')
+      .attr('data-index', d =>  d.id)
+      .attr('data-label', d =>  d.name)
+      .attr('x', d =>  d.newX + cx)
+      .attr('y', d => -d.newY + cy)
+      .attr('ox', d =>  d.newX + cx)
+      .attr('oy', d => -d.newY + cy)
+      .attr('font-size', d => (d.size * labelSizeConst).toString() + 'px')
+      .attr('transform', d => (d.newX < 0)
+        ? `rotate(${(180 - d.rotation).toString()},${(d.newX + cx).toString()}, ${(-d.newY + cy).toString()})`
+        : `rotate(${(-d.rotation).toString()},${(d.newX + cx).toString()}, ${(-d.newY + cy).toString()})`
+      )
+      .attr('text-anchor', d => (d.newX < 0)
+        ? 'end'
+        : 'start'
+      )
+      .attr('alignment-baseline', 'middle')
+      .attr('cursor', 'all-scroll')
+      .style('font-family', 'Arial Narrow')
+      .attr('title', d => d.name)
+      .text(d => d.name)
+      .call(drag)
 
-    _(lunarSurfaceLabelsData).each((label, i) => {
-      x =  label.newX + cx
-      y = -label.newY + cy
+    const lunarLabelSvgNodes = []
+    lunarSurfaceLabels.each(function () { lunarLabelSvgNodes.push(d3.select(this).node()) })
 
-      console.log(`i: ${i}`)
-
-      if (label.newX < 0) {
-        t = svg.append('text')
-        .style('fill', textColor)
-        .attr('class', 'surface-label')
-        .attr('data-index', i)
-        .attr('data-label', label.name)
-        .attr('x', x)
-        .attr('y', y)
-        .attr('ox', x)
-        .attr('oy', y)
-        .attr('font-size', (label.size * labelSizeConst).toString() + 'px')
-        .attr('transform', `rotate(${(180 - label.rotation).toString()},${x.toString()}, ${y.toString()})`)
-        .attr('text-anchor', 'end')
-        .attr('alignment-baseline', 'middle')
-        .attr('cursor', 'all-scroll')
-        .style('font-family', 'Arial Narrow')
-        .attr('title', label.name)
-        .text(label.name)
-        .call(drag)
-      } else {
-        t = svg.append('text')
-        .style('fill', textColor)
-        .attr('class', 'surface-label')
-        .attr('data-index', i)
-        .attr('data-label', label.name)
-        .attr('y', y)
-        .attr('x', x)
-        .attr('ox', x)
-        .attr('oy', y)
-        .attr('font-size', (label.size * labelSizeConst).toString() + 'px')
-        .attr('transform', `rotate(${(-label.rotation).toString()},${x.toString()}, ${y.toString()})`)
-        .attr('text-anchor', 'start')
-        .attr('alignment-baseline', 'middle')
-        .attr('cursor', 'all-scroll')
-        .style('font-family', 'Arial Narrow')
-        .attr('title', label.name)
-        .text(label.name)
-        .call(drag)
-      }
-      lunarSurfaceLabels.push(t.node())
-    })
-    return Utils.adjustSurfaceLabelLength(lunarSurfaceLabels, height, width)
+    return Utils.adjustSurfaceLabelLength(lunarLabelSvgNodes, height, width)
   }
 }

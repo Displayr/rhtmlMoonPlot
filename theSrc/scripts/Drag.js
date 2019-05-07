@@ -43,18 +43,7 @@ export class Drag {
       const coreLabels = d3.selectAll('.core-label').nodes()
       Utils.adjustCoreLabelLength(coreLabels, radius, xCenter, yCenter)
       Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray)
-
-      console.log('d')
-      console.log(JSON.stringify(d, {}, 2))
-
-      console.log('d3.event.x')
-      console.log(JSON.stringify(d3.event.x, {}, 2))
-
-      console.log('d3.event.y')
-      console.log(JSON.stringify(d3.event.y, {}, 2))
-
-
-      onDragEnd()
+      onDragEnd(d.id, {x: d.x, y: d.y})
     }
 
     return d3.drag()
@@ -77,7 +66,8 @@ export class Drag {
                                yCenter,
                                height,
                                width,
-                               textColor) {
+                               textColor,
+                               onDragEnd) {
     const dragStart = function () {
       svg.selectAll('.surface-link').remove()
       d3.select(this).style('fill', 'red')
@@ -85,13 +75,14 @@ export class Drag {
 
     const dragMove = function () {
       return d3.select(this)
-      .attr('x', (d3.select(this).x = d3.mouse(this)[0]))
-      .attr('y', (d3.select(this).y = d3.mouse(this)[1]))
+      .attr('x', (d3.select(this).x = d3.mouse(this)[0])) // TODO we are doing this two ways (i.e., search for .attr('x', (d3.select(this).x = d3.event.x))). Why ?
+      .attr('y', (d3.select(this).y = d3.mouse(this)[1])) // TODO we are doing this two ways (i.e., search for .attr('y', (d3.select(this).y = d3.event.y))). Why ?
       .attr('cursor', 'all-scroll')
     }
 
-    const dragEnd = function () {
+    const dragEnd = function (d) {
       let x2, y2
+
       d3.select(this).style('fill', textColor)
 
       if (d3.select(this).attr('ox')) {
@@ -127,6 +118,7 @@ export class Drag {
          .attr('stroke', 'gray')
 
       Utils.adjustSurfaceLabelLength(lunarSurfaceLabels, height, width)
+      onDragEnd(d.id, {x: d.x, y: d.y})
     }
 
     return d3.drag()
