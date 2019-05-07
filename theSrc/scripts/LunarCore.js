@@ -56,6 +56,7 @@ export class LunarCore {
       cx,
       cy,
       textColor,
+      linkWidth,
       plotState.moveCoreLabel
     )
 

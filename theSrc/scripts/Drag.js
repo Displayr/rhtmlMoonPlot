@@ -11,6 +11,7 @@ export class Drag {
                             xCenter,
                             yCenter,
                             textColor,
+                            linkWidth,
                             onDragEnd) {
     const dragStart = function () {
       svg.selectAll('.core-link').remove()
@@ -42,7 +43,7 @@ export class Drag {
       d3.select(this).style('fill', textColor)
       const coreLabels = d3.selectAll('.core-label').nodes()
       Utils.adjustCoreLabelLength(coreLabels, radius, xCenter, yCenter)
-      Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray)
+      Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray, linkWidth)
       onDragEnd(d.id, {x: d.x, y: d.y})
     }
 
