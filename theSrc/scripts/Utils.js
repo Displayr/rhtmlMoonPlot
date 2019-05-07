@@ -49,7 +49,6 @@ class Utils {
       const result = []
       while ((collisions.length > 0) && (maxMoves > 0)) {
         maxMoves--
-        console.log('Moved surface labels')
         result.push((() => {
           const result1 = []
           for (let pc of Array.from(polarCoords)) {
@@ -145,15 +144,11 @@ class Utils {
   }
 
   static detectViewportCollision (surfaceLabel, viewportHeight, viewportWidth) {
-    console.log('detectViewportCollision')
     const getScreenCoords = function (x, y, ctm) {
       const xn = ctm.e + (x * ctm.a) + (y * ctm.c)
       const yn = ctm.f + (x * ctm.b) + (y * ctm.d)
       return { x: xn, y: yn }
     }
-
-    console.log('d3.select(surfaceLabel).node()')
-    console.log(JSON.stringify(d3.select(surfaceLabel).node(), {}, 2))
 
     if (d3.select(surfaceLabel).node().textContent === '') {
       return false
@@ -190,12 +185,9 @@ class Utils {
   }
 
   static adjustSurfaceLabelLength (surfaceLabels, viewHeight, viewWidth) {
-    console.log('adjustSurfaceLabelLength')
     this.extendFullLabelName(surfaceLabels)
     surfaceLabels.forEach(surfaceLabel => {
-      console.log('looping')
       if (this.detectViewportCollision(surfaceLabel, viewHeight, viewWidth)) {
-        console.log('this.detectViewportCollision')
         this.condenseSurfaceLabel(surfaceLabel, viewHeight, viewWidth)
       }
       const tooltipText = d3.select(surfaceLabel).attr('title')
@@ -349,7 +341,6 @@ class Utils {
         //                     .attr('r', 2)
         //                     .attr('stroke')
         if (newLinkPt != null) {
-          console.log('adding core link')
           svg.append('line').attr('class', 'core-link')
           .attr('x1', anchorArray[j].x)
           .attr('y1', anchorArray[j].y)

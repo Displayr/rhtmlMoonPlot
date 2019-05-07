@@ -133,7 +133,7 @@ export class Drag {
              .on('end', dragEnd)
   }
 
-  static setupMoonResize (lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, radius, textColor) {
+  static setupMoonResize (lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, radius, textColor, plotState) {
     const drag = function () {
       const findDistance = (cx, cy, x, y) => Math.sqrt(Math.pow((x - cx), 2) + Math.pow((y - cy), 2))
       const mouseX = d3.mouse(this)[0]
@@ -144,6 +144,7 @@ export class Drag {
     }
 
     const dragStart = function () {
+      console.log(`start dragging circle. Moon size is r=${radius}`)
       svg.selectAll('.init-core-link').remove()
       svg.selectAll('.core-label').remove()
       svg.selectAll('.core-anchor').remove()
@@ -151,33 +152,38 @@ export class Drag {
       svg.selectAll('.surface-label').remove()
     }
 
+    // TODO NB these shouldn't be called from here !
     const dragEnd = function () {
-      console.log(`Moon resized to r=${radius}`)
-      LunarCore.drawLunarCoreLabels(lunarCoreLabels, svg,
+      console.log(`end circle drag. Moon resized to r=${radius}`)
+
+      LunarCore.drawLunarCoreLabels({
+        plotState,
+        lunarCoreLabelsData: lunarCoreLabels,
+        svg,
         cx,
         cy,
         radius,
-        textColor)
+        textColor,
+        linkWidth: 1}) // TODO pull from config
 
-      LunarSurface.drawLunarSurfaceLabels(lunarSurfaceLabels, svg,
+      LunarSurface.drawLunarSurfaceLabels({
+        plotState,
+        lunarSurfaceLabelsData: lunarSurfaceLabels,
+        svg,
         cx,
         cy,
         radius,
         height,
         width,
         textColor,
-        14)
+        labelSizeConst: 14}) // TODO pull from config
+
+      plotState.setCircleRadius(radius)
     }
 
     return d3.drag()
-             .subject(function () {
-               return {
-                 x: d3.select(this).attr('cy'),
-                 y: d3.select(this).attr('cy')
-               }
-             })
-             .on('start', dragStart)
-             .on('drag', drag)
-             .on('end', dragEnd)
+     .on('start', dragStart)
+     .on('drag', drag)
+     .on('end', dragEnd)
   }
 }

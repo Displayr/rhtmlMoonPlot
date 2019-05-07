@@ -84,9 +84,9 @@ class MoonPlot {
     const cx = width / 2
     const cy = height / 2
     const radius = Math.min(height, width) / 3 // TODO move to config
-    const {lunarCoreLabels, lunarSurfaceLabels, circleColor, crossColor, textColor, linkWidth, labelSizeConst} = this.config
+    const {lunarCoreLabels, lunarSurfaceLabels, circleColor, crossColor, circleStrokeWidth, textColor, linkWidth, labelSizeConst} = this.config
 
-    Circle.drawCircle({plotState: this.plotState, lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor})
+    Circle.drawCircle({plotState: this.plotState, lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor, circleStrokeWidth})
     LunarCore.drawLunarCoreLabels({plotState: this.plotState, lunarCoreLabelsData: lunarCoreLabels, svg, cx, cy, radius, textColor, linkWidth}) // TODO remove need for lunarCoreLabelsData
     LunarSurface.drawLunarSurfaceLabels({plotState: this.plotState, lunarSurfaceLabelsData: lunarSurfaceLabels, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) // TODO remove need for lunarSurfaceLabelsData
   }

@@ -7,6 +7,7 @@ const defaultConfig = {
   lunarCoreLabels: [],
   lunarSurfaceLabels: [],
   textColor: '#333333',
+  circleStrokeWidth: 4,
   circleColor: '#042a4b',
   crossColor: 'grey',
   linkWidth: 1,
