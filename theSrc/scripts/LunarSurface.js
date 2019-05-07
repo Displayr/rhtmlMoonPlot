@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import {polarsFromCartesians, polarFromCartesian, cartesiansFromPolars, cartesianFromPolar} from './math/coord'
 import Utils from './Utils'
 import {Drag} from './Drag'
 import * as d3 from 'd3'
@@ -55,33 +55,33 @@ export class LunarSurface {
     }
 
     svg.selectAll('.surface-label').remove()
-    const polarCoords = Utils.polarCoords(cartCoords)
+    const polarCoords = polarsFromCartesians(cartCoords)
     const lengthOfLine = radius * 2 * Math.PI
 
     Utils.moveSurfaceCollsions(polarCoords, lengthOfLine, radius)
-    cartCoords = Utils.cartesianCoords(polarCoords)
+    cartCoords = cartesiansFromPolars(polarCoords)
 
     // Load the new cartesian coordinates into lunarSurfaceLabelsData array
     for (let i = 0; i < lunarSurfaceLabelsData.length; i++) {
       label = lunarSurfaceLabelsData[i]
       label.newX = cartCoords[i].x
       label.newY = cartCoords[i].y
-      label.rotation = Utils.calculateLabelRotation(Utils.polarCoord(cartCoords[i]).a)
+      label.rotation = Utils.calculateLabelRotation(polarFromCartesian(cartCoords[i]).a)
     }
 
     // Plot the surface links
     for (let pc of Array.from(polarCoords)) {
       let cc = null
       if (pc.oa) {
-        cc = Utils.cartesianCoord({
+        cc = cartesianFromPolar({
           a: pc.oa,
           r: pc.or,
           h: pc.h
         })
       } else {
-        cc = Utils.cartesianCoord(pc)
+        cc = cartesianFromPolar(pc)
       }
-      const ccNew = Utils.cartesianCoord(pc)
+      const ccNew = cartesianFromPolar(pc)
       x =  cc.x + cx
       y = -cc.y + cy
       const xNew =  ccNew.x + cx

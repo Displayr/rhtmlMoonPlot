@@ -100,40 +100,6 @@ class Utils {
     })()
   }
 
-  // Convert Cartesian to polar coordinates
-  static polarCoords (cartCoords) {
-    const polarCoords = []
-    for (let cartCoord of Array.from(cartCoords)) {
-      polarCoords.push(this.polarCoord(cartCoord))
-    }
-    return polarCoords
-  }
-
-  static polarCoord (cartCoord) {
-    return ({
-      r: Math.sqrt(Math.pow(cartCoord.x, 2) + Math.pow(cartCoord.y, 2)),
-      a: Math.atan2(cartCoord.y, cartCoord.x),
-      h: cartCoord.h
-    })
-  }
-
-  // Convert polar to Cartesian coordinates
-  static cartesianCoords (polarCoords) {
-    const cartCoords = []
-    for (let polarCoord of Array.from(polarCoords)) {
-      cartCoords.push(this.cartesianCoord(polarCoord))
-    }
-    return cartCoords
-  }
-
-  static cartesianCoord (polarCoord) {
-    return ({
-      x: polarCoord.r * Math.cos(polarCoord.a),
-      y: polarCoord.r * Math.sin(polarCoord.a),
-      h: polarCoord.h
-    })
-  }
-
   // Translate angles to position on line
   static positionAlongLine (rad, lengthOfLine) {
     return ((rad + Math.PI) / (2 * Math.PI)) * lengthOfLine
@@ -226,7 +192,6 @@ class Utils {
     d3.select(coreLabel).data()[0].width = coreLabel.getBBox().width
   }
 
-  // TODO probably not working any more
   static extendFullLabelName (labels) {
     return Array.from(labels).map((label) =>
       d3.select(label).text(d3.select(label).attr('title')))
@@ -242,10 +207,6 @@ class Utils {
       result.push(d3.select(coreLabel).append('title').text(d3.select(coreLabel).attr('title')))
     }
     return result
-  }
-
-  static distanceFromCenter (x, y) {
-    return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
   }
 
   static adjustCoreLinks (svg, lunarCoreLabels, anchorArray, linkWidth) {
