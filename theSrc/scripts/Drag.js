@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import * as d3 from 'd3'
 import Utils from './Utils'
 import {LunarSurface} from './LunarSurface'
@@ -18,25 +19,14 @@ export class Drag {
       return d3.select(this).style('fill', 'red')
     }
 
-    const dragMove = function () {
+    const dragMove = function (d) {
       d3.select(this)
-      .attr('x', (d3.select(this).x = d3.event.x))
-      .attr('y', (d3.select(this).y = d3.event.y))
+      .attr('x', d3.event.x)
+      .attr('y', d3.event.y)
       .attr('cursor', 'all-scroll')
 
-      // Save the new location of text so links can be redrawn
-      return (() => {
-        const result = []
-        for (let coreLabel of Array.from(lunarCoreLabels)) {
-          if (d3.select(this).attr('title') === coreLabel.id) {
-            coreLabel.x = d3.event.x
-            result.push(coreLabel.y = d3.event.y)
-          } else {
-            result.push(undefined)
-          }
-        }
-        return result
-      })()
+      d.x = d3.event.x
+      d.y = d3.event.y
     }
 
     const dragEnd = function (d) {
