@@ -20,9 +20,9 @@ export class Drag {
 
     const dragMove = function (d) {
       d3.select(this)
-      .attr('x', d3.event.x)
-      .attr('y', d3.event.y)
-      .attr('cursor', 'all-scroll')
+        .attr('x', d3.event.x)
+        .attr('y', d3.event.y)
+        .attr('cursor', 'all-scroll')
 
       d.x = d3.event.x
       d.y = d3.event.y
@@ -63,11 +63,14 @@ export class Drag {
       d3.select(this).style('fill', 'red')
     }
 
-    const dragMove = function () {
-      return d3.select(this)
-      .attr('x', (d3.select(this).x = d3.mouse(this)[0])) // TODO we are doing this two ways (i.e., search for .attr('x', (d3.select(this).x = d3.event.x))). Why ?
-      .attr('y', (d3.select(this).y = d3.mouse(this)[1])) // TODO we are doing this two ways (i.e., search for .attr('y', (d3.select(this).y = d3.event.y))). Why ?
-      .attr('cursor', 'all-scroll')
+    const dragMove = function (d) {
+      d3.select(this)
+        .attr('x', d3.event.x)
+        .attr('y', d3.event.y)
+        .attr('cursor', 'all-scroll')
+
+      d.x = d3.event.x
+      d.y = d3.event.y
     }
 
     const dragEnd = function (d) {

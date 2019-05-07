@@ -129,6 +129,7 @@ export class LunarCore {
         }
       })
     }
+    // TODO can I use raise() and lower() here (now using d3 v4)
     lunarCoreLinksSvg.moveToBack()
     lunarCoreLabelsSvg.moveToFront()
     d3.selectAll('.core-anchor').moveToFront()

@@ -48,9 +48,25 @@ class PlotState {
     this.callListeners()
   }
 
+  hasCoreLabelBeenMoved (id) {
+    return _.has(this.state.labelPositioning.core, id)
+  }
+
+  getCoreLabelCoord (id) {
+    return this.state.labelPositioning.core[id]
+  }
+
   moveSurfaceLabel (id, coord) {
     this.state.labelPositioning.surface[id] = coord
     this.callListeners()
+  }
+
+  hasSurfaceLabelBeenMoved (id) {
+    return _.has(this.state.labelPositioning.surface, id)
+  }
+
+  getSurfaceLabelCoord (id) {
+    return this.state.labelPositioning.surface[id]
   }
 
   setPlotSize ({width, height}) {

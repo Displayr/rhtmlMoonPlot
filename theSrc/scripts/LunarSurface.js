@@ -1,6 +1,7 @@
 import {polarsFromCartesians, polarFromCartesian, cartesiansFromPolars, cartesianFromPolar} from './math/coord'
 import Utils from './Utils'
 import {Drag} from './Drag'
+import * as d3 from 'd3'
 
 export class LunarSurface {
   static drawLunarSurfaceLabels ({plotState, lunarSurfaceLabelsData, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) {
@@ -47,6 +48,7 @@ export class LunarSurface {
       }
 
       cartCoords.push({
+        id: label.id,
         x: label.x,
         y: label.y,
         h: t.node().getBBox().height
@@ -83,8 +85,11 @@ export class LunarSurface {
       const ccNew = cartesianFromPolar(pc)
       x =  cc.x + cx
       y = -cc.y + cy
-      const xNew =  ccNew.x + cx
-      const yNew = -ccNew.y + cy
+
+      const { x: xNew, y: yNew } = (plotState.hasSurfaceLabelBeenMoved(pc.id))
+        ? plotState.getSurfaceLabelCoord(pc.id)
+        : { x: ccNew.x + cx, y: -ccNew.y + cy }
+
       svg.append('line')
          .attr('class', 'surface-link')
          .attr('x1', x)
@@ -113,19 +118,25 @@ export class LunarSurface {
       .attr('class', 'surface-label')
       .attr('data-index', d =>  d.id)
       .attr('data-label', d =>  d.name)
-      .attr('x', d =>  d.newX + cx)
-      .attr('y', d => -d.newY + cy)
-      .attr('ox', d =>  d.newX + cx)
-      .attr('oy', d => -d.newY + cy)
+      .each(function (d) {
+        const {x, y} = (plotState.hasSurfaceLabelBeenMoved(d.id))
+          ? plotState.getSurfaceLabelCoord(d.id)
+          : {
+            x: (d.newX + cx).toString(),
+            y: (-d.newY + cy).toString()
+          }
+        d3.select(this)
+          .attr('x', x)
+          .attr('y', y)
+          .attr('ox', x)
+          .attr('oy', y)
+          .attr('transform', (d.newX < 0)
+            ? `rotate(${(180 - d.rotation).toString()},${x}, ${y})`
+            : `rotate(${(-d.rotation).toString()},${x}, ${y})`
+          )
+      })
       .attr('font-size', d => (d.size * labelSizeConst).toString() + 'px')
-      .attr('transform', d => (d.newX < 0)
-        ? `rotate(${(180 - d.rotation).toString()},${(d.newX + cx).toString()}, ${(-d.newY + cy).toString()})`
-        : `rotate(${(-d.rotation).toString()},${(d.newX + cx).toString()}, ${(-d.newY + cy).toString()})`
-      )
-      .attr('text-anchor', d => (d.newX < 0)
-        ? 'end'
-        : 'start'
-      )
+      .attr('text-anchor', d => (d.newX < 0) ? 'end' : 'start')
       .attr('alignment-baseline', 'middle')
       .attr('cursor', 'all-scroll')
       .style('font-family', 'Arial Narrow')
