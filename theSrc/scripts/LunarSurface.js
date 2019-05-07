@@ -1,7 +1,6 @@
 import {polarsFromCartesians, polarFromCartesian, cartesiansFromPolars, cartesianFromPolar} from './math/coord'
 import Utils from './Utils'
 import {Drag} from './Drag'
-import * as d3 from 'd3'
 
 export class LunarSurface {
   static drawLunarSurfaceLabels ({plotState, lunarSurfaceLabelsData, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) {
