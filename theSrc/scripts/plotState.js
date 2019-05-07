@@ -74,6 +74,14 @@ class PlotState {
     this.callListeners()
   }
 
+  hasCircleRadius (radius) {
+    return !_.isNull(this.state.circleRadius)
+  }
+
+  getCircleRadius () {
+    return this.state.circleRadius
+  }
+
   setCircleRadius (radius) {
     this.state.circleRadius = radius
     this.callListeners()
