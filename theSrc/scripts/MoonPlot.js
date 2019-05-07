@@ -42,8 +42,8 @@ class MoonPlot {
       circleRadius: null,
       labelPositioning: {
         surface: {},
-        core: {},
-      },
+        core: {}
+      }
     })
   }
 
@@ -67,7 +67,7 @@ class MoonPlot {
   }
 
   resetState () {
-    this.plotState.setState(_.merge({},MoonPlot.defaultState(), {
+    this.plotState.setState(_.merge({}, MoonPlot.defaultState(), {
       lunarSurfaceLabels: this.config.lunarSurfaceLabels,
       lunarCoreLabels: this.config.lunarCoreLabels
     }))

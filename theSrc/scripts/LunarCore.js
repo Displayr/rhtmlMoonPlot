@@ -156,7 +156,6 @@ export class LunarCore {
         Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray, linkWidth)
       })
 
-
     lunarCoreLinksSvg.transition()
       .duration(800)
       .attr('x2', d => d.x)

@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
 class PlotState {
-
   constructor () {
     this.moveCoreLabel = this.moveCoreLabel.bind(this)
     this.moveSurfaceLabel = this.moveSurfaceLabel.bind(this)
@@ -54,7 +53,7 @@ class PlotState {
     this.callListeners()
   }
 
-  setPlotSize ({width, height }) {
+  setPlotSize ({width, height}) {
     this.state.plotSize = { width, height }
     this.callListeners()
   }
