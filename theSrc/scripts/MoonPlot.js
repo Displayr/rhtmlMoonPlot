@@ -42,7 +42,12 @@ class MoonPlot {
       circleRadius: null,
       labelPositioning: {
         surface: {},
-        core: {}
+        core: {
+          "3": {
+            "x": 274.0681878773125,
+            "y": 273.37056906884425
+          }
+        }
       }
     })
   }

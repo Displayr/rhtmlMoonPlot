@@ -149,8 +149,14 @@ export class LunarCore {
 
     lunarCoreLabelsSvg.transition()
       .duration(800)
-      .attr('x', d => d.x)
-      .attr('y', d => d.y)
+      .each(function (d) {
+        const {x, y} = (plotState.hasCoreLabelBeenMoved(d.id))
+          ? plotState.getCoreLabelCoord(d.id)
+          : {x: d.x, y: d.y}
+        d3.select(this)
+          .attr('x', x)
+          .attr('y', y)
+      })
       .on('end', () => {
         svg.selectAll('.init-core-link').remove()
         // adjustCoreLabelLength(lunarCoreLabelsSvg.node(), radius, cx, cy)
@@ -159,7 +165,13 @@ export class LunarCore {
 
     lunarCoreLinksSvg.transition()
       .duration(800)
-      .attr('x2', d => d.x)
-      .attr('y2', d => d.y)
+      .each(function (d) {
+        const {x, y} = (plotState.hasCoreLabelBeenMoved(d.id))
+          ? plotState.getCoreLabelCoord(d.id)
+          : {x: d.x, y: d.y}
+        d3.select(this)
+          .attr('x2', x)
+          .attr('y2', y)
+      })
   }
 }
