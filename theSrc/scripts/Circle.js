@@ -1,15 +1,15 @@
 import {Drag} from './Drag'
 
 class Circle {
-  static drawCircle ({plotState, lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, radius, height, width, circleColor, crossColor, textColor, circleStrokeWidth}) {
+  static drawCircle ({plotState, lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, circleColor, crossColor, textColor, circleStrokeWidth}) {
     this.drawCross(svg, cx, cy, crossColor)
 
-    const moonDrag = Drag.setupMoonResize(lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, radius, textColor, plotState)
+    const moonDrag = Drag.setupMoonResize(lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, textColor, plotState)
 
     let moon = svg.append('circle')
                   .attr('cx', cx)
                   .attr('cy', cy)
-                  .attr('r', radius)
+                  .attr('r', plotState.getCircleRadius())
                   .attr('class', 'moon-circle')
                   .attr('stroke-width', circleStrokeWidth)
                   .attr('cursor', 'all-scroll')

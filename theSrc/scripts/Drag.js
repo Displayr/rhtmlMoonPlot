@@ -7,12 +7,11 @@ export class Drag {
   static setupLunarCoreDragAndDrop (svg,
                             lunarCoreLabels,
                             anchorArray,
-                            radius,
                             xCenter,
                             yCenter,
                             textColor,
                             linkWidth,
-                            onDragEnd) {
+                            plotState) {
     const dragStart = function () {
       svg.selectAll('.core-link').remove()
       return d3.select(this).style('fill', 'red')
@@ -31,9 +30,9 @@ export class Drag {
     const dragEnd = function (d) {
       d3.select(this).style('fill', textColor)
       const coreLabels = d3.selectAll('.core-label').nodes()
-      Utils.adjustCoreLabelLength(coreLabels, radius, xCenter, yCenter)
+      Utils.adjustCoreLabelLength(coreLabels, plotState.getCircleRadius(), xCenter, yCenter)
       Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray, linkWidth)
-      onDragEnd(d.id, {x: d.x, y: d.y})
+      plotState.moveCoreLabel(d.id, {x: d.x, y: d.y})
     }
 
     return d3.drag()
@@ -51,13 +50,12 @@ export class Drag {
   static setupLunarSurfaceDragAndDrop (svg,
                                lunarSurfaceLabels,
                                lunarSurfaceLinks,
-                               radius,
                                xCenter,
                                yCenter,
                                height,
                                width,
                                textColor,
-                               onDragEnd) {
+                               plotState) {
     const dragStart = function () {
       svg.selectAll('.surface-link').remove()
       d3.select(this).style('fill', 'red')
@@ -65,8 +63,8 @@ export class Drag {
 
     const dragMove = function (d) {
       d3.select(this)
-        .attr('x', d3.event.x)
-        .attr('y', d3.event.y)
+        .attr('x', d3.mouse(this)[0])
+        .attr('y', d3.mouse(this)[1])
         .attr('cursor', 'all-scroll')
 
       d.x = d3.event.x
@@ -111,7 +109,7 @@ export class Drag {
          .attr('stroke', 'gray')
 
       Utils.adjustSurfaceLabelLength(lunarSurfaceLabels, height, width)
-      onDragEnd(d.id, {x: d.x, y: d.y})
+      plotState.moveSurfaceLabel(d.id, {x: d.x, y: d.y})
     }
 
     return d3.drag()
@@ -126,18 +124,16 @@ export class Drag {
              .on('end', dragEnd)
   }
 
-  static setupMoonResize (lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, radius, textColor, plotState) {
+  static setupMoonResize (lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, textColor, plotState) {
     const drag = function () {
-      const findDistance = (cx, cy, x, y) => Math.sqrt(Math.pow((x - cx), 2) + Math.pow((y - cy), 2))
-      const mouseX = d3.mouse(this)[0]
-      const mouseY = d3.mouse(this)[1]
-      const newRadius = findDistance(cx, cy, mouseX, mouseY)
-      radius = newRadius
-      return d3.select(this).attr('r', newRadius)
+      const findDistance = (cx, cy, x, y) => Math.sqrt(Math.pow((x - cx), 2) + Math.pow((y - cy), 2)) // TODO this is distanceFromCenter
+      const mouseX = d3.mouse(this)[0] // TODO switch to d3.event. Or lookup and see if I should switch all to d3.mouse
+      const mouseY = d3.mouse(this)[1] // TODO switch to d3.event. Or lookup and see if I should switch all to d3.mouse
+      return d3.select(this).attr('r', findDistance(cx, cy, mouseX, mouseY))
     }
 
     const dragStart = function () {
-      console.log(`start dragging circle. Moon size is r=${radius}`)
+      console.log(`start dragging circle. Moon size is r=${plotState.getCircleRadius()}`)
       svg.selectAll('.init-core-link').remove()
       svg.selectAll('.core-label').remove()
       svg.selectAll('.core-anchor').remove()
@@ -145,33 +141,35 @@ export class Drag {
       svg.selectAll('.surface-label').remove()
     }
 
-    // TODO NB these shouldn't be called from here !
     const dragEnd = function () {
-      console.log(`end circle drag. Moon resized to r=${radius}`)
+      const findDistance = (cx, cy, x, y) => Math.sqrt(Math.pow((x - cx), 2) + Math.pow((y - cy), 2)) // TODO this is distanceFromCenter
+      const mouseX = d3.mouse(this)[0] // TODO switch to d3.event. Or lookup and see if I should switch all to d3.mouse
+      const mouseY = d3.mouse(this)[1] // TODO switch to d3.event. Or lookup and see if I should switch all to d3.mouse
+      const newRadius = findDistance(cx, cy, mouseX, mouseY)
+      plotState.setCircleRadius(newRadius)
+      console.log(`end circle drag. Moon resized to r=${newRadius}`)
 
+      // TODO this should be moved up to state, not called from here
       LunarCore.drawLunarCoreLabels({
         plotState,
         lunarCoreLabelsData: lunarCoreLabels,
         svg,
         cx,
         cy,
-        radius,
         textColor,
         linkWidth: 1}) // TODO pull from config
 
+      // TODO this should be moved up to state, not called from here
       LunarSurface.drawLunarSurfaceLabels({
         plotState,
         lunarSurfaceLabelsData: lunarSurfaceLabels,
         svg,
         cx,
         cy,
-        radius,
         height,
         width,
         textColor,
         labelSizeConst: 14}) // TODO pull from config
-
-      plotState.setCircleRadius(radius)
     }
 
     return d3.drag()

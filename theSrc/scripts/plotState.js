@@ -79,6 +79,7 @@ class PlotState {
   }
 
   getCircleRadius () {
+    console.log('this.state.circleRadius', `${this.state.circleRadius}`)
     return this.state.circleRadius
   }
 

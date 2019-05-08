@@ -5,7 +5,7 @@ import labeler from './labeler'
 import Utils from './Utils'
 
 export class LunarCore {
-  static drawLunarCoreLabels ({plotState, lunarCoreLabelsData, svg, cx, cy, radius, textColor, linkWidth}) {
+  static drawLunarCoreLabels ({plotState, lunarCoreLabelsData, svg, cx, cy, textColor, linkWidth}) {
     let x, y
     const drawLabels = function (labelData, drag2) {
       svg.selectAll('.core-label')
@@ -52,18 +52,17 @@ export class LunarCore {
       svg,
       lunarCoreLabels,
       anchorArray,
-      radius,
       cx,
       cy,
       textColor,
       linkWidth,
-      plotState.moveCoreLabel
+      plotState
     )
 
     // prevent labels from escaping moon surface
     for (let label of Array.from(lunarCoreLabelsData)) {
-      x = (label.x * radius) + cx
-      y = (-label.y * radius) + cy
+      x = (label.x * plotState.getCircleRadius()) + cx
+      y = (-label.y * plotState.getCircleRadius()) + cy
 
       lunarCoreLabels.push({
         x,
@@ -142,7 +141,7 @@ export class LunarCore {
      .svg(svg)
      .cx(cx)
      .cy(cy)
-     .radius(radius)
+     .radius(plotState.getCircleRadius())
      .anchor(anchorArray)
      .label(lunarCoreLabels)
      .start(500)

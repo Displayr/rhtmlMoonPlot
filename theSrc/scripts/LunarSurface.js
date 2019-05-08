@@ -4,26 +4,25 @@ import {Drag} from './Drag'
 import * as d3 from 'd3'
 
 export class LunarSurface {
-  static drawLunarSurfaceLabels ({plotState, lunarSurfaceLabelsData, svg, cx, cy, radius, height, width, textColor, labelSizeConst}) {
+  static drawLunarSurfaceLabels ({plotState, lunarSurfaceLabelsData, svg, cx, cy, height, width, textColor, labelSizeConst}) {
     let x, y
     const lunarSurfaceLinks = []
     let lunarSurfaceLabels = []
     const drag = Drag.setupLunarSurfaceDragAndDrop(svg,
       lunarSurfaceLabels,
       lunarSurfaceLinks,
-      radius,
       cx,
       cy,
       height,
       width,
       textColor,
-      plotState.moveSurfaceLabel)
+      plotState)
 
     let cartCoords = []
     let t = null
     for (var label of Array.from(lunarSurfaceLabelsData)) {
-      x = (label.x * radius * 0.7) + cx
-      y = (-label.y * radius * 0.7) + cy
+      x = (label.x * plotState.getCircleRadius() * 0.7) + cx
+      y = (-label.y * plotState.getCircleRadius() * 0.7) + cy
 
       if (label.x < 0) {
         t = svg.append('text')
@@ -57,9 +56,9 @@ export class LunarSurface {
 
     svg.selectAll('.surface-label').remove()
     const polarCoords = polarsFromCartesians(cartCoords)
-    const lengthOfLine = radius * 2 * Math.PI
+    const lengthOfLine = plotState.getCircleRadius() * 2 * Math.PI
 
-    Utils.moveSurfaceCollsions(polarCoords, lengthOfLine, radius)
+    Utils.moveSurfaceCollsions(polarCoords, lengthOfLine, plotState.getCircleRadius())
     cartCoords = cartesiansFromPolars(polarCoords)
 
     // Load the new cartesian coordinates into lunarSurfaceLabelsData array
