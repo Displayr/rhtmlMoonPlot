@@ -6,8 +6,6 @@ import _ from 'lodash'
 //   plot: { coreLabels: [], surfaceLabels: [] },
 //   plotSize: { width: null, height: null },
 //   circleRadius: null, // TODO just make it radius or plotRadius, or move to plot.radius
-//   labellerHasRan: false,
-//   userModifiedPositions: false,
 // })
 
 class PlotState {
