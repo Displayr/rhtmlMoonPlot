@@ -28,6 +28,9 @@ const cartesianFromPolar = (polarCoord) => {
   })
 }
 
+const toDegrees = (radians) => radians * (180 / Math.PI)
+const toRadians = (degrees) => degrees * (Math.PI / 180)
+
 // Convert polar to Cartesian coordinates
 const cartesiansFromPolars = (polarCoords) => {
   const cartCoords = []
@@ -38,6 +41,8 @@ const cartesiansFromPolars = (polarCoords) => {
 }
 
 module.exports = {
+  toDegrees,
+  toRadians,
   polarsFromCartesians,
   polarFromCartesian,
   cartesiansFromPolars,

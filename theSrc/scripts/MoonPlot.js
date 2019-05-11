@@ -4,10 +4,13 @@ import _ from 'lodash'
 import * as d3 from 'd3'
 
 import PlotState from './plotState'
-import {LunarSurface} from './LunarSurface'
-import {LunarCore} from './LunarCore'
-import Circle from './Circle'
 import buildConfig from './buildConfig'
+import CoreLabeller from './labellers/coreLabeller'
+import SurfaceLabeller from './labellers/surfaceLabeller'
+
+import CorelLabels from './components/coreLabels'
+import SurfacelLabels from './components/surfaceLabels'
+import Circle from './components/circle'
 
 class MoonPlot {
   static initClass () {
@@ -36,14 +39,13 @@ class MoonPlot {
 
   static defaultState () {
     return _.cloneDeep({
-      lunarCoreLabels: [],
-      lunarSurfaceLabels: [],
+      version: 1,
+      sourceData: { coreLabels: [], surfaceLabels: [] },
+      plot: { coreLabels: [], surfaceLabels: [] },
       plotSize: { width: null, height: null },
-      circleRadius: null,
-      labelPositioning: {
-        surface: {},
-        core: {}
-      }
+      circleRadius: null, // TODO just make it radius or plotRadius, or move to plot.radius
+      labellerHasRan: false,
+      userModifiedPositions: false
     })
   }
 
@@ -53,11 +55,11 @@ class MoonPlot {
 
   checkState (previousUserState) {
     const stateIsValid = !_.isNull(previousUserState) &&
-      _.isEqual(previousUserState.lunarSurfaceLabels, this.config.lunarSurfaceLabels) &&
-      _.isEqual(previousUserState.lunarCoreLabels, this.config.lunarCoreLabels) &&
+      previousUserState.version === 1 &&
+      _.isEqual(previousUserState.sourceData.surfaceLabels, this.config.surfaceLabels) &&
+      _.isEqual(previousUserState.sourceData.coreLabels, this.config.coreLabels) &&
       _.has(previousUserState, 'plotSize') &&
-      _.has(previousUserState, 'circleRadius') &&
-      _.has(previousUserState, 'labelPositioning')
+      _.has(previousUserState, 'circleRadius')
 
     return stateIsValid
   }
@@ -68,12 +70,16 @@ class MoonPlot {
 
   resetState () {
     this.plotState.setState(_.merge({}, MoonPlot.defaultState(), {
-      lunarSurfaceLabels: this.config.lunarSurfaceLabels,
-      lunarCoreLabels: this.config.lunarCoreLabels
+      sourceData: {
+        lunarSurfaceLabels: this.config.lunarSurfaceLabels,
+        lunarCoreLabels: this.config.lunarCoreLabels
+      }
     }))
   }
 
   draw (rootElement) {
+    // TODO buildConfig shouldn't really be transforming the labels ...
+
     const { width, height } = getContainerDimensions(_.has(rootElement, 'length') ? rootElement[0] : rootElement)
 
     const svg = d3.select(rootElement).append('svg')
@@ -81,17 +87,82 @@ class MoonPlot {
       .attr('width', width)
       .attr('height', height)
 
-    const cx = width / 2
-    const cy = height / 2
+    const cx = width / 2 // TODO maintain in state ?
+    const cy = height / 2 // TODO maintain in state ?
 
     if (!this.plotState.hasCircleRadius()) {
       this.plotState.setCircleRadius(Math.min(height, width) / 3) // TODO move to config
     }
-    const {lunarCoreLabels, lunarSurfaceLabels, circleColor, crossColor, circleStrokeWidth, textColor, linkWidth, labelSizeConst} = this.config
 
-    Circle.drawCircle({plotState: this.plotState, lunarCoreLabels, lunarSurfaceLabels, svg, cx, cy, height, width, circleColor, crossColor, textColor, circleStrokeWidth})
-    LunarCore.drawLunarCoreLabels({plotState: this.plotState, lunarCoreLabelsData: lunarCoreLabels, svg, cx, cy, textColor, linkWidth}) // TODO remove need for lunarCoreLabelsData
-    LunarSurface.drawLunarSurfaceLabels({plotState: this.plotState, lunarSurfaceLabelsData: lunarSurfaceLabels, svg, cx, cy, height, width, textColor, labelSizeConst}) // TODO remove need for lunarSurfaceLabelsData
+    if (!this.plotState.labellerHasRan) {
+      const coreLabels = CoreLabeller.positionLabels({
+        svg,
+        lunarCoreLabels: this.config.lunarCoreLabels,
+        fontFamily: this.config.coreLabelFontFamily,
+        fontSize: this.config.coreLabelFontSize,
+        radius: this.plotState.getCircleRadius(),
+        cx,
+        cy
+      })
+
+      const surfaceLabels = SurfaceLabeller.positionLabels({
+        svg,
+        surfaceLabels: this.config.lunarSurfaceLabels,
+        fontFamily: this.config.surfaceLabelFontFamily,
+        fontSize: this.config.surfaceLabelFontSize,
+        radius: this.plotState.getCircleRadius(),
+        cx,
+        cy
+      })
+
+      // TODO make accessors for plotState
+      this.plotState.state.labellerHasRan = true
+      this.plotState.state.plot.coreLabels = coreLabels
+      this.plotState.state.plot.surfaceLabels = surfaceLabels
+      this.plotState.callListeners()
+    }
+
+    this.coreLabels = new CorelLabels({
+      parentContainer: svg,
+      plotState: this.plotState,
+      cx,
+      cy,
+      fontFamily: this.config.coreLabelFontFamily,
+      fontSize: this.config.coreLabelFontSize,
+      fontColor: this.config.coreLabelFontColor,
+      fontSelectedColor: this.config.coreLabelFontSelectedColor,
+      linkWidth: this.config.linkWidth,
+      linkColor: this.config.linkColor
+    })
+
+    this.surfaceLabels = new SurfacelLabels({
+      parentContainer: svg,
+      plotState: this.plotState,
+      cx,
+      cy,
+      height,
+      width,
+      fontFamily: this.config.surfaceLabelFontFamily,
+      fontSize: this.config.surfaceLabelFontSize,
+      fontColor: this.config.surfaceLabelFontColor,
+      fontSelectedColor: this.config.surfaceLabelFontSelectedColor,
+      linkWidth: this.config.linkWidth,
+      linkColor: this.config.linkColor
+    })
+
+    this.circle = new Circle({
+      parentContainer: svg,
+      plotState: this.plotState,
+      cx,
+      cy,
+      circleColor: this.config.circleColor,
+      crossColor: this.config.crossColor,
+      circleStrokeWidth: this.config.circleStrokeWidth
+    })
+
+    this.coreLabels.draw()
+    this.surfaceLabels.draw()
+    this.circle.draw()
   }
 }
 MoonPlot.initClass()

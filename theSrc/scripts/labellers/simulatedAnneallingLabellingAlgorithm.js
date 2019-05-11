@@ -403,24 +403,12 @@ const labeler = function () {
   }
   
   labeler.label = function(x) {
-    // users insert label positions
     if (!arguments.length) return lab
     lab = x
-    for(let i=0; i<lab.length;i++) {
-      // lab[i].y -= 5
-      // svg.append('rect').attr('x', lab[i].x)
-      //                   .attr('y', lab[i].y - lab[i].height)
-      //                   .attr('width', lab[i].width)
-      //                   .attr('height', lab[i].height)
-      //                   .attr('fill', 'yellow')
-      //                   .attr('stroke', 'blue')
-      //                   .attr('opacity', 0.1)
-    }
     return labeler
   }
   
   labeler.anchor = function(x) {
-    // users insert anchor positions
     if (!arguments.length) return anc
     anc = x
     return labeler

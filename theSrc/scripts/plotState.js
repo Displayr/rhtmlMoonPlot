@@ -1,5 +1,15 @@
 import _ from 'lodash'
 
+// return _.cloneDeep({
+//   version: 1,
+//   sourceData: { coreLabels: [], surfaceLabels: [] },
+//   plot: { coreLabels: [], surfaceLabels: [] },
+//   plotSize: { width: null, height: null },
+//   circleRadius: null, // TODO just make it radius or plotRadius, or move to plot.radius
+//   labellerHasRan: false,
+//   userModifiedPositions: false,
+// })
+
 class PlotState {
   constructor () {
     this.moveCoreLabel = this.moveCoreLabel.bind(this)
@@ -44,29 +54,15 @@ class PlotState {
   }
 
   moveCoreLabel (id, coord) {
-    this.state.labelPositioning.core[id] = coord
+    // NB in current design we dont need to update the coord in plotState, because the D3 data bind is such that d3 is sharing a direct reference to plotState coords ... (is this good ?)
+    _.find(this.state.plot.coreLabels, { id }).moved = true
     this.callListeners()
   }
-
-  hasCoreLabelBeenMoved (id) {
-    return _.has(this.state.labelPositioning.core, id)
-  }
-
-  getCoreLabelCoord (id) {
-    return this.state.labelPositioning.core[id]
-  }
-
+  
   moveSurfaceLabel (id, coord) {
-    this.state.labelPositioning.surface[id] = coord
+    // NB in current design we dont need to update the coord in plotState, because the D3 data bind is such that d3 is sharing a direct reference to plotState coords ... (is this good ?)
+    _.find(this.state.plot.surfaceLabels, { id }).moved = true
     this.callListeners()
-  }
-
-  hasSurfaceLabelBeenMoved (id) {
-    return _.has(this.state.labelPositioning.surface, id)
-  }
-
-  getSurfaceLabelCoord (id) {
-    return this.state.labelPositioning.surface[id]
   }
 
   setPlotSize ({width, height}) {
@@ -90,6 +86,14 @@ class PlotState {
 
   setData (data) {
     this.state.datahash = PlotState.datahash(data)
+  }
+
+  getCoreLabels () {
+    return this.state.plot.coreLabels
+  }
+
+  getSurfaceLabels () {
+    return this.state.plot.surfaceLabels
   }
 }
 
