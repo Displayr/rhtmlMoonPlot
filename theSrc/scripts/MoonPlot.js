@@ -34,15 +34,20 @@ class MoonPlot {
   }
 
   init () {
-    this.plotState = new PlotState()
+    console.log('moonplot init')
+    this.plotState = new PlotState(this)
     this.config = null
     this.inputData = null
   }
 
   reset () {
-    this.svg.innerHTML = ''
+    console.log('moonplot reset')
     this.registeredStateListeners.forEach(dergisterFn => dergisterFn())
     this.init()
+  }
+
+  clearPlot () {
+    this.svg.selectAll('*').remove()
   }
 
   setConfig (config) {
@@ -82,9 +87,10 @@ class MoonPlot {
     this.plotState.initialiseState(previousUserState)
   }
 
-  resetState () {
+  // TODO newRadius is a bit hacky
+  resetState (newRadius) {
     const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
-    const radius = Math.min(height, width) / 3 // TODO move the 3 to config
+    const radius = (newRadius) ? newRadius : Math.min(height, width) / 3 // TODO move the 3 to config
     const sourceData = buildLabelObjectsFromConfig(this.inputData)
     const coreLabels = CoreLabeller.positionLabels({
       svg: this.svg,
@@ -116,6 +122,7 @@ class MoonPlot {
   }
 
   draw () {
+    this.clearPlot()
     const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
     const cx = width / 2 // TODO maintain in state ?
     const cy = height / 2 // TODO maintain in state ?

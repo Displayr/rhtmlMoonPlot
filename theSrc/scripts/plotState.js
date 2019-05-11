@@ -11,12 +11,16 @@ import _ from 'lodash'
 // })
 
 class PlotState {
-  constructor () {
+  constructor (plotReference) {
+    this.setPlotReference(plotReference)
     this.moveCoreLabel = this.moveCoreLabel.bind(this)
     this.moveSurfaceLabel = this.moveSurfaceLabel.bind(this)
-    this.setPlotSize = this.setPlotSize.bind(this)
-    this.setCircleRadius = this.setCircleRadius.bind(this)
+    this.circleRadiusChanged = this.circleRadiusChanged.bind(this)
     this.init()
+  }
+
+  setPlotReference (plotReference) {
+    this.plotReference = plotReference
   }
 
   init () {
@@ -24,6 +28,7 @@ class PlotState {
     this.listeners = {}
     this.listenerId = 0
   }
+
 
   // does not call listeners
   initialiseState (newState) {
@@ -37,10 +42,6 @@ class PlotState {
 
   callListeners () {
     _.each(this.listeners, (listenerFn) => { listenerFn(_.cloneDeep(this.state)) })
-  }
-
-  getState () {
-    return this.state
   }
 
   addListener (listenerFn) {
@@ -65,27 +66,17 @@ class PlotState {
     this.callListeners()
   }
 
-  setPlotSize ({width, height}) {
-    this.state.plotSize = { width, height }
-    this.callListeners()
-  }
-
-  hasCircleRadius (radius) {
-    return !_.isNull(this.state.circleRadius)
-  }
-
   getCircleRadius () {
     console.log('this.state.circleRadius', `${this.state.circleRadius}`)
     return this.state.circleRadius
   }
 
-  setCircleRadius (radius) {
-    this.state.circleRadius = radius
+  circleRadiusChanged (radius) {
+    console.log(`circleRadiusChanged called with`, radius)
+    this.plotReference.clearPlot()
+    this.plotReference.resetState(radius)
     this.callListeners()
-  }
-
-  setData (data) {
-    this.state.datahash = PlotState.datahash(data)
+    this.plotReference.draw()
   }
 
   getCoreLabels () {
