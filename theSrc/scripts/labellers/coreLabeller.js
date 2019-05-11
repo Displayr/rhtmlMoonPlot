@@ -2,17 +2,17 @@ import labeler from './simulatedAnneallingLabellingAlgorithm'
 import {getLabelDimensionsUsingSvgApproximation} from '../labelUtils'
 import _ from 'lodash'
 
-// ({plotState, lunarCoreLabelsData, svg, cx, cy, textColor, linkWidth})
+// ({plotState, coreLabelsData, svg, cx, cy, textColor, linkWidth})
 const positionLabels = ({
   svg,
-  lunarCoreLabels,
+  coreLabels,
   fontFamily,
   fontSize,
   fontColor,
   radius,
   cx,
   cy }) => {
-  const labels = _(lunarCoreLabels)
+  const labels = _(coreLabels)
     .cloneDeep()
     .map(label => {
       const x = (label.x * radius) + cx

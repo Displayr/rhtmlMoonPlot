@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-// return _.cloneDeep({
+// State {
 //   version: 1,
 //   sourceData: { coreLabels: [], surfaceLabels: [] },
 //   plot: { coreLabels: [], surfaceLabels: [] },

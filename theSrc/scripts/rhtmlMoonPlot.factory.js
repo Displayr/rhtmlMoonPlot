@@ -14,7 +14,6 @@ module.exports = function (element, w, h, stateChangedFn) {
 
   function doRenderValue (config, state) {
     try {
-      element.innerHTML = ''
       moonplot.reset()
       moonplot.setConfig(config)
 
@@ -29,7 +28,7 @@ module.exports = function (element, w, h, stateChangedFn) {
 
       moonplot.addStateListener(newState => { stateCopy = newState })
 
-      return moonplot.draw(element)
+      moonplot.draw()
     } catch (err) {
       _showError(err, element)
     }

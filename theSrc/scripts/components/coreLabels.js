@@ -86,7 +86,7 @@ export class CoreLabels {
       // TODO re-enable
       // const coreLabels = labelSelection.nodes()
       // Utils.adjustCoreLabelLength(coreLabels, plotState.getCircleRadius(), xCenter, yCenter)
-      // Utils.adjustCoreLinks(svg, lunarCoreLabels, anchorArray, linkWidth)
+      // Utils.adjustCoreLinks(svg, coreLabels, anchorArray, linkWidth)
       plotState.moveCoreLabel(d.id, d.label)
     }
 

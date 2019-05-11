@@ -1,5 +1,5 @@
 {
-  "lunarCoreNodes": [
+  "coreNodes": [
     [
       -0.0761,
       0.0141
@@ -17,13 +17,13 @@
       -0.238
     ]
   ],
-  "lunarCoreLabels": [
+  "coreLabels": [
     "CORE 1",
     "CORE 2",
     "CORE 3",
     "CORE 4"
   ],
-  "lunarSurfaceNodes": [
+  "surfaceNodes": [
     [
       2.0758,
       -0.0107
@@ -41,7 +41,7 @@
       0.373
     ]
   ],
-  "lunarSurfaceLabels": [
+  "surfaceLabels": [
     "SURFACE 1",
     "SURFACE 2",
     "SURFACE 3",

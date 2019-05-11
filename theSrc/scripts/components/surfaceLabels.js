@@ -80,7 +80,7 @@ export class SurfaceLabels {
         .attr('opacity', 1)
 
       // TODO re-enable
-      // Utils.adjustSurfaceLabelLength(lunarSurfaceLabels, height, width)
+      // Utils.adjustSurfaceLabelLength(surfaceLabels, height, width)
       plotState.moveSurfaceLabel(d.id, d.label)
     }
 

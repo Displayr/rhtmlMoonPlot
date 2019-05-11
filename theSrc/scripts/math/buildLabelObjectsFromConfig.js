@@ -1,33 +1,49 @@
 import _ from 'lodash'
 import distanceFromCenter from './distanceFromCenter'
 
-module.exports = (config) => {
-  const normalizedCoreNodes = normalizeCoreNodes(config.lunarCoreNodes)
-  const lunarSurfaceSizes = calculateSurfaceLabelSizes(config.lunarSurfaceNodes, 1.5, 0.5)
-  const surfaceNodePositions = calculateSurfaceNodePositions(config.lunarSurfaceNodes)
+// TODO check array length matches surface(node v label) core(node v label)
+const configArrayFields = ['coreNodes', 'surfaceNodes', 'coreLabels', 'surfaceLabels']
 
-  const lunarCoreLabels = _(normalizedCoreNodes)
+module.exports = (config) => {
+  _(configArrayFields).each(requiredArray => {
+    if (!_.has(config, requiredArray)) { throw new Error(`Invalid config. Missing ${requiredArray}`) }
+    if (!_.isArray(config[requiredArray])) { throw new Error(`Invalid config. ${requiredArray} must be array`) }
+  })
+
+  if (config.coreNodes.length !== config.coreLabels.length) {
+    throw new Error('Invalid config. length(coreNodes) != length(coreLabels)')
+  }
+
+  if (config.surfaceNodes.length !== config.surfaceLabels.length) {
+    throw new Error('Invalid config. length(surfaceNodes) != length(surfaceLabels)')
+  }
+
+  const normalizedCoreNodes = normalizeCoreNodes(config.coreNodes)
+  const surfaceSizes = calculateSurfaceLabelSizes(config.surfaceNodes, 1.5, 0.5)
+  const surfaceNodePositions = calculateSurfaceNodePositions(config.surfaceNodes)
+
+  const coreLabels = _(normalizedCoreNodes)
     .map((node, i) => ({
       id: i,
-      name: config.lunarCoreLabels[i],
+      name: config.coreLabels[i],
       x: node[0],
       y: node[1]
     }))
     .value()
 
-  const lunarSurfaceLabels = _(surfaceNodePositions)
+  const surfaceLabels = _(surfaceNodePositions)
     .map((node, i) => ({
       id: i,
-      name: config.lunarSurfaceLabels[i],
+      name: config.surfaceLabels[i],
       x: node[0],
       y: node[1],
-      size: lunarSurfaceSizes[i]
+      size: surfaceSizes[i]
     }))
     .value()
 
   return {
-    lunarCoreLabels,
-    lunarSurfaceLabels
+    coreLabels,
+    surfaceLabels
   }
 }
 
@@ -44,12 +60,12 @@ const normalizeCoreNodes = (rawCoreNodes, threshold = 0.1) => {
 
 // TODO scaleFactor, equalizeFactor to config
 const calculateSurfaceLabelSizes = (rawSurfaceNodes, scaleFactor, equalizeFactor) => {
-  const lunarSurfaceSizes = _(rawSurfaceNodes)
+  const surfaceSizes = _(rawSurfaceNodes)
     .map(node => distanceFromCenter(node[0], node[1]))
     .value()
-  let maxSize = _(lunarSurfaceSizes).max()
+  let maxSize = _(surfaceSizes).max()
 
-  return _(lunarSurfaceSizes)
+  return _(surfaceSizes)
     .map(s => scaleFactor * Math.pow((s / maxSize), equalizeFactor))
     .value()
 }

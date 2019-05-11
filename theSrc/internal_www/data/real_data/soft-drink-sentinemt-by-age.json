@@ -1,5 +1,5 @@
 {
-  "lunarCoreNodes": [
+  "coreNodes": [
     [
       0.1722,
       -0.0751,
@@ -73,7 +73,7 @@
       0.0755
     ]
   ],
-  "lunarCoreLabels": [
+  "coreLabels": [
     "Coca-Cola",
     "Diet Coke",
     "Coke Zero",
@@ -83,7 +83,7 @@
     "Dislike all cola",
     "Don't care"
   ],
-  "lunarSurfaceNodes": [
+  "surfaceNodes": [
     [
       0.3751,
       -0.1123,
@@ -157,7 +157,7 @@
       -0.0472
     ]
   ],
-  "lunarSurfaceLabels": [
+  "surfaceLabels": [
     "25 to 29",
     "30 to 34",
     "35 to 39",

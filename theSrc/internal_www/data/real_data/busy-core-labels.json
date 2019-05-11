@@ -1,5 +1,5 @@
 {
-  "lunarCoreNodes": [
+  "coreNodes": [
     [
       "-1.463366472005000000000000000000",
       "-0.379352165370800000000000000000"
@@ -169,7 +169,7 @@
       "-0.229969450459200000000000000000"
     ]
   ],
-  "lunarSurfaceNodes": [
+  "surfaceNodes": [
     [
       "-0.089228875276690000000000000",
       "-1.495366049410000000000000000"
@@ -231,7 +231,7 @@
       "-0.575895421910000000000000000"
     ]
   ],
-  "lunarCoreLabels": [
+  "coreLabels": [
     "Porsche",
     "Nike athletic shoes",
     "Mercedes",
@@ -275,7 +275,7 @@
     "Kmart",
     "Campbell's soup"
   ],
-  "lunarSurfaceLabels": [
+  "surfaceLabels": [
     "Charming",
     "Cheerful",
     "Daring",
