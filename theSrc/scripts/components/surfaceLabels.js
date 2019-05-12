@@ -47,8 +47,53 @@ export class SurfaceLabels {
       .text(d => d.name)
       .call(this.setupDrag())
 
-      // TODO re-enable
-      //   return Utils.adjustSurfaceLabelLength(lunarLabelSvgNodes, height, width)
+      this.adjustLabelLengths()
+  }
+
+  adjustLabelLengths () {
+    const detectViewportCollision = (surfaceLabel) => {
+      const getScreenCoords = function (x, y, ctm) {
+        const xn = ctm.e + (x * ctm.a) + (y * ctm.c)
+        const yn = ctm.f + (x * ctm.b) + (y * ctm.d)
+        return { x: xn, y: yn }
+      }
+
+      if (d3.select(surfaceLabel).node().textContent === '') {
+        return false
+      }
+
+      const box = surfaceLabel.getBBox()
+      const ctm = surfaceLabel.getCTM()
+      const transformedCoords = getScreenCoords(box.x, box.y, ctm)
+      box.right = transformedCoords.x + box.width
+      box.left = transformedCoords.x
+      box.top = transformedCoords.y
+      box.bottom = transformedCoords.y + box.height
+
+      const collideL = box.left < 0
+      const collideR = box.right > this.width
+      let collideT = false
+      let collideB = false
+      if (box.x < (this.width / 2)) { // only need to condense text on left half
+        collideT = box.top < 0
+        collideB = box.bottom > this.height
+      }
+      return collideL || collideR || collideT || collideB
+    }
+
+    this.parentContainer.selectAll('.surface-label').nodes().forEach(surfaceLabel => {
+      // Throw away chars one at a time and check if still collides w/viewport
+      let text = d3.select(surfaceLabel).node().textContent
+      let truncated = false
+      while (detectViewportCollision(surfaceLabel) && text.length > 0) {
+        truncated = true
+        text = d3.select(surfaceLabel).node().textContent
+        d3.select(surfaceLabel).text(text.slice(0, -1))
+      }
+      if (truncated) {
+        d3.select(surfaceLabel).text(text.slice(0, -3) + '...')
+      }
+    })
   }
 
   setupDrag () {
