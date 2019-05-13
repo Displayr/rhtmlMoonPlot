@@ -42,6 +42,7 @@ export class CoreLabels {
       .attr('stroke', this.linkColor)
       .attr('opacity', d => _.isNull(d.labelLineConnector) ? 0 : 1)
 
+    // TODO i dont hink i use labelSelection anywhere (it is stale) . Clean it up
     this.labelSelection = this.parentContainer.selectAll('.core-label')
     this.labelSelection
       .data(this.plotState.getCoreLabels())
@@ -59,7 +60,9 @@ export class CoreLabels {
       .style('font-size', this.fontSize)
       .text(d => d.name)
       .call(this.setupDrag())
-      .append('title').text(d => d.name)
+
+    this.labelSelection = this.parentContainer.selectAll('.core-label')
+      .append('title').text('foo')
 
     this.adjustLabelLengths()
   }
@@ -110,7 +113,7 @@ export class CoreLabels {
   setupDrag () {
     const { fontColor, fontSelectedColor, plotState, parentContainer } = this
     const adjustLabelLength = this.adjustLabelLength.bind(this)
-    
+
     const dragStart = function (d) {
       parentContainer.selectAll(`.core-link[data-id='${d.id}']`).attr('opacity', 0)
       d3.select(this).style('fill', fontSelectedColor)

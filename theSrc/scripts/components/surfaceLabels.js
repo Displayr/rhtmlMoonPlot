@@ -31,12 +31,20 @@ export class SurfaceLabels {
       .attr('class', 'surface-label')
       .attr('data-id', d => d.id)
       .attr('data-label', d =>  d.name)
-      .attr('x', d => d.label.x)
-      .attr('y', d => d.label.y)
-      .each(function (d) {
-        const rotation = buildRotationTransform({circleCenter: { x: cx, y: cy}, labelAnchor: d.anchor })
-        // console.log(`${d.name} buildRotationTransform({circleCenter: {x: ${cx}, y: ${cy}}, labelAnchor: {x: ${d.anchor.x}, y: ${d.anchor.y} }) = ${rotation}`)
-        d3.select(this).attr('transform', rotation)
+      .attr('x', d => d.label.x + cx)
+      .attr('y', d => -d.label.y + cy)
+      // .each(function (d) {
+      //   const rotation = buildRotationTransform({circleCenter: { x: cx, y: cy}, labelAnchor: d.anchor })
+      //   // console.log(`${d.name} buildRotationTransform({circleCenter: {x: ${cx}, y: ${cy}}, labelAnchor: {x: ${d.anchor.x}, y: ${d.anchor.y} }) = ${rotation}`)
+      //   d3.select(this).attr('transform', rotation)
+      // })
+      .attr('transform', d => {
+        const rotation = (d.polarLabel.a / 2 / Math.PI) * 360
+        const x = d.label.x + cx
+        const y = -d.label.y + cy
+        return (d.label.x < 0)
+          ? `rotate(${(180 - rotation).toString()},${x.toString()}, ${y.toString()})`
+          : `rotate(${(-rotation).toString()},${x.toString()}, ${y.toString()})`
       })
       .attr('font-size', d => (d.size * this.fontSize).toString() + 'px')
       .attr('text-anchor', d => (d.label.x < cx) ? 'end' : 'start')
@@ -153,6 +161,10 @@ const buildRotationTransform = ({circleCenter, labelAnchor}) => {
   const deltaX = labelAnchor.x - circleCenter.x
   const deltaY = labelAnchor.y - circleCenter.y
   const absRotation = toDegrees(Math.atan(Math.abs(deltaY) / Math.abs(deltaX)))
-  const rotationTranslation = pos(deltaY) ? -absRotation : absRotation
+  let rotationTranslation = null
+  if (pos(deltaY) && pos(deltaX)) { rotationTranslation = absRotation }
+  if (!pos(deltaY) && pos(deltaX)) { rotationTranslation = -absRotation }
+  if (pos(deltaY) && !pos(deltaX)) { rotationTranslation = -absRotation }
+  if (!pos(deltaY) && !pos(deltaX)) { rotationTranslation = absRotation }
   return `rotate(${rotationTranslation} ${labelAnchor.x} ${labelAnchor.y})`
 }

@@ -15,12 +15,12 @@ const positionLabels = ({
   const labels = _(surfaceLabels)
     .cloneDeep()
     .map(label => {
-      const x = (label.x * radius) + cx
-      const y = (-label.y * radius) + cy
+      const x = (label.x * radius) + cx // NB dont understand the 0.7 but it appears to be relevant (placement breaks without it)
+      const y = (-label.y * radius) + cy // NB dont understand the 0.7 but it appears to be relevant (placement breaks without it)
       const {width, height} = getLabelDimensionsUsingSvgApproximation({
         parentContainer: svg,
         text: label.name,
-        fontSize,
+        fontSize: label.size * fontSize,
         fontFamily
       })
       return {
@@ -30,7 +30,7 @@ const positionLabels = ({
         truncatedName: label.name,
         anchor: { x, y },
         label: { x, y },
-        polarLabel: polarFromCartesian({ x, y, h: height }), // passing h in this is corny ...
+        polarLabel: polarFromCartesian({ x: label.x, y: label.y, h: height }), // passing h in this is corny ...
         width,
         height
       }
@@ -39,12 +39,19 @@ const positionLabels = ({
 
   const polarCoords = _(labels)
     .map('polarLabel')
+    // .map(polarCoord => _.merge(polarCoord, { r: 1 }))
     .value()
 
   console.log(' before move ')
   console.log(JSON.stringify(labels.map(x => x.label), {}, 2))
 
+  console.log(' before move polar')
+  console.log(JSON.stringify(polarCoords, {}, 2))
+
   moveSurfaceCollisions(polarCoords, radius)
+
+  console.log(' after move polar')
+  console.log(JSON.stringify(polarCoords, {}, 2))
 
 
   const cartCoords = cartesiansFromPolars(polarCoords)
@@ -59,15 +66,16 @@ const positionLabels = ({
   // x: (d.newX + cx).toString(),
   // y: (-d.newY + cy).toString()
 
-  return labels.map(label => _.omit(label, ['polarLabel']))
+  return labels
+  // return labels.map(label => _.omit(label, ['polarLabel']))
 }
 
 
 function moveSurfaceCollisions (polarCoords, radius) {
   const lengthOfLine = radius * 2 * Math.PI
-  // for (let pc of Array.from(polarCoords)) {
-  //   pc.r = radius
-  // }
+  for (let pc of Array.from(polarCoords)) {
+    pc.r = radius
+  }
 
   polarCoords = _.sortBy(polarCoords, coords => coords.a)
   const moveAmount = (0.2 / 360) * 2 * Math.PI // deg to rad
@@ -77,6 +85,7 @@ function moveSurfaceCollisions (polarCoords, radius) {
   let maxMoves = 500
   while ((collisions.length > 0) && (maxMoves > 0)) {
     maxMoves--
+    console.log('Moved surface labels')
     for (let pc of Array.from(polarCoords)) {
       if (pc.collision_l) {
         if (pc.a > (0.5 * Math.PI)) { // UL
