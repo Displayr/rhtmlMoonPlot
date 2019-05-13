@@ -51,19 +51,24 @@ export class SurfaceLabels {
   }
 
   adjustLabelLengths () {
-    const detectViewportCollision = (surfaceLabel) => {
+    this.plotState.getSurfaceLabels().forEach(({id}) => this.adjustLabelLength(id))
+  }
+
+  // TODO needs a cleanup
+  adjustLabelLength (id) {
+    const detectViewportCollision = (label) => {
       const getScreenCoords = function (x, y, ctm) {
         const xn = ctm.e + (x * ctm.a) + (y * ctm.c)
         const yn = ctm.f + (x * ctm.b) + (y * ctm.d)
         return { x: xn, y: yn }
       }
 
-      if (d3.select(surfaceLabel).node().textContent === '') {
+      if (d3.select(label).node().textContent === '') {
         return false
       }
 
-      const box = surfaceLabel.getBBox()
-      const ctm = surfaceLabel.getCTM()
+      const box = label.getBBox()
+      const ctm = label.getCTM()
       const transformedCoords = getScreenCoords(box.x, box.y, ctm)
       box.right = transformedCoords.x + box.width
       box.left = transformedCoords.x
@@ -81,23 +86,29 @@ export class SurfaceLabels {
       return collideL || collideR || collideT || collideB
     }
 
-    this.parentContainer.selectAll('.surface-label').nodes().forEach(surfaceLabel => {
-      // Throw away chars one at a time and check if still collides w/viewport
-      let text = d3.select(surfaceLabel).node().textContent
-      let truncated = false
-      while (detectViewportCollision(surfaceLabel) && text.length > 0) {
-        truncated = true
-        text = d3.select(surfaceLabel).node().textContent
-        d3.select(surfaceLabel).text(text.slice(0, -1))
-      }
-      if (truncated) {
-        d3.select(surfaceLabel).text(text.slice(0, -3) + '...')
-      }
-    })
+    const label = this.parentContainer
+       .select(`.surface-label[data-id='${id}']`)
+       .node()
+
+    // restore full text first
+    d3.select(label).text(d3.select(label).data()[0].name)
+
+    let text = d3.select(label).node().textContent
+    let truncated = false
+    while (detectViewportCollision(label) && text.length > 0) {
+      truncated = true
+      text = d3.select(label).node().textContent
+      d3.select(label).text(text.slice(0, -1))
+    }
+    if (truncated) {
+      text = d3.select(label).node().textContent
+      d3.select(label).text(text.slice(0, -3) + '...')
+    }
   }
 
   setupDrag () {
     const { fontColor, fontSelectedColor, plotState, parentContainer } = this
+    const adjustLabelLength = this.adjustLabelLength.bind(this)
 
     const dragStart = function (d) {
       parentContainer.selectAll(`.surface-link[data-id='${d.id}']`).attr('opacity', 0)
@@ -124,8 +135,7 @@ export class SurfaceLabels {
         .attr('y2', d => d.label.y)
         .attr('opacity', 1)
 
-      // TODO re-enable
-      // Utils.adjustSurfaceLabelLength(surfaceLabels, height, width)
+      adjustLabelLength(d.id)
       plotState.moveSurfaceLabel(d.id, d.label)
     }
 

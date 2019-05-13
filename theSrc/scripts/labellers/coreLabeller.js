@@ -137,7 +137,7 @@ const getLabelAnchorPoint = (lab, anc, name, allTheAnchors) => {
       placementOption = NONE // else just return the label x,y
     }
   }
-  console.log(`label ${name} chose ${placementOption}`)
+
   return placementOptions[placementOption]
 }
 
