@@ -61,9 +61,6 @@ export class CoreLabels {
       .text(d => d.name)
       .call(this.setupDrag())
 
-    this.labelSelection = this.parentContainer.selectAll('.core-label')
-      .append('title').text('foo')
-
     this.adjustLabelLengths()
   }
 

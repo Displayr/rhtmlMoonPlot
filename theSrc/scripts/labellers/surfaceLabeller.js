@@ -39,35 +39,20 @@ const positionLabels = ({
 
   const polarCoords = _(labels)
     .map('polarLabel')
-    // .map(polarCoord => _.merge(polarCoord, { r: 1 }))
     .value()
-
-  console.log(' before move ')
-  console.log(JSON.stringify(labels.map(x => x.label), {}, 2))
-
-  console.log(' before move polar')
-  console.log(JSON.stringify(polarCoords, {}, 2))
 
   moveSurfaceCollisions(polarCoords, radius)
 
-  console.log(' after move polar')
-  console.log(JSON.stringify(polarCoords, {}, 2))
-
-
   const cartCoords = cartesiansFromPolars(polarCoords)
-  _(labels).each((label,i) => {
-    label.label = cartCoords[i]
-  })
-
-  console.log(' after move ')
-  console.log(JSON.stringify(labels.map(x => x.label), {}, 2))
-
-  // TODO do I need to do the (see below) ?
-  // x: (d.newX + cx).toString(),
-  // y: (-d.newY + cy).toString()
-
-  return labels
-  // return labels.map(label => _.omit(label, ['polarLabel']))
+  return _(labels)
+    .map((label,i) => _.merge(label, {
+      label: {
+        x: cartCoords[i].x + cx,
+        y: -cartCoords[i].y + cy,
+      }
+    }))
+    .map(label => _.omit(label, ['polarLabel']))
+    .value()
 }
 
 

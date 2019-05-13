@@ -31,21 +31,9 @@ export class SurfaceLabels {
       .attr('class', 'surface-label')
       .attr('data-id', d => d.id)
       .attr('data-label', d =>  d.name)
-      .attr('x', d => d.label.x + cx)
-      .attr('y', d => -d.label.y + cy)
-      // .each(function (d) {
-      //   const rotation = buildRotationTransform({circleCenter: { x: cx, y: cy}, labelAnchor: d.anchor })
-      //   // console.log(`${d.name} buildRotationTransform({circleCenter: {x: ${cx}, y: ${cy}}, labelAnchor: {x: ${d.anchor.x}, y: ${d.anchor.y} }) = ${rotation}`)
-      //   d3.select(this).attr('transform', rotation)
-      // })
-      .attr('transform', d => {
-        const rotation = (d.polarLabel.a / 2 / Math.PI) * 360
-        const x = d.label.x + cx
-        const y = -d.label.y + cy
-        return (d.label.x < 0)
-          ? `rotate(${(180 - rotation).toString()},${x.toString()}, ${y.toString()})`
-          : `rotate(${(-rotation).toString()},${x.toString()}, ${y.toString()})`
-      })
+      .attr('x', d => d.label.x)
+      .attr('y', d => d.label.y)
+      .attr('transform', d => buildRotationTransform({circleCenter: { x: cx, y: cy}, labelAnchor: d.anchor}))
       .attr('font-size', d => (d.size * this.fontSize).toString() + 'px')
       .attr('text-anchor', d => (d.label.x < cx) ? 'end' : 'start')
       .attr('alignment-baseline', 'middle')
@@ -115,7 +103,7 @@ export class SurfaceLabels {
   }
 
   setupDrag () {
-    const { fontColor, fontSelectedColor, plotState, parentContainer } = this
+    const { fontColor, fontSelectedColor, plotState, parentContainer, cx, cy } = this
     const adjustLabelLength = this.adjustLabelLength.bind(this)
 
     const dragStart = function (d) {
