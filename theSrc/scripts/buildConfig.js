@@ -9,12 +9,13 @@ const defaultConfig = {
   surfaceLabelFontSize: 14,
   surfaceLabelFontColor: '#333333',
   surfaceLabelFontSelectedColor: '#0000dd',
-  circleStrokeWidth: 4,
+  surfaceLabelMinimumLabelDistance: 15,
+  surfaceLabelRadialPadding: 3,
+  circleStrokeWidth: 1,
   circleColor: '#042a4b',
   crossColor: 'grey',
   linkColor: 'grey',
-  linkWidth: 1,
-  labelSizeConst: 14
+  linkWidth: 1
 }
 
 

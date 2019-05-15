@@ -6,6 +6,8 @@ import _ from 'lodash'
 const positionLabels = ({
   svg,
   surfaceLabels,
+  minLabelDistance,
+  radialPadding,
   fontFamily,
   fontSize,
   cx,
@@ -15,8 +17,8 @@ const positionLabels = ({
   const labels = _(surfaceLabels)
     .cloneDeep()
     .map(label => {
-      const x = (label.x * radius) + cx // NB dont understand the 0.7 but it appears to be relevant (placement breaks without it)
-      const y = (-label.y * radius) + cy // NB dont understand the 0.7 but it appears to be relevant (placement breaks without it)
+      const x = (label.x * radius) + cx
+      const y = (-label.y * radius) + cy
       const {width, height} = getLabelDimensionsUsingSvgApproximation({
         parentContainer: svg,
         text: label.name,
@@ -30,7 +32,7 @@ const positionLabels = ({
         truncatedName: label.name,
         anchor: { x, y },
         label: { x, y },
-        polarLabel: polarFromCartesian({ x: label.x, y: label.y, h: height }), // passing h in this is corny ...
+        polarLabel: polarFromCartesian({ x: label.x, y: label.y, h: height + minLabelDistance }), // passing h in this is corny ...
         width,
         height
       }
@@ -41,7 +43,7 @@ const positionLabels = ({
     .map('polarLabel')
     .value()
 
-  moveSurfaceCollisions(polarCoords, radius)
+  moveSurfaceCollisions(polarCoords, radius + radialPadding)
 
   const cartCoords = cartesiansFromPolars(polarCoords)
   return _(labels)
@@ -64,14 +66,26 @@ function moveSurfaceCollisions (polarCoords, radius) {
 
   polarCoords = _.sortBy(polarCoords, coords => coords.a)
   const moveAmount = (0.2 / 360) * 2 * Math.PI // deg to rad
-  const altitudeIncr = (0.1 * lengthOfLine) / 360
   let collisions = detectSurfaceCollisions(polarCoords, lengthOfLine)
+
+  // NB On "radialAdjustmentStrategy"
+  // In the moonplot context it should only be necessary to to modify the angle, not the radius
+  // but once a label is offset from its anchor because we adjusted its angle, it is aesthetically pleasing to give it
+  // a bit of seperation from the circle so that we can see the link and identify that the label has been moved
+  // this should only be done once, whereas in the current algo it will get repeatedly bumped on every adjustment ...
+  const radiusIncrement = (0.1 * lengthOfLine) / 360
+  const elevatedRadialPosition = radius + (0.3 * lengthOfLine) / 360
+  const radialAdjustmentStrategy = 'FIXED' // ['NONE', 'INCREMENTAL', 'FIXED'] // TODO could make enum, not worth it for now
 
   let maxMoves = 500
   while ((collisions.length > 0) && (maxMoves > 0)) {
     maxMoves--
-    console.log('Moved surface labels')
     for (let pc of Array.from(polarCoords)) {
+      if (pc.collision_l || pc.collision_r) {
+        if (radialAdjustmentStrategy === 'INCREMENTAL') { pc.r += radiusIncrement }
+        if (radialAdjustmentStrategy === 'FIXED') { pc.r = elevatedRadialPosition }
+      }
+
       if (pc.collision_l) {
         if (pc.a > (0.5 * Math.PI)) { // UL
           pc.a += moveAmount
@@ -83,7 +97,6 @@ function moveSurfaceCollisions (polarCoords, radius) {
           pc.a += moveAmount
         }
         pc.collision_l = false
-        pc.r += altitudeIncr
       } else if (pc.collision_r) {
         if (pc.a > (0.5 * Math.PI)) { // UL
           pc.a -= moveAmount
@@ -95,8 +108,8 @@ function moveSurfaceCollisions (polarCoords, radius) {
           pc.a -= moveAmount
         }
         pc.collision_r = false
-        pc.r += altitudeIncr
       }
+
       collisions = detectSurfaceCollisions(polarCoords, lengthOfLine)
     }
   }

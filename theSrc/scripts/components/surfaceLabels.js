@@ -33,7 +33,7 @@ export class SurfaceLabels {
       .attr('data-label', d =>  d.name)
       .attr('x', d => d.label.x)
       .attr('y', d => d.label.y)
-      .attr('transform', d => buildRotationTransform({circleCenter: { x: cx, y: cy}, labelAnchor: d.anchor}))
+      .attr('transform', d => buildRotationTransform({circleCenter: { x: cx, y: cy}, rotationCenter: d.label}))
       .attr('font-size', d => (d.size * this.fontSize).toString() + 'px')
       .attr('text-anchor', d => (d.label.x < cx) ? 'end' : 'start')
       .attr('alignment-baseline', 'middle')
@@ -144,15 +144,15 @@ export class SurfaceLabels {
 
 module.exports = SurfaceLabels
 
-const buildRotationTransform = ({circleCenter, labelAnchor}) => {
+const buildRotationTransform = ({circleCenter, rotationCenter}) => {
   const pos = x => (x >= 0)
-  const deltaX = labelAnchor.x - circleCenter.x
-  const deltaY = labelAnchor.y - circleCenter.y
+  const deltaX = rotationCenter.x - circleCenter.x
+  const deltaY = rotationCenter.y - circleCenter.y
   const absRotation = toDegrees(Math.atan(Math.abs(deltaY) / Math.abs(deltaX)))
   let rotationTranslation = null
   if (pos(deltaY) && pos(deltaX)) { rotationTranslation = absRotation }
   if (!pos(deltaY) && pos(deltaX)) { rotationTranslation = -absRotation }
   if (pos(deltaY) && !pos(deltaX)) { rotationTranslation = -absRotation }
   if (!pos(deltaY) && !pos(deltaX)) { rotationTranslation = absRotation }
-  return `rotate(${rotationTranslation} ${labelAnchor.x} ${labelAnchor.y})`
+  return `rotate(${rotationTranslation} ${rotationCenter.x} ${rotationCenter.y})`
 }

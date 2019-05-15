@@ -105,6 +105,8 @@ class MoonPlot {
     const surfaceLabels = SurfaceLabeller.positionLabels({
       svg: this.svg,
       surfaceLabels: sourceData.surfaceLabels,
+      minLabelDistance: this.config.surfaceLabelMinimumLabelDistance,
+      radialPadding: this.config.surfaceLabelRadialPadding,
       fontFamily: this.config.surfaceLabelFontFamily,
       fontSize: this.config.surfaceLabelFontSize,
       radius,
