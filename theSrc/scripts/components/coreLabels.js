@@ -4,8 +4,8 @@ import 'd3-transition'
 import {getLabelAnchorPoint} from '../labellers/coreLabeller'
 
 export class CoreLabels {
-  constructor ({ parentContainer, plotState, cx, cy, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor }) {
-    _.assign(this, { parentContainer, plotState, cx, cy, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor })
+  constructor ({ parentContainer, plotState, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor }) {
+    _.assign(this, { parentContainer, plotState, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor })
   }
 
   draw () {
@@ -33,8 +33,8 @@ export class CoreLabels {
       // TODO labelLineConnector might be null, in which case we dont want to show the line,
       // but I do want to create the line, in case the user drags the label and I need to show the line
       // the current implementation of this behaviour is a little dodgy
-      .attr('x2', d => _.get(d, 'labelLineConnector.x',d.anchor.x))
-      .attr('y2', d => _.get(d, 'labelLineConnector.y',d.anchor.y))
+      .attr('x2', d => _.get(d, 'labelLineConnector.x', d.anchor.x))
+      .attr('y2', d => _.get(d, 'labelLineConnector.y', d.anchor.y))
       .attr('data-id', d => d.id)
       .attr('data-label', d => d.name)
       .attr('class', 'core-link')
@@ -71,6 +71,7 @@ export class CoreLabels {
   // TODO needs a cleanup
   adjustLabelLength (id) {
     const radius = this.plotState.getCircleRadius()
+    const center = this.plotState.getCenter()
     const detectCoreLabelBoundaryCollision = (label)  => {
       const labelBb = label.getBBox()
       const yRightB = labelBb.y
@@ -78,10 +79,10 @@ export class CoreLabels {
       const xRight = labelBb.x + labelBb.width
 
       // Calculate circle boundary using parametric eq for circle
-      const angleB = Math.asin((yRightB - this.cy) / radius)
-      const angleT = Math.asin((yRightT - this.cy) / radius)
-      const circleBoundaryRightB = this.cx + (radius * Math.cos(angleB))
-      const circleBoundaryRightT = this.cx + (radius * Math.cos(angleT))
+      const angleB = Math.asin((yRightB - center.y) / radius)
+      const angleT = Math.asin((yRightT - center.y) / radius)
+      const circleBoundaryRightB = center.x + (radius * Math.cos(angleB))
+      const circleBoundaryRightT = center.x + (radius * Math.cos(angleT))
 
       return (circleBoundaryRightB < xRight) || (circleBoundaryRightT < xRight)
     }
@@ -134,8 +135,8 @@ export class CoreLabels {
       d.labelLineConnector = labelLineConnector
 
       parentContainer.selectAll(`.core-link[data-id='${d.id}']`)
-        .attr('x2', _.get(d, 'labelLineConnector.x',d.anchor.x))
-        .attr('y2', _.get(d, 'labelLineConnector.y',d.anchor.y))
+        .attr('x2', _.get(d, 'labelLineConnector.x', d.anchor.x))
+        .attr('y2', _.get(d, 'labelLineConnector.y', d.anchor.y))
         .attr('opacity', _.isNull(d.labelLineConnector) ? 0 : 1)
 
       adjustLabelLength(d.id)

@@ -19,8 +19,6 @@ const defaultConfig = {
   linkWidth: 1
 }
 
-
-
 function buildConfig (userConfig) {
   return _.merge({}, defaultConfig, userConfig)
 }

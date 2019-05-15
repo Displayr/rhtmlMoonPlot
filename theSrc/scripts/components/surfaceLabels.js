@@ -1,8 +1,10 @@
 import * as d3 from 'd3'
 import { toDegrees } from '../math/coord'
+import _ from 'lodash'
+
 export class SurfaceLabels {
-  constructor({ parentContainer, plotState, cx, cy, height, width, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor }) {
-    _.assign(this, { parentContainer, plotState, cx, cy, height, width, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor })
+  constructor ({ parentContainer, plotState, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor }) {
+    _.assign(this, { parentContainer, plotState, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor })
   }
 
   draw () {
@@ -21,7 +23,7 @@ export class SurfaceLabels {
       .attr('stroke-width', this.linkWidth)
       .attr('stroke', this.linkColor)
 
-    const { cx, cy } = this
+    const center = this.plotState.getCenter()
     this.labelSelection = this.parentContainer.selectAll('.surface-label')
     this.labelSelection
       .data(this.plotState.getSurfaceLabels())
@@ -33,9 +35,9 @@ export class SurfaceLabels {
       .attr('data-label', d =>  d.name)
       .attr('x', d => d.label.x)
       .attr('y', d => d.label.y)
-      .attr('transform', d => buildRotationTransform({circleCenter: { x: cx, y: cy}, rotationCenter: d.label}))
+      .attr('transform', d => buildRotationTransform({circleCenter: center, rotationCenter: d.label}))
       .attr('font-size', d => (d.size * this.fontSize).toString() + 'px')
-      .attr('text-anchor', d => (d.label.x < cx) ? 'end' : 'start')
+      .attr('text-anchor', d => (d.label.x < center.x) ? 'end' : 'start')
       .attr('alignment-baseline', 'middle')
       .attr('cursor', 'all-scroll')
       .style('font-family', 'Arial Narrow')
@@ -63,6 +65,7 @@ export class SurfaceLabels {
         return false
       }
 
+      const {width: plotWidth, height: plotHeight} = this.plotState.getPlotSize()
       const box = label.getBBox()
       const ctm = label.getCTM()
       const transformedCoords = getScreenCoords(box.x, box.y, ctm)
@@ -72,12 +75,12 @@ export class SurfaceLabels {
       box.bottom = transformedCoords.y + box.height
 
       const collideL = box.left < 0
-      const collideR = box.right > this.width
+      const collideR = box.right > plotWidth
       let collideT = false
       let collideB = false
-      if (box.x < (this.width / 2)) { // only need to condense text on left half
+      if (box.x < (plotWidth / 2)) { // only need to condense text on left half
         collideT = box.top < 0
-        collideB = box.bottom > this.height
+        collideB = box.bottom > plotHeight
       }
       return collideL || collideR || collideT || collideB
     }
@@ -103,7 +106,7 @@ export class SurfaceLabels {
   }
 
   setupDrag () {
-    const { fontColor, fontSelectedColor, plotState, parentContainer, cx, cy } = this
+    const { fontColor, fontSelectedColor, plotState, parentContainer } = this
     const adjustLabelLength = this.adjustLabelLength.bind(this)
 
     const dragStart = function (d) {

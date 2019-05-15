@@ -1,4 +1,4 @@
-import {polarFromCartesian, cartesiansFromPolars, toDegrees } from '../math/coord'
+import {polarFromCartesian, cartesiansFromPolars} from '../math/coord'
 import positionAlongLine from '../math/positionAlongLine'
 import {getLabelDimensionsUsingSvgApproximation} from '../labelUtils'
 import _ from 'lodash'
@@ -10,15 +10,14 @@ const positionLabels = ({
   radialPadding,
   fontFamily,
   fontSize,
-  cx,
-  cy,
   radius,
+  center
 }) => {
   const labels = _(surfaceLabels)
     .cloneDeep()
     .map(label => {
-      const x = (label.x * radius) + cx
-      const y = (-label.y * radius) + cy
+      const x = (label.x * radius) + center.x
+      const y = (-label.y * radius) + center.y
       const {width, height} = getLabelDimensionsUsingSvgApproximation({
         parentContainer: svg,
         text: label.name,
@@ -48,16 +47,15 @@ const positionLabels = ({
 
   const cartCoords = cartesiansFromPolars(polarCoords)
   return _(labels)
-    .map((label,i) => _.merge(label, {
+    .map((label, i) => _.merge(label, {
       label: {
-        x: cartCoords[i].x + cx,
-        y: -cartCoords[i].y + cy,
+        x: cartCoords[i].x + center.x,
+        y: -cartCoords[i].y + center.y
       }
     }))
     .map(label => _.omit(label, ['polarLabel']))
     .value()
 }
-
 
 function moveSurfaceCollisions (polarCoords, radius) {
   const lengthOfLine = radius * 2 * Math.PI

@@ -27,7 +27,6 @@ class PlotState {
     this.listenerId = 0
   }
 
-
   // does not call listeners
   initialiseState (newState) {
     this.state = newState
@@ -57,16 +56,11 @@ class PlotState {
     _.find(this.state.plot.coreLabels, { id }).moved = true
     this.callListeners()
   }
-  
+
   moveSurfaceLabel (id, coord) {
     // NB in current design we dont need to update the coord in plotState, because the D3 data bind is such that d3 is sharing a direct reference to plotState coords ... (is this good ?)
     _.find(this.state.plot.surfaceLabels, { id }).moved = true
     this.callListeners()
-  }
-
-  getCircleRadius () {
-    console.log('this.state.circleRadius', `${this.state.circleRadius}`)
-    return this.state.circleRadius
   }
 
   circleRadiusChanged (radius) {
@@ -77,12 +71,24 @@ class PlotState {
     this.plotReference.draw()
   }
 
+  getCircleRadius () {
+    return this.state.circleRadius
+  }
+
+  getCenter () {
+    return this.state.center
+  }
+
   getCoreLabels () {
     return this.state.plot.coreLabels
   }
 
   getSurfaceLabels () {
     return this.state.plot.surfaceLabels
+  }
+
+  getPlotSize () {
+    return this.state.plotSize
   }
 }
 

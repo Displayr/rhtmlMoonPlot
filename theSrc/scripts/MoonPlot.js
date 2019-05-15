@@ -51,8 +51,8 @@ class MoonPlot {
   }
 
   setConfig (config) {
-    this.config = buildConfig(_.omit(config,['coreNodes', 'surfaceNodes', 'coreLabels', 'surfaceLabels']))
-    this.inputData = _.pick(config,['coreNodes', 'surfaceNodes', 'coreLabels', 'surfaceLabels'])
+    this.config = buildConfig(_.omit(config, ['coreNodes', 'surfaceNodes', 'coreLabels', 'surfaceLabels']))
+    this.inputData = _.pick(config, ['coreNodes', 'surfaceNodes', 'coreLabels', 'surfaceLabels'])
   }
 
   static defaultState () {
@@ -61,7 +61,7 @@ class MoonPlot {
       sourceData: { coreLabels: [], surfaceLabels: [] },
       plot: { coreLabels: [], surfaceLabels: [] },
       plotSize: { width: null, height: null },
-      circleRadius: null, // TODO just make it radius or plotRadius, or move to plot.radius
+      circleRadius: null // TODO just make it radius or plotRadius, or move to plot.radius
     })
   }
 
@@ -90,7 +90,8 @@ class MoonPlot {
   // TODO newRadius is a bit hacky
   resetState (newRadius) {
     const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
-    const radius = (newRadius) ? newRadius : Math.min(height, width) / 3 // TODO move the 3 to config
+    const radius = (newRadius) || Math.min(height, width) / 3 // TODO move the 3 to config
+    const center = {x: width / 2, y: height / 2}
     const sourceData = buildLabelObjectsFromConfig(this.inputData)
     const coreLabels = CoreLabeller.positionLabels({
       svg: this.svg,
@@ -99,8 +100,7 @@ class MoonPlot {
       fontFamily: this.config.coreLabelFontFamily,
       fontSize: this.config.coreLabelFontSize,
       radius,
-      cx: width / 2, // TODO maintain in state ?,
-      cy: height / 2 // TODO maintain in state ?
+      center
     })
 
     const surfaceLabels = SurfaceLabeller.positionLabels({
@@ -111,8 +111,7 @@ class MoonPlot {
       fontFamily: this.config.surfaceLabelFontFamily,
       fontSize: this.config.surfaceLabelFontBaseSize,
       radius,
-      cx: width / 2, // TODO maintain in state ?,
-      cy: height / 2 // TODO maintain in state ?
+      center
     })
 
     this.plotState.setState(_.merge({}, MoonPlot.defaultState(), {
@@ -120,15 +119,14 @@ class MoonPlot {
       sourceData: sourceData,
       plot: { coreLabels, surfaceLabels },
       plotSize: { width, height },
-      circleRadius: radius
+      circleRadius: radius,
+      center
     }))
   }
 
   draw () {
     this.clearPlot()
     const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
-    const cx = width / 2 // TODO maintain in state ?
-    const cy = height / 2 // TODO maintain in state ?
 
     this.svg
       .attr('width', width)
@@ -137,8 +135,6 @@ class MoonPlot {
     this.coreLabels = new CorelLabels({
       parentContainer: this.svg,
       plotState: this.plotState,
-      cx,
-      cy,
       fontFamily: this.config.coreLabelFontFamily,
       fontSize: this.config.coreLabelFontSize,
       fontColor: this.config.coreLabelFontColor,
@@ -150,10 +146,6 @@ class MoonPlot {
     this.surfaceLabels = new SurfacelLabels({
       parentContainer: this.svg,
       plotState: this.plotState,
-      cx,
-      cy,
-      height,
-      width,
       fontFamily: this.config.surfaceLabelFontFamily,
       fontSize: this.config.surfaceLabelFontBaseSize,
       fontColor: this.config.surfaceLabelFontColor,
@@ -165,8 +157,6 @@ class MoonPlot {
     this.circle = new Circle({
       parentContainer: this.svg,
       plotState: this.plotState,
-      cx,
-      cy,
       circleColor: this.config.circleColor,
       crossColor: this.config.crossColor,
       circleStrokeWidth: this.config.circleStrokeWidth

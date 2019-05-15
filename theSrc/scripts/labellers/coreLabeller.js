@@ -20,13 +20,13 @@ const positionLabels = ({
   fontSize,
   fontColor,
   radius,
-  cx,
-  cy }) => {
+  center
+}) => {
   const labels = _(coreLabels)
     .cloneDeep()
     .map(label => {
-      const x = (label.x * radius) + cx
-      const y = (-label.y * radius) + cy
+      const x = (label.x * radius) + center.x
+      const y = (-label.y * radius) + center.y
       const {width, height} = getLabelDimensionsUsingSvgApproximation({
         parentContainer: svg,
         text: label.name,
@@ -56,8 +56,8 @@ const positionLabels = ({
   // Check if labels are overlapping and if need to be repositioned
   labeler()
     .svg(svg)
-    .cx(cx)
-    .cy(cy)
+    .cx(center.x)
+    .cy(center.y)
     .radius(radius)
     .anchor(_(labels).map('anchor').value())
     .label(_(labels).map('label').value())
@@ -69,8 +69,6 @@ const positionLabels = ({
       label.width -= minLabelDistance
       label.height -= minLabelDistance
     })
-
-
 
   const allTheAnchors = _(labels).map('anchor').value()
   _(labels).each(label => { label.labelLineConnector = getLabelAnchorPoint(label.label, label.anchor, label.name, allTheAnchors) })
@@ -85,15 +83,15 @@ const getLabelAnchorPoint = (lab, anc, name, allTheAnchors) => {
   const labelBottom = lab.y
 
   const placementOptions = {
-    NONE:          null,
-    BOTTOM_LEFT:   { x: labelLeft,  y: lab.y},
-    BOTTOM_CENTER: { x: lab.x,      y: lab.y},
-    BOTTOM_RIGHT:  { x: labelRight, y: lab.y},
-    TOP_LEFT:      { x: labelLeft,  y: labelTop},
-    TOP_CENTER:    { x: lab.x,      y: labelTop},
-    TOP_RIGHT:     { x: labelRight, y: labelTop},
-    MIDDLE_LEFT:   { x: labelLeft,  y: lab.y - (lab.height / 2)},
-    MIDDLE_RIGHT:  { x: labelRight, y: lab.y - (lab.height / 2)}
+    NONE: null,
+    BOTTOM_LEFT: {x: labelLeft,  y: lab.y},
+    BOTTOM_CENTER: {x: lab.x,      y: lab.y},
+    BOTTOM_RIGHT: {x: labelRight, y: lab.y},
+    TOP_LEFT: {x: labelLeft,  y: labelTop},
+    TOP_CENTER: {x: lab.x,      y: labelTop},
+    TOP_RIGHT: {x: labelRight, y: labelTop},
+    MIDDLE_LEFT: {x: labelLeft,  y: lab.y - (lab.height / 2)},
+    MIDDLE_RIGHT: {x: labelRight, y: lab.y - (lab.height / 2)}
   }
 
   const padding = 10
@@ -108,15 +106,7 @@ const getLabelAnchorPoint = (lab, anc, name, allTheAnchors) => {
   const anchorFarToRight = anc.x > (labelRight + padding)
 
   let placementOption = null
-  if      (horizontallyAligned && anchorFarAbove)   {placementOption = TOP_CENTER}
-  else if (horizontallyAligned && anchorFarBelow)   {placementOption = BOTTOM_CENTER}
-  else if (anchorAbove && anchorToLeft)             {placementOption = TOP_LEFT}
-  else if (anchorAbove && anchorToRight)            {placementOption = TOP_RIGHT}
-  else if (anchorBelow && anchorToLeft)             {placementOption = BOTTOM_LEFT}
-  else if (anchorBelow && anchorToRight)            {placementOption = BOTTOM_RIGHT}
-  else if (anchorFarToLeft)                         {placementOption = MIDDLE_LEFT}
-  else if (anchorFarToRight)                        {placementOption = MIDDLE_RIGHT}
-  else {
+  if      (horizontallyAligned && anchorFarAbove)   { placementOption = TOP_CENTER }  else if (horizontallyAligned && anchorFarBelow)   { placementOption = BOTTOM_CENTER }  else if (anchorAbove && anchorToLeft)             { placementOption = TOP_LEFT }  else if (anchorAbove && anchorToRight)            { placementOption = TOP_RIGHT }  else if (anchorBelow && anchorToLeft)             { placementOption = BOTTOM_LEFT }  else if (anchorBelow && anchorToRight)            { placementOption = BOTTOM_RIGHT }  else if (anchorFarToLeft)                         { placementOption = MIDDLE_LEFT }  else if (anchorFarToRight)                        { placementOption = MIDDLE_RIGHT }  else {
     // Draw the link if there are any anc nearby
     const ambiguityFactor = 10
     const padL = placementOptions[TOP_LEFT]['x'] - ambiguityFactor
