@@ -148,7 +148,10 @@ const buildRotationTransform = ({circleCenter, rotationCenter}) => {
   const pos = x => (x >= 0)
   const deltaX = rotationCenter.x - circleCenter.x
   const deltaY = rotationCenter.y - circleCenter.y
-  const absRotation = toDegrees(Math.atan(Math.abs(deltaY) / Math.abs(deltaX)))
+  const absRotation = (deltaX !== 0)
+    ? toDegrees(Math.atan(Math.abs(deltaY) / Math.abs(deltaX)))
+    : 90
+
   let rotationTranslation = null
   if (pos(deltaY) && pos(deltaX)) { rotationTranslation = absRotation }
   if (!pos(deltaY) && pos(deltaX)) { rotationTranslation = -absRotation }

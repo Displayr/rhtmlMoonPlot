@@ -109,7 +109,7 @@ class MoonPlot {
       minLabelDistance: this.config.surfaceLabelMinimumLabelDistance,
       radialPadding: this.config.surfaceLabelRadialPadding,
       fontFamily: this.config.surfaceLabelFontFamily,
-      fontSize: this.config.surfaceLabelFontSize,
+      fontSize: this.config.surfaceLabelFontBaseSize,
       radius,
       cx: width / 2, // TODO maintain in state ?,
       cy: height / 2 // TODO maintain in state ?
@@ -155,7 +155,7 @@ class MoonPlot {
       height,
       width,
       fontFamily: this.config.surfaceLabelFontFamily,
-      fontSize: this.config.surfaceLabelFontSize,
+      fontSize: this.config.surfaceLabelFontBaseSize,
       fontColor: this.config.surfaceLabelFontColor,
       fontSelectedColor: this.config.surfaceLabelFontSelectedColor,
       linkWidth: this.config.linkWidth,

@@ -7,9 +7,4 @@
 bower_components
 node_modules
 browser
-src-i386/
-tags
-.tags_swap
-.tags
 .tmp
-theSrc/oldScripts

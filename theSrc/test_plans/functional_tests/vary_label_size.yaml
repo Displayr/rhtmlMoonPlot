@@ -2,7 +2,7 @@ version: 1
 tests:
   - title: vary outer label size
     general_comments:
-      - 'Variables to test: [labelSizeConst].'
+      - 'Variables to test: [surfaceLabelFontBaseSize].'
     width: 500
     height: 500
     rowSize: 4
@@ -10,10 +10,10 @@ tests:
     comments: []
     data: data.functional_tests.minimal
     config:
-      - '{ "labelSizeConst": 4}'
-      - '{ "labelSizeConst": 8}'
-      - '{ "labelSizeConst": 12}'
-      - '{ "labelSizeConst": 16}'
-      - '{ "labelSizeConst": 20}'
-      - '{ "labelSizeConst": 24}'
+      - '{ "surfaceLabelFontBaseSize": 4}'
+      - '{ "surfaceLabelFontBaseSize": 8}'
+      - '{ "surfaceLabelFontBaseSize": 12}'
+      - '{ "surfaceLabelFontBaseSize": 16}'
+      - '{ "surfaceLabelFontBaseSize": 20}'
+      - '{ "surfaceLabelFontBaseSize": 24}'
 
