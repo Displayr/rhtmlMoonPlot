@@ -4,8 +4,10 @@ import DisplayError from './DisplayError'
 
 // TODO: finish porting this to match "no resize just redo" style
 
+console.log('spot 2')
 module.exports = function (element, w, h, stateChangedFn) {
-  const stateChangedFnPresent = (typeof stateChangedFn === 'function') ? 'present' : 'absent'
+  console.log('spot 3')
+  const stateChangedFnPresent = (typeof stateChangedFn === 'function')
 
   let configCopy = null
   let stateCopy = null
@@ -39,24 +41,14 @@ module.exports = function (element, w, h, stateChangedFn) {
       doRenderValue(configCopy, stateCopy)
     },
 
-    renderValue (inputConfig, state) {
-      try {
-        const config = _parseConfig(inputConfig)
-        configCopy = _.cloneDeep(config)
-        doRenderValue(config, state)
-      } catch (err) {
-        const readableError = new Error(`MoonPlot error : Cannot parse 'settingsJsonString': ${err}`)
-        _showError(readableError, element)
-      }
-    }
-  }
-}
+    renderValue (config, state) {
+      console.log('spot 4')
+      console.log('config')
+      console.log(JSON.stringify(config, {}, 2))
 
-function _parseConfig (inputConfig) {
-  if (_.isString(inputConfig) && inputConfig.match(/^{/)) {
-    return JSON.parse(inputConfig)
-  } else {
-    return inputConfig
+      configCopy = _.cloneDeep(config)
+      doRenderValue(config, state)
+    }
   }
 }
 

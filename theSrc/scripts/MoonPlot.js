@@ -22,7 +22,7 @@ const configInvariants = [
   'surfaceLabelMinimumLabelDistance',
   'surfaceLabelRadialPadding',
   'surfaceLabelFontBaseSize',
-  'surfaceLabelRadialPadding',
+  'surfaceLabelRadialPadding'
 ]
 
 class MoonPlot {
@@ -83,7 +83,6 @@ class MoonPlot {
   checkState (previousUserState) {
     const configInvariantsHaveNotChanged = _(configInvariants)
       .every(invariant => _.get(previousUserState, `configInvariants.${invariant}`) === this.config[invariant])
-
 
     const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
     const { coreLabels, surfaceLabels } = buildLabelObjectsFromConfig(this.inputData)

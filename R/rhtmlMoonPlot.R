@@ -1,66 +1,92 @@
-#' rhtmlMoonPlot HTML Widget
+# cat R/rhtmlMoonPlot.R
+#' rhtmlMoonPlot
 #'
-#' @description A HTMLWidget that renders moonplots
+#' Uses correspondence analysis to create a Moon Plot
 #'
-#' @section Usage Scenarios:
-#'
-#' Scenario 1: Blah blah
-#'
-#' @param param1 is a good param
-#'
-#' @examples
-#'
-#' rhtmlMoonPlot::moonplot('{}')
-#'
-#' @author Displayr <opensource@displayr.com>
+#' @author Po Liu <po.liu@displayr.com>
 #'
 #' @source https://github.com/Displayr/rhtmlMoonPlot
+#'
+#' @param coreNodes : Coordinates of nodes in the center of the moon
+#' @param surfaceNodes : Coordinates of nodes outside of the moon
+#' @param width : Width of the viewer window. Ignored. Do not use
+#' @param height : Height of viewer window. Ignored. Do not use
+#' @param core.font.family : Font family for core labels
+#' @param core.font.size : Font size for core labels
+#' @param core.font.color : Font color for core labels
+#' @param core.font.selected.color : Font color for core labels while it is being moved
+#' @param core.label.minimumDistance Relative minimum distance between core labels. Larger numbers, more minimum distance
+#' @param surface.font.family Font family for surface labels
+#' @param surface.font.baseSize Base font size for surface labels. Actual font size is a multiplier applied to this base.
+#' @param surface.font.color Font color for surface labels
+#' @param surface.font.selected.color Font color for surface labels while it is being moved
+#' @param surface.label.minimumDistance Relative minimum distance between surface labels. Larger numbers, more minimum distance
+#' @param surface.label.radialPadding Padding between the circle and the surface label
+#' @param circle.width The width of the circle circumference line
+#' @param circle.color The color of the circle circumference line
+#' @param circle.cross.color The color of the crosshairs that mark the center of the circle
+#' @param link.color The color of the label links
+#' @param link.width The width of the label links
 #'
 #' @import htmlwidgets
 #'
 #' @export
-#'
+moonplot <- function(
+  coreNodes = NULL,
+  surfaceNodes = NULL,
+  height = NULL,
+  width = NULL,
+  core.font.family = 'sans-serif',
+  core.font.size = 14,
+  core.font.color = '#333333',
+  core.font.selected.color = '#0000dd',
+  core.label.minimumDistance = 7,
+  surface.font.family = 'sans-serif',
+  surface.font.baseSize = 14,
+  surface.font.color = '#333333',
+  surface.font.selected.color = '#0000dd',
+  surface.label.minimumDistance = 15,
+  surface.label.radialPadding = 3,
+  circle.width = 1,
+  circle.color = '#042a4b',
+  circle.cross.color = 'grey',
+  link.color = 'grey',
+  link.width = 1
+) {
 
-moonplot <- function(settingsJsonString = '{}') {
-
-  DEFAULT_WIDGET_WIDTH <- 600
-  DEFAULT_WIDGET_HEIGHT <- 600
-
-  parsedInput <- NULL
-  parsedInput = tryCatch({
-    jsonlite::fromJSON(settingsJsonString)
-  }, warning = function(w) {
-    print("warning while parsing JSON:")
-    print(w)
-  }, error = function(e) {
-    print("error while parsing JSON:")
-    print(e)
-    stop(e)
-  }, finally = {})
-
-  width <- DEFAULT_WIDGET_WIDTH
-  height <- DEFAULT_WIDGET_HEIGHT
-
-  if('width' %in% names(parsedInput)) {
-    width <- as.numeric(unlist(parsedInput['width']))
-  }
-
-  if('height' %in% names(parsedInput)) {
-    height <- as.numeric(unlist(parsedInput['height']))
-  }
+  x = list(
+    coreLabels = labels(coreNodes)[[1]],
+    surfaceLabels = labels(surfaceNodes)[[1]],
+    coreNodes = coreNodes,
+    surfaceNodes = surfaceNodes,
+    coreLabelFontFamily = core.font.family,
+    coreLabelFontSize = core.font.size,
+    coreLabelFontColor = core.font.color,
+    coreLabelFontSelectedColor = core.font.selected.color,
+    coreLabelMinimumLabelDistance = core.label.minimumDistance,
+    surfaceLabelFontFamily = surface.font.family,
+    surfaceLabelFontBaseSize = surface.font.baseSize,
+    surfaceLabelFontColor = surface.font.color,
+    surfaceLabelFontSelectedColor = surface.font.selected.color,
+    surfaceLabelMinimumLabelDistance = surface.label.minimumDistance,
+    surfaceLabelRadialPadding = surface.label.radialPadding,
+    circleStrokeWidth = circle.width,
+    circleColor = circle.color,
+    crossColor = circle.cross.color,
+    linkColor = link.color,
+    linkWidth = link.width
+  )
 
   htmlwidgets::createWidget(
-    name = 'rhtmlMoonPlot',
-    settingsJsonString,
-    width = width,
-    height = height,
+    name = "rhtmlMoonPlot",
+    x,
+    width = width, # width is ignored, but must be passed or htmlwidgets has issues
+    height = height, # height is ignored, but must be passed or htmlwidgets has issues
     sizingPolicy = htmlwidgets::sizingPolicy(
-      defaultWidth = width,
-      defaultHeight = height,
-      browser.fill = TRUE,
-      viewer.fill = TRUE,
-      padding = 0
+        padding = 5,
+        browser.fill = TRUE, # resizing will not work if FALSE
+        viewer.fill = TRUE
     ),
-    package = 'rhtmlMoonPlot'
+    package = "rhtmlMoonPlot"
   )
 }
