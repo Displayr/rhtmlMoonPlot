@@ -14,6 +14,17 @@ import CorelLabels from './components/coreLabels'
 import SurfacelLabels from './components/surfaceLabels'
 import Circle from './components/circle'
 
+// If any of these config values change, we must reset state
+// NB we may need to remove font size from this list
+const configInvariants = [
+  'coreLabelFontSize',
+  'surfaceLabelFontSize',
+  'surfaceLabelMinimumLabelDistance',
+  'surfaceLabelRadialPadding',
+  'surfaceLabelFontBaseSize',
+  'surfaceLabelRadialPadding',
+]
+
 class MoonPlot {
   static initClass () {
     this.widgetIndex = 0
@@ -70,15 +81,20 @@ class MoonPlot {
   }
 
   checkState (previousUserState) {
+    const configInvariantsHaveNotChanged = _(configInvariants)
+      .every(invariant => _.get(previousUserState, `configInvariants.${invariant}`) === this.config[invariant])
+
+
     const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
     const { coreLabels, surfaceLabels } = buildLabelObjectsFromConfig(this.inputData)
     const stateIsValid = !_.isNull(previousUserState) &&
       previousUserState.version === 1 &&
       Math.abs(previousUserState.plotSize.width - width) < 2 && // TODO configurable tolerance
       Math.abs(previousUserState.plotSize.height - height) < 2 && // TODO configurable tolerance
-      _.isEqual(previousUserState.sourceData, { coreLabels, surfaceLabels }) && // TODO this is inefficient
-      _.has(previousUserState, 'plotSize') &&
-      _.has(previousUserState, 'circleRadius')
+      _.isEqual(previousUserState.sourceData, { coreLabels, surfaceLabels }) &&
+      _.has(previousUserState, 'circleRadius') &&
+      _.has(previousUserState, 'center') &&
+      configInvariantsHaveNotChanged
 
     return stateIsValid
   }
@@ -120,7 +136,8 @@ class MoonPlot {
       plot: { coreLabels, surfaceLabels },
       plotSize: { width, height },
       circleRadius: radius,
-      center
+      center,
+      configInvariants: _.pick(this.config, configInvariants)
     }))
   }
 
