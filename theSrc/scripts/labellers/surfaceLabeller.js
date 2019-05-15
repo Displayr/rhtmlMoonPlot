@@ -32,7 +32,8 @@ const positionLabels = ({
         truncatedName: label.name,
         anchor: { x, y },
         label: { x, y },
-        polarLabel: polarFromCartesian({ x: label.x, y: label.y, h: height + minLabelDistance }), // passing h in this is corny ...
+        // NB adding minLabelDistance to the height is a hack, but it is an easy solution that avoids modifying the label placement algorithm
+        polarLabel: polarFromCartesian({ x: label.x, y: label.y, h: height + minLabelDistance }),
         width,
         height
       }

@@ -95,6 +95,7 @@ class MoonPlot {
     const coreLabels = CoreLabeller.positionLabels({
       svg: this.svg,
       coreLabels: sourceData.coreLabels,
+      minLabelDistance: this.config.coreLabelMinimumLabelDistance,
       fontFamily: this.config.coreLabelFontFamily,
       fontSize: this.config.coreLabelFontSize,
       radius,

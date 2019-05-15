@@ -5,6 +5,7 @@ const defaultConfig = {
   coreLabelFontSize: 14,
   coreLabelFontColor: '#333333',
   coreLabelFontSelectedColor: '#0000dd',
+  coreLabelMinimumLabelDistance: 7,
   surfaceLabelFontFamily: 'sans-serif',
   surfaceLabelFontSize: 14,
   surfaceLabelFontColor: '#333333',

@@ -12,10 +12,10 @@ const TOP_RIGHT = 'TOP_RIGHT'
 const MIDDLE_LEFT = 'MIDDLE_LEFT'
 const MIDDLE_RIGHT = 'MIDDLE_RIGHT'
 
-// ({plotState, coreLabelsData, svg, cx, cy, textColor, linkWidth})
 const positionLabels = ({
   svg,
   coreLabels,
+  minLabelDistance,
   fontFamily,
   fontSize,
   fontColor,
@@ -45,6 +45,14 @@ const positionLabels = ({
     })
     // TODO I should have to call .value() here, but that throws an error ?
 
+  // NB adding then later subtracting minLabelDistance is a hack, but it is an easy solution that avoids modifying the label placement algorithm
+  _(labels)
+    .map('label')
+    .each(label => {
+      label.width += minLabelDistance
+      label.height += minLabelDistance
+    })
+
   // Check if labels are overlapping and if need to be repositioned
   labeler()
     .svg(svg)
@@ -54,6 +62,14 @@ const positionLabels = ({
     .anchor(_(labels).map('anchor').value())
     .label(_(labels).map('label').value())
     .start(500)
+
+  _(labels)
+    .map('label')
+    .each(label => {
+      label.width -= minLabelDistance
+      label.height -= minLabelDistance
+    })
+
 
 
   const allTheAnchors = _(labels).map('anchor').value()
