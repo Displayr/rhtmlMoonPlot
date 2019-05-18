@@ -15,18 +15,18 @@
 #' @param core.font.size : Font size for core labels
 #' @param core.font.color : Font color for core labels
 #' @param core.font.selected.color : Font color for core labels while it is being moved
-#' @param core.label.minimumDistance Relative minimum distance between core labels. Larger numbers, more minimum distance
-#' @param surface.font.family Font family for surface labels
-#' @param surface.font.baseSize Base font size for surface labels. Actual font size is a multiplier applied to this base.
-#' @param surface.font.color Font color for surface labels
-#' @param surface.font.selected.color Font color for surface labels while it is being moved
-#' @param surface.label.minimumDistance Relative minimum distance between surface labels. Larger numbers, more minimum distance
-#' @param surface.label.radialPadding Padding between the circle and the surface label
-#' @param circle.width The width of the circle circumference line
-#' @param circle.color The color of the circle circumference line
-#' @param circle.cross.color The color of the crosshairs that mark the center of the circle
-#' @param link.color The color of the label links
-#' @param link.width The width of the label links
+#' @param core.label.minimumDistance : Relative minimum distance between core labels. Larger numbers, more minimum distance
+#' @param surface.font.family : Font family for surface labels
+#' @param surface.font.baseSize : Base font size for surface labels. Actual font size is a multiplier applied to this base.
+#' @param surface.font.color : Font color for surface labels
+#' @param surface.font.selected.color : Font color for surface labels while it is being moved
+#' @param surface.label.minimumDistance : Relative minimum distance between surface labels. Larger numbers, more minimum distance
+#' @param surface.label.radialPadding : Padding between the circle and the surface label
+#' @param circle.width : The width of the circle circumference line
+#' @param circle.color : The color of the circle circumference line
+#' @param circle.cross.color : The color of the crosshairs that mark the center of the circle
+#' @param link.color : The color of the label links
+#' @param link.width : The width of the label links
 #'
 #' @import htmlwidgets
 #'

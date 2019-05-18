@@ -34,29 +34,29 @@ moonplot(coreNodes = NULL, surfaceNodes = NULL, height = NULL,
 
 \item{core.font.selected.color}{: Font color for core labels while it is being moved}
 
-\item{core.label.minimumDistance}{Relative minimum distance between core labels. Larger numbers, more minimum distance}
+\item{core.label.minimumDistance}{: Relative minimum distance between core labels. Larger numbers, more minimum distance}
 
-\item{surface.font.family}{Font family for surface labels}
+\item{surface.font.family}{: Font family for surface labels}
 
-\item{surface.font.baseSize}{Base font size for surface labels. Actual font size is a multiplier applied to this base.}
+\item{surface.font.baseSize}{: Base font size for surface labels. Actual font size is a multiplier applied to this base.}
 
-\item{surface.font.color}{Font color for surface labels}
+\item{surface.font.color}{: Font color for surface labels}
 
-\item{surface.font.selected.color}{Font color for surface labels while it is being moved}
+\item{surface.font.selected.color}{: Font color for surface labels while it is being moved}
 
-\item{surface.label.minimumDistance}{Relative minimum distance between surface labels. Larger numbers, more minimum distance}
+\item{surface.label.minimumDistance}{: Relative minimum distance between surface labels. Larger numbers, more minimum distance}
 
-\item{surface.label.radialPadding}{Padding between the circle and the surface label}
+\item{surface.label.radialPadding}{: Padding between the circle and the surface label}
 
-\item{circle.width}{The width of the circle circumference line}
+\item{circle.width}{: The width of the circle circumference line}
 
-\item{circle.color}{The color of the circle circumference line}
+\item{circle.color}{: The color of the circle circumference line}
 
-\item{circle.cross.color}{The color of the crosshairs that mark the center of the circle}
+\item{circle.cross.color}{: The color of the crosshairs that mark the center of the circle}
 
-\item{link.color}{The color of the label links}
+\item{link.color}{: The color of the label links}
 
-\item{link.width}{The width of the label links}
+\item{link.width}{: The width of the label links}
 }
 \description{
 Uses correspondence analysis to create a Moon Plot
