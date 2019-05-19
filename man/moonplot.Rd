@@ -7,8 +7,8 @@
 https://github.com/Displayr/rhtmlMoonPlot
 }
 \usage{
-moonplot(coreNodes = NULL, surfaceNodes = NULL,
-  core.font.family = "sans-serif", core.font.size = 14,
+moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
+  height = NULL, core.font.family = "sans-serif", core.font.size = 14,
   core.font.color = "#333333", core.font.selected.color = "#0000dd",
   core.label.minimumDistance = 7, surface.font.family = "sans-serif",
   surface.font.baseSize = 14, surface.font.color = "#333333",

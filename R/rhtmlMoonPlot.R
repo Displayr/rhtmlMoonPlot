@@ -31,6 +31,8 @@
 moonplot <- function(
   coreNodes = NULL,
   surfaceNodes = NULL,
+  width = NULL,
+  height = NULL,
   core.font.family = 'sans-serif',
   core.font.size = 14,
   core.font.color = '#333333',
@@ -75,8 +77,8 @@ moonplot <- function(
   htmlwidgets::createWidget(
     name = "rhtmlMoonPlot",
     x,
-    width = 600, # width is ignored, but must be passed or htmlwidgets has issues
-    height = 600, # height is ignored, but must be passed or htmlwidgets has issues
+    width = width, # width is ignored, but must be passed or htmlwidgets has issues
+    height = height, # height is ignored, but must be passed or htmlwidgets has issues
     sizingPolicy = htmlwidgets::sizingPolicy(
         padding = 0,
         browser.fill = TRUE, # resizing will not work if FALSE
