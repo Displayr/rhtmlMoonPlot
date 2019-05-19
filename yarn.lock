@@ -6926,9 +6926,9 @@ ret@~0.1.10:
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
 
-rhtmlBuildUtils@Displayr/rhtmlBuildUtils#3.0.9:
-  version "3.0.9"
-  resolved "https://codeload.github.com/Displayr/rhtmlBuildUtils/tar.gz/4f11a48079703e4da6f5fc19b5800dbeb4617a91"
+rhtmlBuildUtils@Displayr/rhtmlBuildUtils#3.0.10:
+  version "3.0.10"
+  resolved "https://codeload.github.com/Displayr/rhtmlBuildUtils/tar.gz/a81d1dbba07255b7c601791eab99c52973a7cc51"
   dependencies:
     app-root-dir "^1.0.2"
     babel-plugin-array-includes "^2.0.3"
@@ -6944,6 +6944,7 @@ rhtmlBuildUtils@Displayr/rhtmlBuildUtils#3.0.9:
     connect "^3.6.2"
     connect-livereload "^0.6.0"
     cucumber "^1.2.1"
+    deep-diff "^1.0.2"
     dot-object "^1.5.4"
     eslint "^3.19.0"
     eslint-config-airbnb "^15.0.1"

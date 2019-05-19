@@ -12,7 +12,7 @@ Feature: Calls to Resize
 
     When I resize the widget to 600x600
     Then the "minimal-one-point-600x600-base" snapshot matches the baseline
-    And the final state callback should match "data.state-minimal-one-point.600x600-base" within 3
+    And the final state callback should match "data.state-minimal-one-point.600x600-base"
 
     When I resize the widget to 600x300
     Then the "minimal-one-point-600x300-base" snapshot matches the baseline
@@ -22,4 +22,4 @@ Feature: Calls to Resize
     When I drag core label 0 by 0 x -20
     And I resize the widget to 500x500
     Then the "minimal-one-point-500x500-base" snapshot matches the baseline
-    And the final state callback should match "data.state-minimal-one-point.500x500-base" within 3
+    And the final state callback should match "data.state-minimal-one-point.500x500-base"
