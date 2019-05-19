@@ -5,7 +5,7 @@ tests:
       - 'Variables to test: [surfaceLabelFontBaseSize].'
     width: 500
     height: 500
-    rowSize: 4
+    rowSize: 3
     type: single_page_one_example_per_config
     comments: []
     data: data.functional_tests.minimal
