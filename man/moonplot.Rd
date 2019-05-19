@@ -7,8 +7,8 @@
 https://github.com/Displayr/rhtmlMoonPlot
 }
 \usage{
-moonplot(coreNodes = NULL, surfaceNodes = NULL, height = NULL,
-  width = NULL, core.font.family = "sans-serif", core.font.size = 14,
+moonplot(coreNodes = NULL, surfaceNodes = NULL,
+  core.font.family = "sans-serif", core.font.size = 14,
   core.font.color = "#333333", core.font.selected.color = "#0000dd",
   core.label.minimumDistance = 7, surface.font.family = "sans-serif",
   surface.font.baseSize = 14, surface.font.color = "#333333",
@@ -21,10 +21,6 @@ moonplot(coreNodes = NULL, surfaceNodes = NULL, height = NULL,
 \item{coreNodes}{: Coordinates of nodes in the center of the moon (assumes coreNodes is transformed output of MASS::corresp then $rscore[, 1:2])}
 
 \item{surfaceNodes}{: Coordinates of nodes outside of the moon (assumes surfaceNodes is transformed output of MASS::corresp then $cscore[, 1:2])}
-
-\item{height}{: Height of viewer window. Ignored. Do not use}
-
-\item{width}{: Width of the viewer window. Ignored. Do not use}
 
 \item{core.font.family}{: Font family for core labels}
 

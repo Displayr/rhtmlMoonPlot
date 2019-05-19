@@ -8,8 +8,6 @@
 #'
 #' @param coreNodes : Coordinates of nodes in the center of the moon (assumes coreNodes is transformed output of MASS::corresp then $rscore[, 1:2])
 #' @param surfaceNodes : Coordinates of nodes outside of the moon (assumes surfaceNodes is transformed output of MASS::corresp then $cscore[, 1:2])
-#' @param width : Width of the viewer window. Ignored. Do not use
-#' @param height : Height of viewer window. Ignored. Do not use
 #' @param core.font.family : Font family for core labels
 #' @param core.font.size : Font size for core labels
 #' @param core.font.color : Font color for core labels
@@ -33,8 +31,6 @@
 moonplot <- function(
   coreNodes = NULL,
   surfaceNodes = NULL,
-  height = NULL,
-  width = NULL,
   core.font.family = 'sans-serif',
   core.font.size = 14,
   core.font.color = '#333333',
@@ -79,10 +75,10 @@ moonplot <- function(
   htmlwidgets::createWidget(
     name = "rhtmlMoonPlot",
     x,
-    width = width, # width is ignored, but must be passed or htmlwidgets has issues
-    height = height, # height is ignored, but must be passed or htmlwidgets has issues
+    width = 600, # width is ignored, but must be passed or htmlwidgets has issues
+    height = 600, # height is ignored, but must be passed or htmlwidgets has issues
     sizingPolicy = htmlwidgets::sizingPolicy(
-        padding = 5,
+        padding = 0,
         browser.fill = TRUE, # resizing will not work if FALSE
         viewer.fill = TRUE
     ),

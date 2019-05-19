@@ -13,7 +13,7 @@ CSDperceptions <- matrix(c(0.3004, 0.6864, 0.4975, 0.2908, 0.2781, 0.2642, 0.191
 obj <- MASS::corresp(CSDperceptions,2)
 coreNodes <- obj$rscore[, 1:2]
 surfaceNodes <- obj$cscore[, 1:2]
-rhtmlMoonPlot::moonplot(coreNodes, surfaceNodes, width = 600, height = 600)
+rhtmlMoonPlot::moonplot(coreNodes, surfaceNodes)
 
 ```
 
