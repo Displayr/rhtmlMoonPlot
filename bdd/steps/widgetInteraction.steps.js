@@ -82,7 +82,6 @@ module.exports = function () {
     }
 
     return wrapInPromiseAndLogErrors(() => {
-
       const replaceDotsWithSlashes = (inputString) => {
         return inputString.replace(/[.]/g, '/')
       }
