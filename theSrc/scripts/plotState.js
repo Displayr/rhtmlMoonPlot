@@ -9,8 +9,7 @@ import _ from 'lodash'
 // })
 
 class PlotState {
-  constructor (plotReference) {
-    this.setPlotReference(plotReference)
+  constructor () {
     this.moveCoreLabel = this.moveCoreLabel.bind(this)
     this.moveSurfaceLabel = this.moveSurfaceLabel.bind(this)
     this.circleRadiusChanged = this.circleRadiusChanged.bind(this)

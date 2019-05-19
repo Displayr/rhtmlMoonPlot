@@ -9,8 +9,7 @@ export class CoreLabels {
   }
 
   draw () {
-    this.anchorSelection = this.parentContainer.selectAll('.core-anchor')
-    this.anchorSelection
+    this.parentContainer.selectAll('.core-anchor')
       .data(this.plotState.getCoreLabels())
       .enter()
       .append('circle')
@@ -23,16 +22,17 @@ export class CoreLabels {
       .attr('cy', d => d.anchor.y)
       .attr('r', d => d.anchor.r)
 
-    this.linkSelection = this.parentContainer.selectAll('.core-link')
-    this.linkSelection
+    this.parentContainer.selectAll('.core-link')
       .data(this.plotState.getCoreLabels())
       .enter()
       .append('line')
       .attr('x1', d => d.anchor.x)
       .attr('y1', d => d.anchor.y)
-      // TODO labelLineConnector might be null, in which case we dont want to show the line,
-      // but I do want to create the line, in case the user drags the label and I need to show the line
-      // the current implementation of this behaviour is a little dodgy
+      // NB On labelLineConnector value
+      // labelLineConnector might be null, in which case we dont want to show the line.
+      // But I do want to create the line regardless : when use drags label, I may need line.
+      // I dont want to deal with conditional line creation at label drag time; at drag time I just want to assume there is a line and change it's coords.
+      // So create it now, even tho it might be a zero length line
       .attr('x2', d => _.get(d, 'labelLineConnector.x', d.anchor.x))
       .attr('y2', d => _.get(d, 'labelLineConnector.y', d.anchor.y))
       .attr('data-id', d => d.id)
@@ -42,9 +42,7 @@ export class CoreLabels {
       .attr('stroke', this.linkColor)
       .attr('opacity', d => _.isNull(d.labelLineConnector) ? 0 : 1)
 
-    // TODO i dont hink i use labelSelection anywhere (it is stale) . Clean it up
-    this.labelSelection = this.parentContainer.selectAll('.core-label')
-    this.labelSelection
+    this.parentContainer.selectAll('.core-label')
       .data(this.plotState.getCoreLabels())
       .enter()
       .append('text')
@@ -61,18 +59,18 @@ export class CoreLabels {
       .text(d => d.name)
       .call(this.setupDrag())
 
-    this.adjustLabelLengths()
-  }
-
-  adjustLabelLengths () {
     this.plotState.getCoreLabels().forEach(({id}) => this.adjustLabelLength(id))
   }
 
-  // TODO needs a cleanup
+  // TODO needs a cleanup:
+  // * readability of detectCoreLabelBoundaryCollision
+  // * detectCoreLabelBoundaryCollision uses getBBox, which typically over reports box size
+  // * truncate code probably takes more than it needs as ... is shorter than most 3 letter combos
+  // * unecessary number d3.select(this) ?
   adjustLabelLength (id) {
     const radius = this.plotState.getCircleRadius()
     const center = this.plotState.getCenter()
-    const detectCoreLabelBoundaryCollision = (label)  => {
+    const detectCoreLabelBoundaryCollision = (label) => {
       const labelBb = label.getBBox()
       const yRightB = labelBb.y
       const yRightT = labelBb.y + (labelBb.height / 2)
@@ -134,6 +132,7 @@ export class CoreLabels {
       const labelLineConnector = getLabelAnchorPoint(d.label, d.anchor, d.name, allTheAnchors)
       d.labelLineConnector = labelLineConnector
 
+      // NB see "On labelLineConnector value" comment above
       parentContainer.selectAll(`.core-link[data-id='${d.id}']`)
         .attr('x2', _.get(d, 'labelLineConnector.x', d.anchor.x))
         .attr('y2', _.get(d, 'labelLineConnector.y', d.anchor.y))

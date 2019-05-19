@@ -68,10 +68,11 @@ function moveSurfaceCollisions (polarCoords, radius) {
   let collisions = detectSurfaceCollisions(polarCoords, lengthOfLine)
 
   // NB On "radialAdjustmentStrategy"
-  // In the moonplot context it should only be necessary to to modify the angle, not the radius
-  // but once a label is offset from its anchor because we adjusted its angle, it is aesthetically pleasing to give it
-  // a bit of seperation from the circle so that we can see the link and identify that the label has been moved
-  // this should only be done once, whereas in the current algo it will get repeatedly bumped on every adjustment ...
+  // For moonplot surface labels it should only be necessary to modify the angle of the surface labels, not the radius, because all the labels are placed along the surface (i.e., at same radius, different angles).
+  // However, once a label is offset from its anchor because we adjusted its angle to avoid collisions, it is aesthetically pleasing to give the offset label
+  // a bit of separation from the circle and show a line to the anchor point, so that we can see that the label has been moved from the anchor.
+  // This radial offset should only be done once, but a previous version of the code applied the radial offset repeatedly on every angle adjustment ...
+  // To preserve the option to revert to the previous strategy, I have implemented the radialAdjustmentStrategy, so we can quickly change the behaviour of the labeller.
   const radiusIncrement = (0.1 * lengthOfLine) / 360
   const elevatedRadialPosition = radius + (0.3 * lengthOfLine) / 360
   const radialAdjustmentStrategy = 'FIXED' // ['NONE', 'INCREMENTAL', 'FIXED'] // TODO could make enum, not worth it for now

@@ -10,7 +10,8 @@
   "devDependencies": {
     "eslint-plugin-import": "2.14.0",
     "gulp": "3.9.1",
-    "husky": "0.13.3"
+    "husky": "0.13.3",
+    "mustache": "^3.0.1"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
@@ -18,9 +19,8 @@
     "es6-promise": "3.2.1",
     "jquery": "2.2.2",
     "lodash": "4.6.1",
-    "mustache": "^3.0.1",
     "random-js": "1.0.8",
     "recursive-readdir": "^2.2.2",
-    "rhtmlBuildUtils": "Displayr/rhtmlBuildUtils#3.0.8"
+    "rhtmlBuildUtils": "Displayr/rhtmlBuildUtils#3.0.9"
   }
 }

@@ -1,5 +1,3 @@
- /* global document */
-
 import _ from 'lodash'
 import * as d3 from 'd3'
 
@@ -25,6 +23,8 @@ const configInvariants = [
   'surfaceLabelRadialPadding'
 ]
 
+const configDataArrays = ['coreNodes', 'surfaceNodes', 'coreLabels', 'surfaceLabels']
+
 class MoonPlot {
   static initClass () {
     this.widgetIndex = 0
@@ -32,11 +32,13 @@ class MoonPlot {
   }
 
   constructor (element) {
-    this.id = `${MoonPlot.widgetName}-${MoonPlot.widgetIndex++}`
-    this.registeredStateListeners = []
     this.rootElement = element
-    const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
+    this.registeredStateListeners = []
+    this.id = `${MoonPlot.widgetName}-${MoonPlot.widgetIndex++}`
+
+    const { width, height } = this.containerDimensions()
     this.svg = d3.select(this.rootElement).append('svg')
+      .attr('id', this.id)
       .attr('class', 'svgContent')
       .attr('width', width)
       .attr('height', height)
@@ -44,15 +46,24 @@ class MoonPlot {
     this.init()
   }
 
+  containerDimensions () {
+    const rootElement = _.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement
+    try {
+      return rootElement.getBoundingClientRect()
+    } catch (err) {
+      err.message = `fail in this.containerDimensions: ${err.message}`
+      throw err
+    }
+  }
+
   init () {
-    console.log('moonplot init')
-    this.plotState = new PlotState(this)
+    this.plotState = new PlotState()
+    this.plotState.setPlotReference(this)
     this.config = null
     this.inputData = null
   }
 
   reset () {
-    console.log('moonplot reset')
     this.registeredStateListeners.forEach(dergisterFn => dergisterFn())
     this.init()
   }
@@ -62,8 +73,8 @@ class MoonPlot {
   }
 
   setConfig (config) {
-    this.config = buildConfig(_.omit(config, ['coreNodes', 'surfaceNodes', 'coreLabels', 'surfaceLabels']))
-    this.inputData = _.pick(config, ['coreNodes', 'surfaceNodes', 'coreLabels', 'surfaceLabels'])
+    this.config = buildConfig(_.omit(config, configDataArrays))
+    this.inputData = _.pick(config, configDataArrays)
   }
 
   static defaultState () {
@@ -72,7 +83,7 @@ class MoonPlot {
       sourceData: { coreLabels: [], surfaceLabels: [] },
       plot: { coreLabels: [], surfaceLabels: [] },
       plotSize: { width: null, height: null },
-      circleRadius: null // TODO just make it radius or plotRadius, or move to plot.radius
+      circleRadius: null
     })
   }
 
@@ -80,34 +91,40 @@ class MoonPlot {
     this.registeredStateListeners.push(this.plotState.addListener(listener))
   }
 
-  checkState (previousUserState) {
-    const configInvariantsHaveNotChanged = _(configInvariants)
-      .every(invariant => _.get(previousUserState, `configInvariants.${invariant}`) === this.config[invariant])
+  setState (previousState) {
+    if (this.checkState(previousState)) {
+      this.plotState.initialiseState(previousState)
+    } else {
+      this.resetState()
+    }
+  }
 
-    const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
+  checkState (previousState) {
+    const configInvariantsHaveNotChanged = _(configInvariants)
+      .every(invariant => _.get(previousState, `configInvariants.${invariant}`) === this.config[invariant])
+
+    const { width, height } = this.containerDimensions()
     const { coreLabels, surfaceLabels } = buildLabelObjectsFromConfig(this.inputData)
-    const stateIsValid = !_.isNull(previousUserState) &&
-      previousUserState.version === 1 &&
-      Math.abs(previousUserState.plotSize.width - width) < 2 && // TODO configurable tolerance
-      Math.abs(previousUserState.plotSize.height - height) < 2 && // TODO configurable tolerance
-      _.isEqual(previousUserState.sourceData, { coreLabels, surfaceLabels }) &&
-      _.has(previousUserState, 'circleRadius') &&
-      _.has(previousUserState, 'center') &&
+    const stateIsValid = !_.isEmpty(previousState) &&
+      previousState.version === 1 &&
+      Math.abs(previousState.plotSize.width - width) < 2 && // TODO configurable tolerance
+      Math.abs(previousState.plotSize.height - height) < 2 && // TODO configurable tolerance
+      _.isEqual(previousState.sourceData, { coreLabels, surfaceLabels }) &&
+      _.has(previousState, 'circleRadius') &&
+      _.has(previousState, 'center') &&
       configInvariantsHaveNotChanged
 
     return stateIsValid
   }
 
-  restoreState (previousUserState) {
-    this.plotState.initialiseState(previousUserState)
-  }
-
-  // TODO newRadius is a bit hacky
+  // TODO passing newRadius is a bit hacky
+  // when the circle is dragged, we must reset state, and in that case radius is not
   resetState (newRadius) {
-    const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
+    const { width, height } = this.containerDimensions()
     const radius = (newRadius) || Math.min(height, width) / 3 // TODO move the 3 to config
     const center = {x: width / 2, y: height / 2}
     const sourceData = buildLabelObjectsFromConfig(this.inputData)
+
     const coreLabels = CoreLabeller.positionLabels({
       svg: this.svg,
       coreLabels: sourceData.coreLabels,
@@ -142,7 +159,7 @@ class MoonPlot {
 
   draw () {
     this.clearPlot()
-    const { width, height } = getContainerDimensions(_.has(this.rootElement, 'length') ? this.rootElement[0] : this.rootElement)
+    const { width, height } = this.containerDimensions()
 
     this.svg
       .attr('width', width)
@@ -185,13 +202,3 @@ class MoonPlot {
 }
 MoonPlot.initClass()
 module.exports = MoonPlot
-
-// TODO to utils
-function getContainerDimensions (rootElement) {
-  try {
-    return rootElement.getBoundingClientRect()
-  } catch (err) {
-    err.message = `fail in getContainerDimensions: ${err.message}`
-    throw err
-  }
-}

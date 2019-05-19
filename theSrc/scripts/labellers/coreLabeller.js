@@ -2,6 +2,7 @@ import labeler from './simulatedAnneallingLabellingAlgorithm'
 import {getLabelDimensionsUsingSvgApproximation} from '../labelUtils'
 import _ from 'lodash'
 
+// TODO could use symbols here, objective is to avoid spelling errors, which is accomplished with current implementation + a decent IDE
 const NONE = 'NONE'
 const BOTTOM_LEFT = 'BOTTOM_LEFT'
 const BOTTOM_CENTER = 'BOTTOM_CENTER'
@@ -76,6 +77,7 @@ const positionLabels = ({
   return labels
 }
 
+// NB returns either coords, which implies draw a line, or null, which implies do not draw a line
 const getLabelAnchorPoint = (lab, anc, name, allTheAnchors) => {
   const labelLeft = lab.x - (lab.width / 2)
   const labelRight = lab.x + (lab.width / 2)
@@ -105,8 +107,17 @@ const getLabelAnchorPoint = (lab, anc, name, allTheAnchors) => {
   const anchorToRight = anc.x > (labelRight)
   const anchorFarToRight = anc.x > (labelRight + padding)
 
+  /* eslint-disable brace-style */
   let placementOption = null
-  if      (horizontallyAligned && anchorFarAbove)   { placementOption = TOP_CENTER }  else if (horizontallyAligned && anchorFarBelow)   { placementOption = BOTTOM_CENTER }  else if (anchorAbove && anchorToLeft)             { placementOption = TOP_LEFT }  else if (anchorAbove && anchorToRight)            { placementOption = TOP_RIGHT }  else if (anchorBelow && anchorToLeft)             { placementOption = BOTTOM_LEFT }  else if (anchorBelow && anchorToRight)            { placementOption = BOTTOM_RIGHT }  else if (anchorFarToLeft)                         { placementOption = MIDDLE_LEFT }  else if (anchorFarToRight)                        { placementOption = MIDDLE_RIGHT }  else {
+  if      (horizontallyAligned && anchorFarAbove)   { placementOption = TOP_CENTER }
+  else if (horizontallyAligned && anchorFarBelow)   { placementOption = BOTTOM_CENTER }
+  else if (anchorAbove && anchorToLeft)             { placementOption = TOP_LEFT }
+  else if (anchorAbove && anchorToRight)            { placementOption = TOP_RIGHT }
+  else if (anchorBelow && anchorToLeft)             { placementOption = BOTTOM_LEFT }
+  else if (anchorBelow && anchorToRight)            { placementOption = BOTTOM_RIGHT }
+  else if (anchorFarToLeft)                         { placementOption = MIDDLE_LEFT }
+  else if (anchorFarToRight)                        { placementOption = MIDDLE_RIGHT }
+  else {
     // Draw the link if there are any anc nearby
     const ambiguityFactor = 10
     const padL = placementOptions[TOP_LEFT]['x'] - ambiguityFactor
@@ -140,9 +151,11 @@ const getLabelAnchorPoint = (lab, anc, name, allTheAnchors) => {
         placementOption = MIDDLE_RIGHT
       }
     } else {
-      placementOption = NONE // else just return the label x,y
+      // NB currently returning null implies "do not show a line because anchor and label are close and there is no ambiguity"
+      placementOption = NONE
     }
   }
+  /* eslint-enable brace-style */
 
   return placementOptions[placementOption]
 }

@@ -49,7 +49,7 @@ class Circle {
     const center = this.plotState.getCenter()
 
     const dragMove = function () {
-      const [mouseX, mouseY] = d3.mouse(this) // NB deliberate d3.mouse vs d3.event. Not sure why yet ...
+      const [mouseX, mouseY] = d3.mouse(this)
       d3.select(this).attr('r', distanceFromCenter(center.x - mouseX, center.y - mouseY))
     }
 
@@ -63,7 +63,7 @@ class Circle {
     }
 
     const dragEnd = function () {
-      const [mouseX, mouseY] = d3.mouse(this) // NB deliberate d3.mouse vs d3.event. Not sure why yet ...
+      const [mouseX, mouseY] = d3.mouse(this)
       const newRadius = distanceFromCenter(center.x - mouseX, center.y - mouseY)
       plotState.circleRadiusChanged(newRadius)
     }

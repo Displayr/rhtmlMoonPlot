@@ -18,9 +18,9 @@ moonplot(coreNodes = NULL, surfaceNodes = NULL, height = NULL,
   link.color = "grey", link.width = 1)
 }
 \arguments{
-\item{coreNodes}{: Coordinates of nodes in the center of the moon}
+\item{coreNodes}{: Coordinates of nodes in the center of the moon (assumes coreNodes is transformed output of MASS::corresp then $rscore[, 1:2])}
 
-\item{surfaceNodes}{: Coordinates of nodes outside of the moon}
+\item{surfaceNodes}{: Coordinates of nodes outside of the moon (assumes surfaceNodes is transformed output of MASS::corresp then $cscore[, 1:2])}
 
 \item{height}{: Height of viewer window. Ignored. Do not use}
 

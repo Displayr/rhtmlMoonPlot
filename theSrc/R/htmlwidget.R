@@ -1,4 +1,3 @@
-# cat R/rhtmlMoonPlot.R
 #' rhtmlMoonPlot
 #'
 #' Uses correspondence analysis to create a Moon Plot
@@ -7,8 +6,8 @@
 #'
 #' @source https://github.com/Displayr/rhtmlMoonPlot
 #'
-#' @param coreNodes : Coordinates of nodes in the center of the moon
-#' @param surfaceNodes : Coordinates of nodes outside of the moon
+#' @param coreNodes : Coordinates of nodes in the center of the moon (assumes coreNodes is transformed output of MASS::corresp then $rscore[, 1:2])
+#' @param surfaceNodes : Coordinates of nodes outside of the moon (assumes surfaceNodes is transformed output of MASS::corresp then $cscore[, 1:2])
 #' @param width : Width of the viewer window. Ignored. Do not use
 #' @param height : Height of viewer window. Ignored. Do not use
 #' @param core.font.family : Font family for core labels

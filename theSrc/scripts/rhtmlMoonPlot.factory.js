@@ -2,16 +2,9 @@ import _ from 'lodash'
 import MoonPlot from './MoonPlot'
 import DisplayError from './DisplayError'
 
-// TODO: finish porting this to match "no resize just redo" style
-
-console.log('spot 2')
 module.exports = function (element, w, h, stateChangedFn) {
-  console.log('spot 3')
-  const stateChangedFnPresent = (typeof stateChangedFn === 'function')
-
   let configCopy = null
   let stateCopy = null
-
   const moonplot = new MoonPlot(element)
 
   function doRenderValue (config, state) {
@@ -19,17 +12,9 @@ module.exports = function (element, w, h, stateChangedFn) {
       moonplot.reset()
       moonplot.setConfig(config)
 
-      if (stateChangedFnPresent) {
-        moonplot.addStateListener(stateChangedFn)
-      }
-      if (state && moonplot.checkState(state)) {
-        moonplot.restoreState(state)
-      } else {
-        moonplot.resetState()
-      }
-
+      if (typeof stateChangedFn === 'function') { moonplot.addStateListener(stateChangedFn) }
+      moonplot.setState(state)
       moonplot.addStateListener(newState => { stateCopy = newState })
-
       moonplot.draw()
     } catch (err) {
       _showError(err, element)
@@ -42,10 +27,6 @@ module.exports = function (element, w, h, stateChangedFn) {
     },
 
     renderValue (config, state) {
-      console.log('spot 4')
-      console.log('config')
-      console.log(JSON.stringify(config, {}, 2))
-
       configCopy = _.cloneDeep(config)
       doRenderValue(config, state)
     }

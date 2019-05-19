@@ -8,8 +8,7 @@ export class SurfaceLabels {
   }
 
   draw () {
-    this.linkSelection = this.parentContainer.selectAll('.surface-link')
-    this.linkSelection
+     this.parentContainer.selectAll('.surface-link')
       .data(this.plotState.getSurfaceLabels())
       .enter()
       .append('line')
@@ -24,8 +23,7 @@ export class SurfaceLabels {
       .attr('stroke', this.linkColor)
 
     const center = this.plotState.getCenter()
-    this.labelSelection = this.parentContainer.selectAll('.surface-label')
-    this.labelSelection
+    this.parentContainer.selectAll('.surface-label')
       .data(this.plotState.getSurfaceLabels())
       .enter()
       .append('text')
@@ -45,14 +43,14 @@ export class SurfaceLabels {
       .text(d => d.name)
       .call(this.setupDrag())
 
-      this.adjustLabelLengths()
-  }
-
-  adjustLabelLengths () {
     this.plotState.getSurfaceLabels().forEach(({id}) => this.adjustLabelLength(id))
   }
 
-  // TODO needs a cleanup
+  // TODO needs a cleanup:
+  // * readability of detectViewportCollision and getScreenCoords
+  // * use of getBBox, which typically over reports box size
+  // * truncate code probably takes more than it needs as ... is shorter than most 3 letter combos
+  // * unecessary number d3.select(this) ?
   adjustLabelLength (id) {
     const detectViewportCollision = (label) => {
       const getScreenCoords = function (x, y, ctm) {
@@ -114,9 +112,9 @@ export class SurfaceLabels {
       d3.select(this).style('fill', fontSelectedColor)
     }
 
-    // NB we choose d3.mouse and d3.event here because mouse gives relative, and event gives absolute
     // src : https://groups.google.com/forum/#!topic/d3-js/2usoXlTKY_8
-    // TODO I dont really understand this but dont f*ck with it ... ?
+    // NB we interchange d3.mouse and d3.event here because mouse gives relative, and event gives absolute
+    // (i am not 100% on the mechanics of this but it works)
     const dragMove = function (d) {
       d3.select(this)
         .attr('x', d3.mouse(this)[0])
