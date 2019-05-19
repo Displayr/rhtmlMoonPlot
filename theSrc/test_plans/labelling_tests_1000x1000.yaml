@@ -1,6 +1,6 @@
 version: 1
 tests:
-  - data_directory: "data/functional_tests"
+  - data_directory: "data/labelling_tests"
     width: 500
     height: 500
     type: for_each_data_in_directory

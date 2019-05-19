@@ -1,5 +1,5 @@
 {
-  "coreNodes": [
+  "surfaceNodes": [
     [
       -1.463366472005,
       -0.3793521653708
@@ -169,7 +169,7 @@
       -0.2299694504592
     ]
   ],
-  "surfaceNodes": [
+  "coreNodes": [
     [
       -0.08922887527669,
       -1.49536604941
@@ -231,7 +231,7 @@
       -0.57589542191
     ]
   ],
-  "coreLabels": [
+  "surfaceLabels": [
     "Porsche",
     "Nike athletic shoes",
     "Mercedes",
@@ -275,7 +275,7 @@
     "Kmart",
     "Campbell's soup"
   ],
-  "surfaceLabels": [
+  "coreLabels": [
     "Charming",
     "Cheerful",
     "Daring",
