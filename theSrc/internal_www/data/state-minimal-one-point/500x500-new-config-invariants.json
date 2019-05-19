@@ -5,7 +5,7 @@
   },
   "circleRadius": 166.66666666666666,
   "configInvariants": {
-    "coreLabelFontSize": 14,
+    "coreLabelFontSize": 8,
     "surfaceLabelFontBaseSize": 14,
     "surfaceLabelMinimumLabelDistance": 15,
     "surfaceLabelRadialPadding": 3
@@ -55,7 +55,7 @@
     ]
   },
   "plotSize": {
-    "height": 500,
+    "height": 600,
     "width": 500
   },
   "sourceData": {

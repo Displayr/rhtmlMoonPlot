@@ -56,21 +56,43 @@ module.exports = function () {
     })
   })
 
+  this.When(/^I drag the circle by (-?[0-9]+) x (-?[0-9]+)$/, function (xMovement, yMovement) {
+    return wrapInPromiseAndLogErrors(() => {
+      this.context.moonPlot.circle().getLocation().then((locationObject) => {
+        this.context.initialLocation = locationObject
+        this.context.expectedOffset = {
+          x: parseInt(xMovement),
+          y: parseInt(yMovement)
+        }
+      })
+
+      return browser.actions()
+        .mouseMove(this.context.moonPlot.circle())
+        .mouseDown()
+        .mouseMove({ x: parseInt(xMovement), y: parseInt(yMovement) })
+        .mouseUp()
+        .perform()
+    })
+  })
+
   this.Then(/^the final state callback should match "(.*)" within ([0-9.]+)$/, function (expectedStateFile, toleranceString) {
-    if (!this.context.configName) {
-      throw new Error('Cannot state match without configName')
-    }
     const tolerance = parseFloat(toleranceString)
     if (_.isNaN(tolerance)) {
       throw new Error(`Invalid toleranceString '${toleranceString}', must be valid float`)
     }
 
     return wrapInPromiseAndLogErrors(() => {
-      const expectedStateUrl = `http://localhost:9000/data/${this.context.configName}/${expectedStateFile}.json`
+
+      const replaceDotsWithSlashes = (inputString) => {
+        return inputString.replace(/[.]/g, '/')
+      }
+
+      const expectedStateUrl = `http://localhost:9000/${replaceDotsWithSlashes(expectedStateFile)}.json`
       const expectedStatePromise = request(expectedStateUrl).then(JSON.parse)
       const actualStatePromise = this.context.getRecentState()
 
       return Promise.all([actualStatePromise, expectedStatePromise]).then(([actualState, expectedState]) => {
+        this.expect(actualState).to.deep.equal(expectedState)
       })
     })
   })

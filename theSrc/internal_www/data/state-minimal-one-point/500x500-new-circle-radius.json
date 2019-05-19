@@ -3,7 +3,7 @@
     "x": 250,
     "y": 250
   },
-  "circleRadius": 166.66666666666666,
+  "circleRadius": 200,
   "configInvariants": {
     "coreLabelFontSize": 14,
     "surfaceLabelFontBaseSize": 14,

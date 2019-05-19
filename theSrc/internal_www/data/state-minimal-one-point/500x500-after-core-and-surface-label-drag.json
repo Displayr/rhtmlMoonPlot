@@ -23,13 +23,11 @@
         "label": {
           "height": 16,
           "width": 17.890625,
-          "x": 357.9359256830706,
-          "y": 172.890498960647
+          "x": 356,
+          "y": 147
         },
-        "labelLineConnector": {
-          "x": 357.9359256830706,
-          "y": 156.890498960647
-        },
+        "labelLineConnector": null,
+        "moved": true,
         "name": "C1",
         "truncatedName": "C1",
         "width": 17.890625
@@ -44,9 +42,10 @@
         "height": 24,
         "id": 0,
         "label": {
-          "x": 130.02754945868247,
-          "y": 369.9724505413176
+          "x": 149,
+          "y": 374
         },
+        "moved": true,
         "name": "S1",
         "size": 1.5,
         "truncatedName": "S1",
