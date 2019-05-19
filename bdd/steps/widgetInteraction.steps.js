@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const request = require('request-promise')
+var deepDiff = require('deep-diff')
 
 // TODO make this an exported module in rhtmlBuild
 // without this cucumber is not logging errors when steps fail which makes debugging painful
@@ -91,6 +92,16 @@ module.exports = function () {
       const actualStatePromise = this.context.getRecentState()
 
       return Promise.all([actualStatePromise, expectedStatePromise]).then(([actualState, expectedState]) => {
+        if (!_.isEqual(actualState, expectedState)) {
+          console.log('actualState')
+          console.log(JSON.stringify(actualState, {}, 2))
+
+          console.log('expectedState')
+          console.log(JSON.stringify(expectedState, {}, 2))
+
+          console.log('differences (left: actual, right: expected')
+          console.log(JSON.stringify(deepDiff(actualState, expectedState), {}, 2))
+        }
         this.expect(actualState).to.deep.equal(expectedState)
       })
     })
