@@ -22,6 +22,7 @@
 #' @param circle.width : The width of the circle circumference line
 #' @param circle.color : The color of the circle circumference line
 #' @param circle.cross.color : The color of the crosshairs that mark the center of the circle
+#' @param circle.drag.area.width : How close to the circle do you need to click to start drag. Higher means larger click area, easier to click
 #' @param link.color : The color of the label links
 #' @param link.width : The width of the label links
 #'
@@ -47,6 +48,7 @@ moonplot <- function(
   circle.width = 1,
   circle.color = '#042a4b',
   circle.cross.color = 'grey',
+  circle.drag.area.width = 8,
   link.color = 'grey',
   link.width = 1
 ) {
@@ -70,6 +72,7 @@ moonplot <- function(
     circleStrokeWidth = circle.width,
     circleColor = circle.color,
     crossColor = circle.cross.color,
+    circleDragAreaWidth = circle.drag.area.width,
     linkColor = link.color,
     linkWidth = link.width
   )

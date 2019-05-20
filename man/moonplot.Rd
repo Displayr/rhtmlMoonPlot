@@ -15,7 +15,7 @@ moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
   surface.font.selected.color = "#0000dd",
   surface.label.minimumDistance = 15, surface.label.radialPadding = 3,
   circle.width = 1, circle.color = "#042a4b", circle.cross.color = "grey",
-  link.color = "grey", link.width = 1)
+  circle.drag.area.width = 8, link.color = "grey", link.width = 1)
 }
 \arguments{
 \item{coreNodes}{: Coordinates of nodes in the center of the moon (assumes coreNodes is transformed output of MASS::corresp then $rscore[, 1:2])}
@@ -49,6 +49,8 @@ moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
 \item{circle.color}{: The color of the circle circumference line}
 
 \item{circle.cross.color}{: The color of the crosshairs that mark the center of the circle}
+
+\item{circle.drag.area.width}{: How close to the circle do you need to click to start drag. Higher means larger click area, easier to click}
 
 \item{link.color}{: The color of the label links}
 

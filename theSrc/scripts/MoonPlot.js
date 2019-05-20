@@ -192,12 +192,13 @@ class MoonPlot {
       plotState: this.plotState,
       circleColor: this.config.circleColor,
       crossColor: this.config.crossColor,
-      circleStrokeWidth: this.config.circleStrokeWidth
+      circleStrokeWidth: this.config.circleStrokeWidth,
+      circleDragAreaWidth: this.config.circleDragAreaWidth
     })
 
+    this.circle.draw()
     this.coreLabels.draw()
     this.surfaceLabels.draw()
-    this.circle.draw()
   }
 }
 MoonPlot.initClass()
