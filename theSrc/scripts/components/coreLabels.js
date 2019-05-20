@@ -101,8 +101,10 @@ export class CoreLabels {
     }
     if (truncated) {
       text = d3.select(label).node().textContent
-      d3.select(label).text(text.slice(0, -3) + '...')
-      d3.select(label).data()[0].width = label.getBBox().width
+      d3.select(label)
+        .text(text.slice(0, -3) + '...')
+        .append('title')
+        .text(d => d.name)
     }
   }
 

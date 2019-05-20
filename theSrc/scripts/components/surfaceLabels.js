@@ -39,7 +39,6 @@ export class SurfaceLabels {
       .attr('text-anchor', d => (d.label.x < center.x) ? 'end' : 'start')
       .attr('alignment-baseline', 'middle')
       .attr('cursor', 'all-scroll')
-      .attr('title', d => d.name)
       .text(d => d.name)
       .call(this.setupDrag())
 
@@ -99,7 +98,10 @@ export class SurfaceLabels {
     }
     if (truncated) {
       text = d3.select(label).node().textContent
-      d3.select(label).text(text.slice(0, -3) + '...')
+      d3.select(label)
+        .text(text.slice(0, -3) + '...')
+        .append('title')
+        .text(d => d.name)
     }
   }
 
