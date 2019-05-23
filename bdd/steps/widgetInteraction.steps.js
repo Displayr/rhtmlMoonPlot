@@ -17,14 +17,6 @@ const wrapInPromiseAndLogErrors = function (fn) {
 module.exports = function () {
   this.When(/^I drag surface label (.+) by (-?[0-9]+) x (-?[0-9]+)$/, function (labelId, xMovement, yMovement) {
     return wrapInPromiseAndLogErrors(() => {
-      this.context.moonPlot.surfaceLabel(labelId).getLocation().then((locationObject) => {
-        this.context.initialLocation = locationObject
-        this.context.expectedOffset = {
-          x: parseInt(xMovement),
-          y: parseInt(yMovement)
-        }
-      })
-
       return browser.actions()
         .mouseMove(this.context.moonPlot.surfaceLabel(labelId))
         .mouseDown()
@@ -36,14 +28,6 @@ module.exports = function () {
 
   this.When(/^I drag core label (.+) by (-?[0-9]+) x (-?[0-9]+)$/, function (labelId, xMovement, yMovement) {
     return wrapInPromiseAndLogErrors(() => {
-      this.context.moonPlot.coreLabel(labelId).getLocation().then((locationObject) => {
-        this.context.initialLocation = locationObject
-        this.context.expectedOffset = {
-          x: parseInt(xMovement),
-          y: parseInt(yMovement)
-        }
-      })
-
       return browser.actions()
         .mouseMove(this.context.moonPlot.coreLabel(labelId))
         .mouseDown()
@@ -53,20 +37,13 @@ module.exports = function () {
     })
   })
 
-  this.When(/^I drag the circle by (-?[0-9]+) x (-?[0-9]+)$/, function (xMovement, yMovement) {
+  this.When(/^I do a brittle circle resize action$/, function () {
+    const offsetForTopOf500x500Circle = { x: 250, y: 83 }
     return wrapInPromiseAndLogErrors(() => {
-      this.context.moonPlot.circle().getLocation().then((locationObject) => {
-        this.context.initialLocation = locationObject
-        this.context.expectedOffset = {
-          x: parseInt(xMovement),
-          y: parseInt(yMovement)
-        }
-      })
-
       return browser.actions()
-        .mouseMove(this.context.moonPlot.circle())
+        .mouseMove(element(by.css('svg')), offsetForTopOf500x500Circle)
         .mouseDown()
-        .mouseMove({ x: parseInt(xMovement), y: parseInt(yMovement) })
+        .mouseMove({ x: 0, y: 30 })
         .mouseUp()
         .perform()
     })
