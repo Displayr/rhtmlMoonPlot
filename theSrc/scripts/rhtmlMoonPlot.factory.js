@@ -1,21 +1,21 @@
 import _ from 'lodash'
-import MoonPlot from './MoonPlot'
+import OuterPlot from './outerPlot'
 import DisplayError from './DisplayError'
 
 module.exports = function (element, w, h, stateChangedFn) {
   let configCopy = null
   let stateCopy = null
-  const moonplot = new MoonPlot(element)
+  const outerPlot = new OuterPlot(element)
 
   function doRenderValue (config, state) {
     try {
-      moonplot.reset()
-      moonplot.setConfig(config)
+      outerPlot.reset()
+      outerPlot.setConfig(config)
 
-      if (typeof stateChangedFn === 'function') { moonplot.addStateListener(stateChangedFn) }
-      moonplot.setState(state)
-      moonplot.addStateListener(newState => { stateCopy = newState })
-      moonplot.draw()
+      if (typeof stateChangedFn === 'function') { outerPlot.addStateListener(stateChangedFn) }
+      outerPlot.setState(state)
+      outerPlot.addStateListener(newState => { stateCopy = newState })
+      outerPlot.draw()
     } catch (err) {
       _showError(err, element)
     }

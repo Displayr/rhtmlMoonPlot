@@ -3,13 +3,13 @@ import { toDegrees } from '../math/coord'
 import _ from 'lodash'
 
 export class SurfaceLabels {
-  constructor ({ parentContainer, plotState, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor }) {
-    _.assign(this, { parentContainer, plotState, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor })
+  constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, center, width, height, getLabels, moveLabel }) {
+    _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, center, width, height, getLabels, moveLabel })
   }
 
   draw () {
      this.parentContainer.selectAll('.surface-link')
-      .data(this.plotState.getSurfaceLabels())
+      .data(this.getLabels())
       .enter()
       .append('line')
       .attr('x1', d => d.anchor.x)
@@ -22,9 +22,8 @@ export class SurfaceLabels {
       .attr('stroke-width', this.linkWidth)
       .attr('stroke', this.linkColor)
 
-    const center = this.plotState.getCenter()
     this.parentContainer.selectAll('.surface-label')
-      .data(this.plotState.getSurfaceLabels())
+      .data(this.getLabels())
       .enter()
       .append('text')
       .style('fill', this.fontColor)
@@ -33,16 +32,16 @@ export class SurfaceLabels {
       .attr('data-label', d =>  d.name)
       .attr('x', d => d.label.x)
       .attr('y', d => d.label.y)
-      .attr('transform', d => buildRotationTransform({circleCenter: center, rotationCenter: d.label}))
+      .attr('transform', d => buildRotationTransform({circleCenter: this.center, rotationCenter: d.label}))
       .attr('font-size', d => (d.size * this.fontSize).toString() + 'px')
       .style('font-family', this.fontFamily)
-      .attr('text-anchor', d => (d.label.x < center.x) ? 'end' : 'start')
+      .attr('text-anchor', d => (d.label.x < this.center.x) ? 'end' : 'start')
       .attr('alignment-baseline', 'middle')
       .attr('cursor', 'all-scroll')
       .text(d => d.name)
       .call(this.setupDrag())
 
-    this.plotState.getSurfaceLabels().forEach(({id}) => this.adjustLabelLength(id))
+    this.getLabels().forEach(({id}) => this.adjustLabelLength(id))
   }
 
   // TODO needs a cleanup:
@@ -62,7 +61,7 @@ export class SurfaceLabels {
         return false
       }
 
-      const {width: plotWidth, height: plotHeight} = this.plotState.getPlotSize()
+      const {width: plotWidth, height: plotHeight} = this
       const box = label.getBBox()
       const ctm = label.getCTM()
       const transformedCoords = getScreenCoords(box.x, box.y, ctm)
@@ -106,7 +105,7 @@ export class SurfaceLabels {
   }
 
   setupDrag () {
-    const { fontColor, fontSelectedColor, plotState, parentContainer } = this
+    const { fontColor, fontSelectedColor, moveLabel, parentContainer } = this
     const adjustLabelLength = this.adjustLabelLength.bind(this)
 
     const dragStart = function (d) {
@@ -135,7 +134,7 @@ export class SurfaceLabels {
         .attr('opacity', 1)
 
       adjustLabelLength(d.id)
-      plotState.moveSurfaceLabel(d.id, d.label)
+      moveLabel(d.id, d.label)
     }
 
     return d3.drag()

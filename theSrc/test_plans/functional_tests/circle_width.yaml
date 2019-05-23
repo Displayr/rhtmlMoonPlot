@@ -2,7 +2,7 @@ version: 1
 tests:
   - title: vary link width
     general_comments:
-      - 'Variables to test: [linkWidth].'
+      - 'Variables to test: [circleStrokeWidth].'
     width: 500
     height: 500
     rowSize: 2

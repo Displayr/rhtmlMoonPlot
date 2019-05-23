@@ -3,14 +3,14 @@ import * as d3 from 'd3'
 import distanceFromCenter from '../math/distanceFromCenter'
 
 class Circle {
-  constructor ({parentContainer, plotState, circleColor, crossColor, circleStrokeWidth, circleDragAreaWidth}) {
-    _.assign(this, {parentContainer, plotState, circleColor, crossColor, circleStrokeWidth, circleDragAreaWidth})
+  constructor ({ parentContainer, circleColor, crossColor, circleStrokeWidth, circleDragAreaWidth, center, radius, circleRadiusChanged }) {
+    _.assign(this, { parentContainer, circleColor, crossColor, circleStrokeWidth, circleDragAreaWidth, center, radius, circleRadiusChanged })
   }
 
   draw () {
     const crossSize = 6
     const crossWidth = 1
-    const center = this.plotState.getCenter()
+    const { center, radius, crossColor, circleColor, circleDragAreaWidth, circleStrokeWidth } = this
 
     const centralCross = this.parentContainer.append('g')
     centralCross.append('line')
@@ -20,7 +20,7 @@ class Circle {
       .attr('x2', center.x + crossSize)
       .attr('y2', center.y)
       .attr('stroke-width', crossWidth)
-      .attr('stroke', this.crossColor)
+      .attr('stroke', crossColor)
 
     centralCross.append('line')
       .attr('class', 'core-cross')
@@ -29,23 +29,23 @@ class Circle {
       .attr('x2', center.x)
       .attr('y2', center.y + crossSize)
       .attr('stroke-width', crossWidth)
-      .attr('stroke', this.crossColor)
+      .attr('stroke', crossColor)
 
     this.parentContainer.append('circle')
       .attr('cx', center.x)
       .attr('cy', center.y)
-      .attr('r', this.plotState.getCircleRadius())
+      .attr('r', radius)
       .attr('class', 'moon-circle')
-      .attr('stroke-width', this.circleStrokeWidth)
+      .attr('stroke-width', circleStrokeWidth)
       .style('fill', 'none')
-      .style('stroke', this.circleColor)
+      .style('stroke', circleColor)
 
     // NB the drag circle is not visible, but creates a larger click surface to initiate circle resizing
     this.parentContainer.append('circle')
       .attr('cx', center.x)
       .attr('cy', center.y)
-      .attr('r', this.plotState.getCircleRadius())
-      .attr('stroke-width', this.circleDragAreaWidth)
+      .attr('r', radius)
+      .attr('stroke-width', circleDragAreaWidth)
       .attr('class', 'drag-circle')
       .attr('cursor', 'all-scroll')
       .style('fill', 'none')
@@ -54,8 +54,7 @@ class Circle {
   }
 
   setupDrag () {
-    const { parentContainer, plotState } = this
-    const center = this.plotState.getCenter()
+    const { parentContainer, center, circleRadiusChanged } = this
 
     const dragMove = function () {
       const [mouseX, mouseY] = d3.mouse(this)
@@ -76,7 +75,7 @@ class Circle {
     const dragEnd = function () {
       const [mouseX, mouseY] = d3.mouse(this)
       const newRadius = distanceFromCenter(center.x - mouseX, center.y - mouseY)
-      plotState.circleRadiusChanged(newRadius)
+      circleRadiusChanged(newRadius)
     }
 
     return d3.drag()

@@ -1,23 +1,32 @@
 import _ from 'lodash'
 
 const defaultConfig = {
-  coreLabelFontFamily: 'sans-serif',
-  coreLabelFontSize: 14,
-  coreLabelFontColor: '#333333',
-  coreLabelFontSelectedColor: '#0000dd',
-  coreLabelMinimumLabelDistance: 7,
+  circleColor: '#042a4b',
   circleDragAreaWidth: 8,
-  surfaceLabelFontFamily: 'sans-serif',
+  circleStrokeWidth: 1,
+  coreLabelFontColor: '#333333',
+  coreLabelFontFamily: 'sans-serif',
+  coreLabelFontSelectedColor: '#0000dd',
+  coreLabelFontSize: 14,
+  coreLabelMinimumLabelDistance: 7,
+  crossColor: 'grey',
+  footerFontColor: '#000000',
+  footerFontFamily: 'sans-serif',
+  footerFontSize: 11,
+  linkColor: 'grey',
+  linkWidth: 1,
+  subtitleFontColor: '#000000',
+  subtitleFontFamily: 'sans-serif',
+  subtitleFontSize: 18,
   surfaceLabelFontBaseSize: 14,
   surfaceLabelFontColor: '#333333',
+  surfaceLabelFontFamily: 'sans-serif',
   surfaceLabelFontSelectedColor: '#0000dd',
   surfaceLabelMinimumLabelDistance: 15,
   surfaceLabelRadialPadding: 3,
-  circleStrokeWidth: 1,
-  circleColor: '#042a4b',
-  crossColor: 'grey',
-  linkColor: 'grey',
-  linkWidth: 1
+  titleFontColor: '#000000',
+  titleFontFamily: 'sans-serif',
+  titleFontSize: 24
 }
 
 function buildConfig (userConfig) {

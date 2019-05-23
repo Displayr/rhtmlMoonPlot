@@ -19,6 +19,18 @@
 #' @param surface.font.selected.color : Font color for surface labels while it is being moved
 #' @param surface.label.minimumDistance : Relative minimum distance between surface labels. Larger numbers, more minimum distance
 #' @param surface.label.radialPadding : Padding between the circle and the surface label
+#' @param footer character. Sets the footer of the chart, defaults to NULL. The footer is left-aligned.
+#' @param footer.font.size integer. Font size of the chart footer.font.size, defaults to 11 pixcels.
+#' @param footer.font.family character. Font family of the chart footer.font.family, defaults to "sans-serif".
+#' @param footer.font.color An RGB character to set the color of the chart footer.font.color. Defaults to "#000000".
+#' @param subtitle character. Sets the subtitle of the chart, defaults to NULL. The subtitle is centred.
+#' @param subtitle.font.size integer. Font size of the chart subtitle, defaults to 18 pixcels.
+#' @param subtitle.font.family character. Font family of the chart subtitle, defaults to "sans-serif".
+#' @param subtitle.font.color An RGB character to set the color of the chart subtitle. Defaults to "#000000".
+#' @param title character. Sets the title of the chart, defaults to NULL. The title is centred.
+#' @param title.font.size integer. Font size of the chart title, defaults to 24 pixcels.
+#' @param title.font.family character. Font family of the chart title, defaults to "sans-serif".
+#' @param title.font.color An RGB character to set the color of the chart title. Defaults to "#000000".
 #' @param circle.width : The width of the circle circumference line
 #' @param circle.color : The color of the circle circumference line
 #' @param circle.cross.color : The color of the crosshairs that mark the center of the circle
@@ -39,6 +51,18 @@ moonplot <- function(
   core.font.color = '#333333',
   core.font.selected.color = '#0000dd',
   core.label.minimumDistance = 7,
+  footer = NULL,
+  footer.font.size = 11,
+  footer.font.family = "sans-serif",
+  footer.font.color = "#000000",
+  subtitle = NULL,
+  subtitle.font.size = 18,
+  subtitle.font.family = "sans-serif",
+  subtitle.font.color = "#000000",
+  title = NULL,
+  title.font.size = 24,
+  title.font.family = "sans-serif",
+  title.font.color = "#000000",
   surface.font.family = 'sans-serif',
   surface.font.baseSize = 14,
   surface.font.color = '#333333',
@@ -54,6 +78,18 @@ moonplot <- function(
 ) {
 
   x = list(
+    title = title,
+    titleFontSize = title.font.size,
+    titleFontFamily = title.font.family,
+    titleFontColor = title.font.color,
+    subtitle = subtitle,
+    subtitleFontSize = subtitle.font.size,
+    subtitleFontFamily = subtitle.font.family,
+    subtitleFontColor = subtitle.font.color,
+    footer = footer,
+    footerFontSize = footer.font.size,
+    footerFontFamily = footer.font.family,
+    footerFontColor = footer.font.color,
     coreLabels = labels(coreNodes)[[1]],
     surfaceLabels = labels(surfaceNodes)[[1]],
     coreNodes = coreNodes,

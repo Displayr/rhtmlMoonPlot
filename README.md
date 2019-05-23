@@ -8,7 +8,7 @@ This package uses a customised htmlwidget package that allows local state saving
 ## Installation
 1. `library(devtools)`
 1. `install_github('Displayr/htmlwidgets')`
-1. `install_github('Displayr/rhtmlPalmTrees')`
+1. `install_github('Displayr/rhtmlMoonPlot')`
 
 An example to verify installation:
 ```

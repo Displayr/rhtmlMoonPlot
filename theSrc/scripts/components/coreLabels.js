@@ -4,13 +4,13 @@ import 'd3-transition'
 import {getLabelAnchorPoint} from '../labellers/coreLabeller'
 
 export class CoreLabels {
-  constructor ({ parentContainer, plotState, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor }) {
-    _.assign(this, { parentContainer, plotState, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor })
+  constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius }) {
+    _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius })
   }
 
   draw () {
     this.parentContainer.selectAll('.core-anchor')
-      .data(this.plotState.getCoreLabels())
+      .data(this.getLabels())
       .enter()
       .append('circle')
       .attr('stroke-width', 3)
@@ -23,7 +23,7 @@ export class CoreLabels {
       .attr('r', d => d.anchor.r)
 
     this.parentContainer.selectAll('.core-link')
-      .data(this.plotState.getCoreLabels())
+      .data(this.getLabels())
       .enter()
       .append('line')
       .attr('x1', d => d.anchor.x)
@@ -43,7 +43,7 @@ export class CoreLabels {
       .attr('opacity', d => _.isNull(d.labelLineConnector) ? 0 : 1)
 
     this.parentContainer.selectAll('.core-label')
-      .data(this.plotState.getCoreLabels())
+      .data(this.getLabels())
       .enter()
       .append('text')
       .style('fill', this.fontColor)
@@ -59,7 +59,7 @@ export class CoreLabels {
       .text(d => d.name)
       .call(this.setupDrag())
 
-    this.plotState.getCoreLabels().forEach(({id}) => this.adjustLabelLength(id))
+    this.getLabels().forEach(({id}) => this.adjustLabelLength(id))
   }
 
   // TODO needs a cleanup:
@@ -68,8 +68,7 @@ export class CoreLabels {
   // * truncate code probably takes more than it needs as ... is shorter than most 3 letter combos
   // * unecessary number d3.select(this) ?
   adjustLabelLength (id) {
-    const radius = this.plotState.getCircleRadius()
-    const center = this.plotState.getCenter()
+    const { radius, center } = this
     const detectCoreLabelBoundaryCollision = (label) => {
       const labelBb = label.getBBox()
       const yRightB = labelBb.y
@@ -109,7 +108,7 @@ export class CoreLabels {
   }
 
   setupDrag () {
-    const { fontColor, fontSelectedColor, plotState, parentContainer } = this
+    const { fontColor, fontSelectedColor, getLabels, moveLabel, parentContainer } = this
     const adjustLabelLength = this.adjustLabelLength.bind(this)
 
     const dragStart = function (d) {
@@ -130,7 +129,7 @@ export class CoreLabels {
     const dragEnd = function (d) {
       d3.select(this).style('fill', fontColor)
 
-      const allTheAnchors = _(plotState.getCoreLabels()).map('anchor').value()
+      const allTheAnchors = _(getLabels()).map('anchor').value()
       const labelLineConnector = getLabelAnchorPoint(d.label, d.anchor, d.name, allTheAnchors)
       d.labelLineConnector = labelLineConnector
 
@@ -141,7 +140,7 @@ export class CoreLabels {
         .attr('opacity', _.isNull(d.labelLineConnector) ? 0 : 1)
 
       adjustLabelLength(d.id)
-      plotState.moveCoreLabel(d.id, d.label)
+      moveLabel(d.id, d.label)
     }
 
     return d3.drag()

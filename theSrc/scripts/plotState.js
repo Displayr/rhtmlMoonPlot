@@ -13,6 +13,8 @@ class PlotState {
     this.moveCoreLabel = this.moveCoreLabel.bind(this)
     this.moveSurfaceLabel = this.moveSurfaceLabel.bind(this)
     this.circleRadiusChanged = this.circleRadiusChanged.bind(this)
+    this.getCoreLabels = this.getCoreLabels.bind(this)
+    this.getSurfaceLabels = this.getSurfaceLabels.bind(this)
     this.init()
   }
 
@@ -64,7 +66,9 @@ class PlotState {
 
   circleRadiusChanged (radius) {
     console.log(`circleRadiusChanged called with`, radius)
+    // TODO this sequence should be in outerPlot.reset()
     this.plotReference.clearPlot()
+    this.plotReference.initialiseComponents()
     this.plotReference.resetState(radius)
     this.callListeners()
     this.plotReference.draw()

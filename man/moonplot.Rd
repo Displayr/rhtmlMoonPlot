@@ -10,7 +10,12 @@ https://github.com/Displayr/rhtmlMoonPlot
 moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
   height = NULL, core.font.family = "sans-serif", core.font.size = 14,
   core.font.color = "#333333", core.font.selected.color = "#0000dd",
-  core.label.minimumDistance = 7, surface.font.family = "sans-serif",
+  core.label.minimumDistance = 7, footer = NULL, footer.font.size = 11,
+  footer.font.family = "sans-serif", footer.font.color = "#000000",
+  subtitle = NULL, subtitle.font.size = 18,
+  subtitle.font.family = "sans-serif", subtitle.font.color = "#000000",
+  title = NULL, title.font.size = 24, title.font.family = "sans-serif",
+  title.font.color = "#000000", surface.font.family = "sans-serif",
   surface.font.baseSize = 14, surface.font.color = "#333333",
   surface.font.selected.color = "#0000dd",
   surface.label.minimumDistance = 15, surface.label.radialPadding = 3,
@@ -31,6 +36,30 @@ moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
 \item{core.font.selected.color}{: Font color for core labels while it is being moved}
 
 \item{core.label.minimumDistance}{: Relative minimum distance between core labels. Larger numbers, more minimum distance}
+
+\item{footer}{character. Sets the footer of the chart, defaults to NULL. The footer is left-aligned.}
+
+\item{footer.font.size}{integer. Font size of the chart footer.font.size, defaults to 11 pixcels.}
+
+\item{footer.font.family}{character. Font family of the chart footer.font.family, defaults to "sans-serif".}
+
+\item{footer.font.color}{An RGB character to set the color of the chart footer.font.color. Defaults to "#000000".}
+
+\item{subtitle}{character. Sets the subtitle of the chart, defaults to NULL. The subtitle is centred.}
+
+\item{subtitle.font.size}{integer. Font size of the chart subtitle, defaults to 18 pixcels.}
+
+\item{subtitle.font.family}{character. Font family of the chart subtitle, defaults to "sans-serif".}
+
+\item{subtitle.font.color}{An RGB character to set the color of the chart subtitle. Defaults to "#000000".}
+
+\item{title}{character. Sets the title of the chart, defaults to NULL. The title is centred.}
+
+\item{title.font.size}{integer. Font size of the chart title, defaults to 24 pixcels.}
+
+\item{title.font.family}{character. Font family of the chart title, defaults to "sans-serif".}
+
+\item{title.font.color}{An RGB character to set the color of the chart title. Defaults to "#000000".}
 
 \item{surface.font.family}{: Font family for surface labels}
 
