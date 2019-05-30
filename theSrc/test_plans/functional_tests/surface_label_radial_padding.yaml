@@ -1,17 +1,16 @@
 version: 1
-tests:
-  - title: vary link width
-    general_comments:
-      - 'Variables to test: [surfaceLabelRadialPadding].'
-    width: 500
-    height: 500
-    rowSize: 2
-    type: single_page_one_example_per_config
-    comments: []
-    data: data.labelling_tests.four-4-point-surface-clusters
-    config:
-      - '{ "surfaceLabelRadialPadding": 5}'
-      - '{ "surfaceLabelRadialPadding": 10}'
-      - '{ "surfaceLabelRadialPadding": 20}'
-      - '{ "surfaceLabelRadialPadding": 30}'
+title: vary link width
+general_comments:
+  - 'Variables to test: [surfaceLabelRadialPadding].'
+width: 500
+height: 500
+rowSize: 2
+type: single_page_one_example_per_config
+comments: []
+data: data.labelling_tests.four-4-point-surface-clusters
+config:
+  - '{ "surfaceLabelRadialPadding": 5}'
+  - '{ "surfaceLabelRadialPadding": 10}'
+  - '{ "surfaceLabelRadialPadding": 20}'
+  - '{ "surfaceLabelRadialPadding": 30}'
 

@@ -19,7 +19,7 @@
 #' @param surface.font.selected.color : Font color for surface labels while it is being moved
 #' @param surface.label.minimumDistance : Relative minimum distance between surface labels. Larger numbers, more minimum distance
 #' @param surface.label.radialPadding : Padding between the circle and the surface label
-#' @param footer character. Sets the footer of the chart, defaults to NULL. The footer is left-aligned.
+#' @param footer character. Sets the footer of the chart, defaults to NULL.
 #' @param footer.font.size integer. Font size of the chart footer.font.size, defaults to 11 pixcels.
 #' @param footer.font.family character. Font family of the chart footer.font.family, defaults to "sans-serif".
 #' @param footer.font.color An RGB character to set the color of the chart footer.font.color. Defaults to "#000000".

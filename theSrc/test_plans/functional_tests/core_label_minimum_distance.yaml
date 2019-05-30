@@ -1,17 +1,16 @@
 version: 1
-tests:
-  - title: vary link width
-    general_comments:
-      - 'Variables to test: [coreLabelMinimumLabelDistance].'
-    width: 500
-    height: 500
-    rowSize: 2
-    type: single_page_one_example_per_config
-    comments: []
-    data: data.labelling_tests.four-10-point-core-clusters
-    config:
-      - '{ "coreLabelMinimumLabelDistance": 10}'
-      - '{ "coreLabelMinimumLabelDistance": 15}'
-      - '{ "coreLabelMinimumLabelDistance": 20}'
-      - '{ "coreLabelMinimumLabelDistance": 30}'
+title: vary link width
+general_comments:
+  - 'Variables to test: [coreLabelMinimumLabelDistance].'
+width: 500
+height: 500
+rowSize: 2
+type: single_page_one_example_per_config
+comments: []
+data: data.labelling_tests.four-10-point-core-clusters
+config:
+  - '{ "coreLabelMinimumLabelDistance": 10}'
+  - '{ "coreLabelMinimumLabelDistance": 15}'
+  - '{ "coreLabelMinimumLabelDistance": 20}'
+  - '{ "coreLabelMinimumLabelDistance": 30}'
 

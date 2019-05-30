@@ -1,8 +1,7 @@
 version: 1
-tests:
-  - type: single_widget_single_page
-    general_comments:
-      - 'Variables to test: [surfaceLabelFontFamily, coreLabelFontFamily].'
-    width: 600
-    height: 400
-    data: 'data.functional_tests.minimal|{ "coreLabelFontFamily": "fantasy", "surfaceLabelFontFamily": "fantasy" }'
+type: single_widget_single_page
+general_comments:
+  - 'Variables to test: [surfaceLabelFontFamily, coreLabelFontFamily].'
+width: 600
+height: 400
+data: 'data.functional_tests.minimal|{ "coreLabelFontFamily": "fantasy", "surfaceLabelFontFamily": "fantasy" }'

@@ -37,7 +37,7 @@ moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
 
 \item{core.label.minimumDistance}{: Relative minimum distance between core labels. Larger numbers, more minimum distance}
 
-\item{footer}{character. Sets the footer of the chart, defaults to NULL. The footer is left-aligned.}
+\item{footer}{character. Sets the footer of the chart, defaults to NULL.}
 
 \item{footer.font.size}{integer. Font size of the chart footer.font.size, defaults to 11 pixcels.}
 

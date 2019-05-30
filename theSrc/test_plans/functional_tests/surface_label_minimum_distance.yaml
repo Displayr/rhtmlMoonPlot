@@ -1,23 +1,22 @@
 version: 1
-tests:
-  - title: vary link width
-    general_comments:
-      - 'Variables to test: [surfaceLabelMinimumLabelDistance].'
-    width: 500
-    height: 500
-    rowSize: 2
-    type: single_page_one_example_per_config
-    data: data.labelling_tests.four-4-point-surface-clusters
-    config:
-      - '{ "surfaceLabelMinimumLabelDistance": 5}'
-      - '{ "surfaceLabelMinimumLabelDistance": 10}'
-      - '{ "surfaceLabelMinimumLabelDistance": 20}'
-      - '{ "surfaceLabelMinimumLabelDistance": 30}'
-    comments:
-      - location: 2
-        text: surface links cross boundary
-        status: red
-      - location: 3
-        text: surface links cross boundary
-        status: red
+title: vary link width
+general_comments:
+  - 'Variables to test: [surfaceLabelMinimumLabelDistance].'
+width: 500
+height: 500
+rowSize: 2
+type: single_page_one_example_per_config
+data: data.labelling_tests.four-4-point-surface-clusters
+config:
+  - '{ "surfaceLabelMinimumLabelDistance": 5}'
+  - '{ "surfaceLabelMinimumLabelDistance": 10}'
+  - '{ "surfaceLabelMinimumLabelDistance": 20}'
+  - '{ "surfaceLabelMinimumLabelDistance": 30}'
+comments:
+  - location: 2
+    text: surface links cross boundary
+    status: red
+  - location: 3
+    text: surface links cross boundary
+    status: red
 
