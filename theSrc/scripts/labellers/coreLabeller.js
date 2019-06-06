@@ -1,5 +1,5 @@
 import labeler from './simulatedAnneallingLabellingAlgorithm'
-import {getLabelDimensionsUsingSvgApproximation} from '../labelUtils'
+import { getLabelDimensionsUsingSvgApproximation } from '../labelUtils'
 import _ from 'lodash'
 
 // TODO could use symbols here, objective is to avoid spelling errors, which is accomplished with current implementation + a decent IDE
@@ -28,7 +28,7 @@ const positionLabels = ({
     .map(label => {
       const x = (label.x * radius) + center.x
       const y = (-label.y * radius) + center.y
-      const {width, height} = getLabelDimensionsUsingSvgApproximation({
+      const { width, height } = getLabelDimensionsUsingSvgApproximation({
         parentContainer: svg,
         text: label.name,
         fontSize,
@@ -86,14 +86,14 @@ const getLabelAnchorPoint = (lab, anc, name, allTheAnchors) => {
 
   const placementOptions = {
     NONE: null,
-    BOTTOM_LEFT: {x: labelLeft,  y: lab.y},
-    BOTTOM_CENTER: {x: lab.x,      y: lab.y},
-    BOTTOM_RIGHT: {x: labelRight, y: lab.y},
-    TOP_LEFT: {x: labelLeft,  y: labelTop},
-    TOP_CENTER: {x: lab.x,      y: labelTop},
-    TOP_RIGHT: {x: labelRight, y: labelTop},
-    MIDDLE_LEFT: {x: labelLeft,  y: lab.y - (lab.height / 2)},
-    MIDDLE_RIGHT: {x: labelRight, y: lab.y - (lab.height / 2)}
+    BOTTOM_LEFT: { x: labelLeft,  y: lab.y },
+    BOTTOM_CENTER: { x: lab.x,      y: lab.y },
+    BOTTOM_RIGHT: { x: labelRight, y: lab.y },
+    TOP_LEFT: { x: labelLeft,  y: labelTop },
+    TOP_CENTER: { x: lab.x,      y: labelTop },
+    TOP_RIGHT: { x: labelRight, y: labelTop },
+    MIDDLE_LEFT: { x: labelLeft,  y: lab.y - (lab.height / 2) },
+    MIDDLE_RIGHT: { x: labelRight, y: lab.y - (lab.height / 2) }
   }
 
   const padding = 10

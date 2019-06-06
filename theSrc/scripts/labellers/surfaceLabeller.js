@@ -1,6 +1,6 @@
-import {polarFromCartesian, cartesiansFromPolars} from '../math/coord'
+import { polarFromCartesian, cartesiansFromPolars } from '../math/coord'
 import positionAlongLine from '../math/positionAlongLine'
-import {getLabelDimensionsUsingSvgApproximation} from '../labelUtils'
+import { getLabelDimensionsUsingSvgApproximation } from '../labelUtils'
 import _ from 'lodash'
 
 const positionLabels = ({
@@ -18,7 +18,7 @@ const positionLabels = ({
     .map(label => {
       const x = (label.x * radius) + center.x
       const y = (-label.y * radius) + center.y
-      const {width, height} = getLabelDimensionsUsingSvgApproximation({
+      const { width, height } = getLabelDimensionsUsingSvgApproximation({
         parentContainer: svg,
         text: label.name,
         fontSize: label.size * fontSize,
