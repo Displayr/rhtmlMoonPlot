@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import * as d3 from 'd3'
 import 'd3-transition'
-import {getLabelAnchorPoint} from '../labellers/coreLabeller'
+import { getLabelAnchorPoint } from '../labellers/coreLabeller'
 
 export class CoreLabels {
   constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius }) {
@@ -59,7 +59,7 @@ export class CoreLabels {
       .text(d => d.name)
       .call(this.setupDrag())
 
-    this.getLabels().forEach(({id}) => this.adjustLabelLength(id))
+    this.getLabels().forEach(({ id }) => this.adjustLabelLength(id))
   }
 
   // TODO needs a cleanup:

@@ -133,8 +133,8 @@ class OuterPlot {
     const moonDimensions = this.layout.getCellBounds(CellNames.PLOT)
     const plotDimensions = this.containerDimensions()
     const radius = (newRadius) || Math.min(moonDimensions.width, moonDimensions.height) / 3 // TODO move the 3 to config
-    const absoluteMoonCenter = {x: moonDimensions.left + moonDimensions.width / 2, y: moonDimensions.top + moonDimensions.height / 2}
-    const relativeMoonCenter = {x: moonDimensions.width / 2, y: moonDimensions.height / 2}
+    const absoluteMoonCenter = { x: moonDimensions.left + moonDimensions.width / 2, y: moonDimensions.top + moonDimensions.height / 2 }
+    const relativeMoonCenter = { x: moonDimensions.width / 2, y: moonDimensions.height / 2 }
     const sourceData = buildLabelObjectsFromConfig(this.inputData)
 
     const coreLabels = CoreLabeller.positionLabels({
@@ -171,7 +171,7 @@ class OuterPlot {
 
   draw () {
     this.clearPlot()
-    const {width, height} = this.containerDimensions()
+    const { width, height } = this.containerDimensions()
 
     this.svg
       .attr('width', width)
@@ -189,7 +189,7 @@ class OuterPlot {
     const innerPadding = 5
     const outerPadding = 0
 
-    const {width, height} = this.containerDimensions()
+    const { width, height } = this.containerDimensions()
     this.layout = new Layout(width, height, innerPadding, outerPadding)
 
     this.components[CellNames.PLOT] = new MoonPlot({

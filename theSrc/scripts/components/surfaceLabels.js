@@ -32,7 +32,7 @@ export class SurfaceLabels {
       .attr('data-label', d =>  d.name)
       .attr('x', d => d.label.x)
       .attr('y', d => d.label.y)
-      .attr('transform', d => buildRotationTransform({circleCenter: this.center, rotationCenter: d.label}))
+      .attr('transform', d => buildRotationTransform({ circleCenter: this.center, rotationCenter: d.label }))
       .attr('font-size', d => (d.size * this.fontSize).toString() + 'px')
       .style('font-family', this.fontFamily)
       .attr('text-anchor', d => (d.label.x < this.center.x) ? 'end' : 'start')
@@ -41,7 +41,7 @@ export class SurfaceLabels {
       .text(d => d.name)
       .call(this.setupDrag())
 
-    this.getLabels().forEach(({id}) => this.adjustLabelLength(id))
+    this.getLabels().forEach(({ id }) => this.adjustLabelLength(id))
   }
 
   // TODO needs a cleanup:
@@ -61,7 +61,7 @@ export class SurfaceLabels {
         return false
       }
 
-      const {width: plotWidth, height: plotHeight} = this
+      const { width: plotWidth, height: plotHeight } = this
       const box = label.getBBox()
       const ctm = label.getCTM()
       const transformedCoords = getScreenCoords(box.x, box.y, ctm)
@@ -146,7 +146,7 @@ export class SurfaceLabels {
 
 module.exports = SurfaceLabels
 
-const buildRotationTransform = ({circleCenter, rotationCenter}) => {
+const buildRotationTransform = ({ circleCenter, rotationCenter }) => {
   const pos = x => (x >= 0)
   const deltaX = rotationCenter.x - circleCenter.x
   const deltaY = rotationCenter.y - circleCenter.y

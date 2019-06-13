@@ -1,19 +1,18 @@
 version: 1
-tests:
-  - title: vary outer label size
-    general_comments:
-      - 'Variables to test: [surfaceLabelFontBaseSize].'
-    width: 500
-    height: 500
-    rowSize: 3
-    type: single_page_one_example_per_config
-    comments: []
-    data: data.functional_tests.minimal
-    config:
-      - '{ "surfaceLabelFontBaseSize": 4}'
-      - '{ "surfaceLabelFontBaseSize": 8}'
-      - '{ "surfaceLabelFontBaseSize": 12}'
-      - '{ "surfaceLabelFontBaseSize": 16}'
-      - '{ "surfaceLabelFontBaseSize": 20}'
-      - '{ "surfaceLabelFontBaseSize": 24}'
+title: vary outer label size
+general_comments:
+  - 'Variables to test: [surfaceLabelFontBaseSize].'
+width: 500
+height: 500
+rowSize: 3
+type: single_page_one_example_per_config
+comments: []
+data: data.functional_tests.minimal
+config:
+  - '{ "surfaceLabelFontBaseSize": 4}'
+  - '{ "surfaceLabelFontBaseSize": 8}'
+  - '{ "surfaceLabelFontBaseSize": 12}'
+  - '{ "surfaceLabelFontBaseSize": 16}'
+  - '{ "surfaceLabelFontBaseSize": 20}'
+  - '{ "surfaceLabelFontBaseSize": 24}'
 

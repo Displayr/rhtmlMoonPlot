@@ -9,9 +9,9 @@
   },
   "devDependencies": {
     "eslint-plugin-import": "2.14.0",
-    "gulp": "3.9.1",
+    "gulp": "^4.0.2",
     "husky": "0.13.3",
-    "mustache": "^3.0.1"
+    "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#4.0.0"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
@@ -20,8 +20,6 @@
     "jquery": "2.2.2",
     "lodash": "4.6.1",
     "loglevel": "^1.6.1",
-    "random-js": "1.0.8",
-    "recursive-readdir": "^2.2.2",
-    "rhtmlBuildUtils": "Displayr/rhtmlBuildUtils#3.0.11"
+    "random-js": "1.0.8"
   }
 }

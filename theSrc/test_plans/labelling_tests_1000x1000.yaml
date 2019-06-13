@@ -1,14 +1,13 @@
 version: 1
-tests:
-  - data_directory: "data/labelling_tests"
-    width: 500
-    height: 500
-    type: for_each_data_in_directory
-    use_config_as_title: true
-    comments:
-      - location: four-10-point-surface-clusters
-        text: surface labeller fubar
-        status: red
-      - location: two-25-point-surface-clusters
-        text: surface labeller fubar
-        status: red
+data_directory: "data/labelling_tests"
+width: 500
+height: 500
+type: for_each_data_in_directory
+use_config_as_title: true
+comments:
+  - location: four-10-point-surface-clusters
+    text: surface labeller fubar
+    status: red
+  - location: two-25-point-surface-clusters
+    text: surface labeller fubar
+    status: red
