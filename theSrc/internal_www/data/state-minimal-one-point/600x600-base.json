@@ -1,0 +1,81 @@
+{
+  "center": {
+    "x": 300,
+    "y": 300
+  },
+  "circleRadius": 200,
+  "configInvariants": {
+    "coreLabelFontSize": 14,
+    "surfaceLabelFontBaseSize": 14,
+    "surfaceLabelMinimumLabelDistance": 15,
+    "surfaceLabelRadialPadding": 3
+  },
+  "plot": {
+    "coreLabels": [
+      {
+        "anchor": {
+          "r": 2,
+          "x": 428.564869306645,
+          "y": 171.435130693355
+        },
+        "height": 16,
+        "id": 0,
+        "label": {
+          "height": 16,
+          "width": 17.890625,
+          "x": 428.6374061176312,
+          "y": 201.4381976128629
+        },
+        "labelLineConnector": {
+          "x": 428.6374061176312,
+          "y": 185.4381976128629
+        },
+        "name": "C1",
+        "truncatedName": "C1",
+        "width": 17.890625
+      }
+    ],
+    "surfaceLabels": [
+      {
+        "anchor": {
+          "x": 158.57864376269052,
+          "y": 441.4213562373095
+        },
+        "height": 24,
+        "id": 0,
+        "label": {
+          "x": 156.45732341913086,
+          "y": 443.54267658086917
+        },
+        "name": "S1",
+        "size": 1.5,
+        "truncatedName": "S1",
+        "width": 25.671875
+      }
+    ]
+  },
+  "plotSize": {
+    "height": 600,
+    "width": 600
+  },
+  "sourceData": {
+    "coreLabels": [
+      {
+        "id": 0,
+        "name": "C1",
+        "x": 0.642824346533225,
+        "y": 0.642824346533225
+      }
+    ],
+    "surfaceLabels": [
+      {
+        "id": 0,
+        "name": "S1",
+        "size": 1.5,
+        "x": -0.7071067811865475,
+        "y": -0.7071067811865476
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,19 @@
+version: 1
+tests:
+  - title: vary outer label size
+    general_comments:
+      - 'Variables to test: [coreLabelFontSize].'
+    width: 500
+    height: 500
+    rowSize: 3
+    type: single_page_one_example_per_config
+    comments: []
+    data: data.functional_tests.minimal
+    config:
+      - '{ "coreLabelFontSize": 4}'
+      - '{ "coreLabelFontSize": 8}'
+      - '{ "coreLabelFontSize": 12}'
+      - '{ "coreLabelFontSize": 16}'
+      - '{ "coreLabelFontSize": 20}'
+      - '{ "coreLabelFontSize": 24}'
+

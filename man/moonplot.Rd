@@ -8,16 +8,82 @@ https://github.com/Displayr/rhtmlMoonPlot
 }
 \usage{
 moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
-  height = NULL)
+  height = NULL, core.font.family = "sans-serif", core.font.size = 14,
+  core.font.color = "#333333", core.font.selected.color = "#0000dd",
+  core.label.minimumDistance = 7, footer = NULL, footer.font.size = 11,
+  footer.font.family = "sans-serif", footer.font.color = "#000000",
+  subtitle = NULL, subtitle.font.size = 18,
+  subtitle.font.family = "sans-serif", subtitle.font.color = "#000000",
+  title = NULL, title.font.size = 24, title.font.family = "sans-serif",
+  title.font.color = "#000000", surface.font.family = "sans-serif",
+  surface.font.baseSize = 14, surface.font.color = "#333333",
+  surface.font.selected.color = "#0000dd",
+  surface.label.minimumDistance = 15, surface.label.radialPadding = 3,
+  circle.width = 1, circle.color = "#042a4b", circle.cross.color = "grey",
+  circle.drag.area.width = 8, link.color = "grey", link.width = 1)
 }
 \arguments{
-\item{coreNodes}{Coordinates of nodes in the center of the moon}
+\item{coreNodes}{: Coordinates of nodes in the center of the moon (assumes coreNodes is transformed output of MASS::corresp then $rscore[, 1:2])}
 
-\item{surfaceNodes}{Coordinates of nodes outside of the moon}
+\item{surfaceNodes}{: Coordinates of nodes outside of the moon (assumes surfaceNodes is transformed output of MASS::corresp then $cscore[, 1:2])}
 
-\item{width}{Width of the viewer window}
+\item{core.font.family}{: Font family for core labels}
 
-\item{height}{Height of viewer window}
+\item{core.font.size}{: Font size for core labels}
+
+\item{core.font.color}{: Font color for core labels}
+
+\item{core.font.selected.color}{: Font color for core labels while it is being moved}
+
+\item{core.label.minimumDistance}{: Relative minimum distance between core labels. Larger numbers, more minimum distance}
+
+\item{footer}{character. Sets the footer of the chart, defaults to NULL. The footer is left-aligned.}
+
+\item{footer.font.size}{integer. Font size of the chart footer.font.size, defaults to 11 pixcels.}
+
+\item{footer.font.family}{character. Font family of the chart footer.font.family, defaults to "sans-serif".}
+
+\item{footer.font.color}{An RGB character to set the color of the chart footer.font.color. Defaults to "#000000".}
+
+\item{subtitle}{character. Sets the subtitle of the chart, defaults to NULL. The subtitle is centred.}
+
+\item{subtitle.font.size}{integer. Font size of the chart subtitle, defaults to 18 pixcels.}
+
+\item{subtitle.font.family}{character. Font family of the chart subtitle, defaults to "sans-serif".}
+
+\item{subtitle.font.color}{An RGB character to set the color of the chart subtitle. Defaults to "#000000".}
+
+\item{title}{character. Sets the title of the chart, defaults to NULL. The title is centred.}
+
+\item{title.font.size}{integer. Font size of the chart title, defaults to 24 pixcels.}
+
+\item{title.font.family}{character. Font family of the chart title, defaults to "sans-serif".}
+
+\item{title.font.color}{An RGB character to set the color of the chart title. Defaults to "#000000".}
+
+\item{surface.font.family}{: Font family for surface labels}
+
+\item{surface.font.baseSize}{: Base font size for surface labels. Actual font size is a multiplier applied to this base.}
+
+\item{surface.font.color}{: Font color for surface labels}
+
+\item{surface.font.selected.color}{: Font color for surface labels while it is being moved}
+
+\item{surface.label.minimumDistance}{: Relative minimum distance between surface labels. Larger numbers, more minimum distance}
+
+\item{surface.label.radialPadding}{: Padding between the circle and the surface label}
+
+\item{circle.width}{: The width of the circle circumference line}
+
+\item{circle.color}{: The color of the circle circumference line}
+
+\item{circle.cross.color}{: The color of the crosshairs that mark the center of the circle}
+
+\item{circle.drag.area.width}{: How close to the circle do you need to click to start drag. Higher means larger click area, easier to click}
+
+\item{link.color}{: The color of the label links}
+
+\item{link.width}{: The width of the label links}
 }
 \description{
 Uses correspondence analysis to create a Moon Plot

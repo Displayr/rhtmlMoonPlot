@@ -1,0 +1,16 @@
+{
+  "coreNodes": [],
+  "coreLabels": [],
+  "surfaceNodes": [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1]
+  ],
+  "surfaceLabels": [
+    "left",
+    "right",
+    "bottom",
+    "top"
+  ]
+}

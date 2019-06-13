@@ -1,0 +1,13 @@
+{
+  "widgetEntryPoint": "theSrc/scripts/rhtmlMoonPlot.js",
+  "widgetFactory": "theSrc/scripts/rhtmlMoonPlot.factory.js",
+  "widgetName": "rhtmlMoonPlot",
+  "visualRegressionSuite": {},
+  "internalWebSettings": {
+    "includeDimensionsOnWidgetDiv": true,
+    "default_border": false,
+    "isReadySelector": "svg.svgContent",
+    "css": [],
+    "singleWidgetSnapshotSelector": "#widget-container"
+  }
+}
