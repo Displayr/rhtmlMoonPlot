@@ -56,6 +56,8 @@ class MoonPlot extends BaseComponent {
       circleDragAreaWidth: config.circleDragAreaWidth,
       center,
       radius,
+      width: bounds.width,
+      height: bounds.height,
       circleRadiusChanged: plotState.circleRadiusChanged
     })
 
