@@ -50,6 +50,7 @@ export class SurfaceLabels {
   // * truncate code probably takes more than it needs as ... is shorter than most 3 letter combos
   // * unecessary number d3.select(this) ?
   adjustLabelLength (id) {
+    // TODO duplicated between surfaceLabels and coreLabels
     const detectViewportCollision = (label) => {
       const getScreenCoords = function (x, y, ctm) {
         const xn = ctm.e + (x * ctm.a) + (y * ctm.c)

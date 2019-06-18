@@ -4,8 +4,8 @@ import 'd3-transition'
 import { getLabelAnchorPoint } from '../labellers/coreLabeller'
 
 export class CoreLabels {
-  constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius }) {
-    _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius })
+  constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius, width, height }) {
+    _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius, width, height })
   }
 
   draw () {
@@ -63,25 +63,43 @@ export class CoreLabels {
   }
 
   // TODO needs a cleanup:
-  // * readability of detectCoreLabelBoundaryCollision
+  // * readability of detectViewportCollision
   // * detectCoreLabelBoundaryCollision uses getBBox, which typically over reports box size
   // * truncate code probably takes more than it needs as ... is shorter than most 3 letter combos
   // * unecessary number d3.select(this) ?
   adjustLabelLength (id) {
     const { radius, center } = this
-    const detectCoreLabelBoundaryCollision = (label) => {
-      const labelBb = label.getBBox()
-      const yRightB = labelBb.y
-      const yRightT = labelBb.y + (labelBb.height / 2)
-      const xRight = labelBb.x + labelBb.width
 
-      // Calculate circle boundary using parametric eq for circle
-      const angleB = Math.asin((yRightB - center.y) / radius)
-      const angleT = Math.asin((yRightT - center.y) / radius)
-      const circleBoundaryRightB = center.x + (radius * Math.cos(angleB))
-      const circleBoundaryRightT = center.x + (radius * Math.cos(angleT))
+    // TODO duplicated between surfaceLabels and coreLabels
+    const detectViewportCollision = (label) => {
+      const getScreenCoords = function (x, y, ctm) {
+        const xn = ctm.e + (x * ctm.a) + (y * ctm.c)
+        const yn = ctm.f + (x * ctm.b) + (y * ctm.d)
+        return { x: xn, y: yn }
+      }
 
-      return (circleBoundaryRightB < xRight) || (circleBoundaryRightT < xRight)
+      if (d3.select(label).node().textContent === '') {
+        return false
+      }
+
+      const { width: plotWidth, height: plotHeight } = this
+      const box = label.getBBox()
+      const ctm = label.getCTM()
+      const transformedCoords = getScreenCoords(box.x, box.y, ctm)
+      box.right = transformedCoords.x + box.width
+      box.left = transformedCoords.x
+      box.top = transformedCoords.y
+      box.bottom = transformedCoords.y + box.height
+
+      const collideL = box.left < 0
+      const collideR = box.right > plotWidth
+      let collideT = false
+      let collideB = false
+      if (box.x < (plotWidth / 2)) { // only need to condense text on left half
+        collideT = box.top < 0
+        collideB = box.bottom > plotHeight
+      }
+      return collideL || collideR || collideT || collideB
     }
 
     const label = this.parentContainer
@@ -93,7 +111,7 @@ export class CoreLabels {
 
     let text = d3.select(label).node().textContent
     let truncated = false
-    while (detectCoreLabelBoundaryCollision(label) && text.length > 0) {
+    while (detectViewportCollision(label) && text.length > 0) {
       truncated = true
       text = d3.select(label).node().textContent
       d3.select(label).text(text.slice(0, -1))
