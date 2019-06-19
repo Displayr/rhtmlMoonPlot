@@ -1,10 +1,12 @@
 import * as d3 from 'd3'
 import { toDegrees } from '../math/coord'
 import _ from 'lodash'
+import getScreenCoords from '../math/getScreenCoords'
+import detectViewportCollision from '../math/detectViewportCollision'
 
 export class SurfaceLabels {
-  constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, center, width, height, getLabels, moveLabel }) {
-    _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, center, width, height, getLabels, moveLabel })
+  constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, center, plotWidth, plotHeight, getLabels, moveLabel }) {
+    _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, center, plotWidth, plotHeight, getLabels, moveLabel })
   }
 
   draw () {
@@ -45,43 +47,10 @@ export class SurfaceLabels {
   }
 
   // TODO needs a cleanup:
-  // * readability of detectViewportCollision and getScreenCoords
   // * use of getBBox, which typically over reports box size
   // * truncate code probably takes more than it needs as ... is shorter than most 3 letter combos
   // * unecessary number d3.select(this) ?
   adjustLabelLength (id) {
-    // TODO duplicated between surfaceLabels and coreLabels
-    const detectViewportCollision = (label) => {
-      const getScreenCoords = function (x, y, ctm) {
-        const xn = ctm.e + (x * ctm.a) + (y * ctm.c)
-        const yn = ctm.f + (x * ctm.b) + (y * ctm.d)
-        return { x: xn, y: yn }
-      }
-
-      if (d3.select(label).node().textContent === '') {
-        return false
-      }
-
-      const { width: plotWidth, height: plotHeight } = this
-      const box = label.getBBox()
-      const ctm = label.getCTM()
-      const transformedCoords = getScreenCoords(box.x, box.y, ctm)
-      box.right = transformedCoords.x + box.width
-      box.left = transformedCoords.x
-      box.top = transformedCoords.y
-      box.bottom = transformedCoords.y + box.height
-
-      const collideL = box.left < 0
-      const collideR = box.right > plotWidth
-      let collideT = false
-      let collideB = false
-      if (box.x < (plotWidth / 2)) { // only need to condense text on left half
-        collideT = box.top < 0
-        collideB = box.bottom > plotHeight
-      }
-      return collideL || collideR || collideT || collideB
-    }
-
     const label = this.parentContainer
        .select(`.surface-label[data-id='${id}']`)
        .node()
@@ -91,7 +60,8 @@ export class SurfaceLabels {
 
     let text = d3.select(label).node().textContent
     let truncated = false
-    while (detectViewportCollision(label) && text.length > 0) {
+    const { plotWidth, plotHeight } = this
+    while (detectViewportCollision({label, plotWidth, plotHeight}) && text.length > 0) {
       truncated = true
       text = d3.select(label).node().textContent
       d3.select(label).text(text.slice(0, -1))
@@ -106,25 +76,53 @@ export class SurfaceLabels {
   }
 
   setupDrag () {
-    const { fontColor, fontSelectedColor, moveLabel, parentContainer } = this
+    const { fontColor, fontSelectedColor, moveLabel, parentContainer, plotWidth, plotHeight, center } = this
     const adjustLabelLength = this.adjustLabelLength.bind(this)
 
     const dragStart = function (d) {
       parentContainer.selectAll(`.surface-link[data-id='${d.id}']`).attr('opacity', 0)
-      d3.select(this).style('fill', fontSelectedColor)
+
+      const label = d3.select(this)
+      label.style('fill', fontSelectedColor)
     }
 
-    // src : https://groups.google.com/forum/#!topic/d3-js/2usoXlTKY_8
-    // NB we interchange d3.mouse and d3.event here because mouse gives relative, and event gives absolute
-    // (i am not 100% on the mechanics of this but it works)
     const dragMove = function (d) {
-      d3.select(this)
-        .attr('x', d3.mouse(this)[0])
-        .attr('y', d3.mouse(this)[1])
+
+      const xInBounds = (d3.event.x >= 0 && d3.event.x <= plotWidth)
+      const yInBounds = (d3.event.y >= 0 && d3.event.y <= plotHeight)
+
+      const label = d3.select(this)
+      const labelNode = label.node()
+      const box = labelNode.getBBox()
+      const ctm = labelNode.getCTM()
+      const transformedCoords = getScreenCoords(box, ctm)
+
+      // NB this does not account for the switch of text-align when anchor.x < center.x
+      const furthestLabelPointFromCenter = {
+        x: transformedCoords.x + (box.width * 1.1 * ctm.a) + (box.height * 1.1 * ctm.c),
+        y: transformedCoords.y + (box.width * 1.1 * ctm.b) + (box.height * 1.1 * ctm.d),
+      }
+
+      const remainingSpaceToLeft = furthestLabelPointFromCenter.x
+      const remainingSpaceToRight = plotWidth - furthestLabelPointFromCenter.x
+      const remainingSpaceToTop = furthestLabelPointFromCenter.y
+      const remainingSpaceToBottom = plotHeight - furthestLabelPointFromCenter.y
+
+      if (xInBounds && remainingSpaceToLeft > 0 && remainingSpaceToRight > 0) { d.label.x = d3.event.x }
+      if (yInBounds && remainingSpaceToTop > 0 && remainingSpaceToBottom > 0) { d.label.y = d3.event.y }
+
+      // NB allow us to recover from weird edge cases where the previous reading was a lie !
+      if (remainingSpaceToRight <= 0) { d.label.x = Math.min(d.label.x, d3.event.x) }
+      if (remainingSpaceToLeft <= 0) { d.label.x = Math.max(d.label.x, d3.event.x) }
+      if (remainingSpaceToTop <= 0) { d.label.y = Math.max(d.label.y, d3.event.y) }
+      if (remainingSpaceToBottom <= 0) { d.label.y = Math.min(d.label.y, d3.event.y) }
+
+      label
+        .attr('x', d.label.x)
+        .attr('y', d.label.y)
+        .attr('transform', d => buildRotationTransform({ circleCenter: center, rotationCenter: d.label }))
         .attr('cursor', 'all-scroll')
 
-      d.label.x = d3.event.x
-      d.label.y = d3.event.y
     }
 
     const dragEnd = function (d) {

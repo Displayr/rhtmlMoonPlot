@@ -29,8 +29,8 @@ class MoonPlot extends BaseComponent {
       linkColor: config.linkColor,
       center,
       radius,
-      width: bounds.width,
-      height: bounds.height,
+      plotWidth: bounds.width,
+      plotHeight: bounds.height,
       getLabels: plotState.getCoreLabels,
       moveLabel: plotState.moveCoreLabel
     })
@@ -44,8 +44,8 @@ class MoonPlot extends BaseComponent {
       linkWidth: config.linkWidth,
       linkColor: config.linkColor,
       center,
-      width: bounds.width,
-      height: bounds.height,
+      plotWidth: bounds.width,
+      plotHeight: bounds.height,
       getLabels: plotState.getSurfaceLabels,
       moveLabel: plotState.moveSurfaceLabel
     })

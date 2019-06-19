@@ -2,10 +2,12 @@ import _ from 'lodash'
 import * as d3 from 'd3'
 import 'd3-transition'
 import { getLabelAnchorPoint } from '../labellers/coreLabeller'
+import getScreenCoords from '../math/getScreenCoords'
+import detectViewportCollision from '../math/detectViewportCollision'
 
 export class CoreLabels {
-  constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius, width, height }) {
-    _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius, width, height })
+  constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius, plotWidth, plotHeight }) {
+    _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius, plotWidth, plotHeight })
   }
 
   draw () {
@@ -68,40 +70,6 @@ export class CoreLabels {
   // * truncate code probably takes more than it needs as ... is shorter than most 3 letter combos
   // * unecessary number d3.select(this) ?
   adjustLabelLength (id) {
-    const { radius, center } = this
-
-    // TODO duplicated between surfaceLabels and coreLabels
-    const detectViewportCollision = (label) => {
-      const getScreenCoords = function (x, y, ctm) {
-        const xn = ctm.e + (x * ctm.a) + (y * ctm.c)
-        const yn = ctm.f + (x * ctm.b) + (y * ctm.d)
-        return { x: xn, y: yn }
-      }
-
-      if (d3.select(label).node().textContent === '') {
-        return false
-      }
-
-      const { width: plotWidth, height: plotHeight } = this
-      const box = label.getBBox()
-      const ctm = label.getCTM()
-      const transformedCoords = getScreenCoords(box.x, box.y, ctm)
-      box.right = transformedCoords.x + box.width
-      box.left = transformedCoords.x
-      box.top = transformedCoords.y
-      box.bottom = transformedCoords.y + box.height
-
-      const collideL = box.left < 0
-      const collideR = box.right > plotWidth
-      let collideT = false
-      let collideB = false
-      if (box.x < (plotWidth / 2)) { // only need to condense text on left half
-        collideT = box.top < 0
-        collideB = box.bottom > plotHeight
-      }
-      return collideL || collideR || collideT || collideB
-    }
-
     const label = this.parentContainer
       .select(`.core-label[data-id='${id}']`)
       .node()
@@ -111,7 +79,8 @@ export class CoreLabels {
 
     let text = d3.select(label).node().textContent
     let truncated = false
-    while (detectViewportCollision(label) && text.length > 0) {
+    const { plotWidth, plotHeight } = this
+    while (detectViewportCollision({label, plotWidth, plotHeight}) && text.length > 0) {
       truncated = true
       text = d3.select(label).node().textContent
       d3.select(label).text(text.slice(0, -1))
@@ -126,22 +95,60 @@ export class CoreLabels {
   }
 
   setupDrag () {
-    const { fontColor, fontSelectedColor, getLabels, moveLabel, parentContainer } = this
+    const { fontColor, fontSelectedColor, getLabels, moveLabel, parentContainer, plotWidth, plotHeight } = this
     const adjustLabelLength = this.adjustLabelLength.bind(this)
+
+    let mouseOffsetRelativeToLabelAnchor = { x: 0, y: 0 }
+    let distanceFromMouseToLabelEdge = { right: 0, left: 0, top: 0, bottom: 0 }
+
+    const getNewLabelAnchor = (mouse) => {
+      const remainingSpaceToLeft = mouse.x - distanceFromMouseToLabelEdge.left
+      const remainingSpaceToRight = plotWidth - (mouse.x + distanceFromMouseToLabelEdge.right)
+      const remainingSpaceToTop = mouse.y - distanceFromMouseToLabelEdge.top
+      const remainingSpaceToBottom = plotHeight - (mouse.y + distanceFromMouseToLabelEdge.bottom)
+
+      const newAnchor = {
+        x: mouse.x - mouseOffsetRelativeToLabelAnchor.x,
+        y: mouse.y - mouseOffsetRelativeToLabelAnchor.y
+      }
+
+      if (remainingSpaceToLeft < 0) { newAnchor.x += Math.abs(remainingSpaceToLeft) }
+      if (remainingSpaceToRight < 0) { newAnchor.x -= Math.abs(remainingSpaceToRight) }
+      if (remainingSpaceToTop < 0) { newAnchor.y += Math.abs(remainingSpaceToTop) }
+      if (remainingSpaceToBottom < 0) { newAnchor.y -= Math.abs(remainingSpaceToBottom) }
+
+      return newAnchor
+    }
 
     const dragStart = function (d) {
       parentContainer.selectAll(`.core-link[data-id='${d.id}']`).attr('opacity', 0)
-      d3.select(this).style('fill', fontSelectedColor)
+
+      const label = d3.select(this)
+      label.style('fill', fontSelectedColor)
+
+      const labelNode = d3.select(this).node()
+      const box = labelNode.getBBox()
+      const ctm = labelNode.getCTM()
+      const transformedCoords = getScreenCoords(box, ctm)
+
+      distanceFromMouseToLabelEdge.left = d3.event.x - transformedCoords.x
+      distanceFromMouseToLabelEdge.right = box.width - distanceFromMouseToLabelEdge.left
+      distanceFromMouseToLabelEdge.top = d3.event.y - transformedCoords.y
+      distanceFromMouseToLabelEdge.bottom = box.height - distanceFromMouseToLabelEdge.top
+      mouseOffsetRelativeToLabelAnchor.x = d3.event.x - (transformedCoords.x + box.width / 2)
+      mouseOffsetRelativeToLabelAnchor.y = d3.event.y - (transformedCoords.y + box.height / 2)
     }
 
     const dragMove = function (d) {
+      const newAnchor = getNewLabelAnchor({ x: d3.event.x, y: d3.event.y})
+
       d3.select(this)
-        .attr('x', d3.event.x)
-        .attr('y', d3.event.y)
+        .attr('x', newAnchor.x)
+        .attr('y', newAnchor.y)
         .attr('cursor', 'all-scroll')
 
-      d.label.x = d3.event.x
-      d.label.y = d3.event.y
+      d.label.x = newAnchor.x
+      d.label.y = newAnchor.y
     }
 
     const dragEnd = function (d) {
