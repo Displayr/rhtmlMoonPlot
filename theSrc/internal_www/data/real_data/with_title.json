@@ -1,0 +1,14 @@
+{
+  "title": "A tale of two sodas",
+  "titleFontSize": 24,
+  "titleFontFamily": "fantasy",
+  "titleFontColor": "black",
+  "subtitle": "I have trouble choosing colors",
+  "subtitleFontSize": 16,
+  "subtitleFontFamily": "fantasy",
+  "subtitleFontColor": "green",
+  "footer": "Moonplots are round and have lots of labels",
+  "footerFontSize": 14,
+  "footerFontFamily": "fantasy",
+  "footerFontColor": "blue"
+}

@@ -65,7 +65,6 @@ class PlotState {
   }
 
   circleRadiusChanged (radius) {
-    console.log(`circleRadiusChanged called with`, radius)
     // TODO this sequence should be in outerPlot.reset()
     this.plotReference.clearPlot()
     this.plotReference.initialiseComponents()
