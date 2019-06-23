@@ -11,6 +11,7 @@ import SurfaceLabeller from './labellers/surfaceLabeller'
 
 import MoonPlot from './components/moonPlot'
 import Title from './components/title'
+import ResetButton from './components/resetButton'
 
 // If any of these config values change, we must reset state
 // NB we may need to remove font size from this list
@@ -181,6 +182,9 @@ class OuterPlot {
     if (this.layout.enabled(CellNames.SUBTITLE)) { this.components[CellNames.SUBTITLE].draw(this.layout.getCellBounds(CellNames.SUBTITLE)) }
     if (this.layout.enabled(CellNames.FOOTER)) { this.components[CellNames.FOOTER].draw(this.layout.getCellBounds(CellNames.FOOTER)) }
     this.components[CellNames.PLOT].draw(this.layout.getCellBounds(CellNames.PLOT))
+
+    // reset button managed outside of layout, it is fixed at bottom right
+    this.components[CellNames.RESET].draw()
   }
 
   initialiseComponents () {
@@ -253,6 +257,17 @@ class OuterPlot {
       this.layout.enable(CellNames.FOOTER)
       this.layout.setPreferredDimensions(CellNames.FOOTER, dimensions)
     }
+
+    this.components[CellNames.RESET] = new ResetButton({
+      parentContainer: this.svg,
+      fontFamily: this.config.titleFontFamily,
+      plotWidth: width,
+      plotHeight: height,
+      onReset: () => {
+        this.resetState()
+        this.draw()
+      }
+    })
 
     this.layout.allComponentsRegistered()
   }

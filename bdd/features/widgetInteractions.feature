@@ -5,7 +5,7 @@ Feature: State Interactions
 
   Some config changes, all data changes, circle resizes, and widget resizes cause state to be reset
 
-  @applitools @state @foo
+  @applitools @state
   Scenario: A New widget correctly generates and saves state
     Given I am viewing "data.functional_tests.minimal-one-point" with dimensions 500x500
     Then the "minimal-one-point-500x500-base" snapshot matches the baseline

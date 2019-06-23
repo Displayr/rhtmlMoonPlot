@@ -6,7 +6,8 @@ const cells = {
   TITLE: 'TITLE',
   SUBTITLE: 'SUBTITLE',
   FOOTER: 'FOOTER',
-  PLOT: 'PLOT'
+  PLOT: 'PLOT',
+  RESET: 'RESET'
 }
 
 const LayoutColumns = [
