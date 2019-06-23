@@ -80,7 +80,7 @@ export class CoreLabels {
     let text = d3.select(label).node().textContent
     let truncated = false
     const { plotWidth, plotHeight } = this
-    while (detectViewportCollision({label, plotWidth, plotHeight}) && text.length > 0) {
+    while (detectViewportCollision({ label, plotWidth, plotHeight }) && text.length > 0) {
       truncated = true
       text = d3.select(label).node().textContent
       d3.select(label).text(text.slice(0, -1))
@@ -140,7 +140,7 @@ export class CoreLabels {
     }
 
     const dragMove = function (d) {
-      const newAnchor = getNewLabelAnchor({ x: d3.event.x, y: d3.event.y})
+      const newAnchor = getNewLabelAnchor({ x: d3.event.x, y: d3.event.y })
 
       d3.select(this)
         .attr('x', newAnchor.x)

@@ -61,7 +61,7 @@ export class SurfaceLabels {
     let text = d3.select(label).node().textContent
     let truncated = false
     const { plotWidth, plotHeight } = this
-    while (detectViewportCollision({label, plotWidth, plotHeight}) && text.length > 0) {
+    while (detectViewportCollision({ label, plotWidth, plotHeight }) && text.length > 0) {
       truncated = true
       text = d3.select(label).node().textContent
       d3.select(label).text(text.slice(0, -1))
@@ -87,7 +87,6 @@ export class SurfaceLabels {
     }
 
     const dragMove = function (d) {
-
       const xInBounds = (d3.event.x >= 0 && d3.event.x <= plotWidth)
       const yInBounds = (d3.event.y >= 0 && d3.event.y <= plotHeight)
 
@@ -100,7 +99,7 @@ export class SurfaceLabels {
       // NB this does not account for the switch of text-align when anchor.x < center.x
       const furthestLabelPointFromCenter = {
         x: transformedCoords.x + (box.width * 1.1 * ctm.a) + (box.height * 1.1 * ctm.c),
-        y: transformedCoords.y + (box.width * 1.1 * ctm.b) + (box.height * 1.1 * ctm.d),
+        y: transformedCoords.y + (box.width * 1.1 * ctm.b) + (box.height * 1.1 * ctm.d)
       }
 
       const remainingSpaceToLeft = furthestLabelPointFromCenter.x
@@ -122,7 +121,6 @@ export class SurfaceLabels {
         .attr('y', d.label.y)
         .attr('transform', d => buildRotationTransform({ circleCenter: center, rotationCenter: d.label }))
         .attr('cursor', 'all-scroll')
-
     }
 
     const dragEnd = function (d) {

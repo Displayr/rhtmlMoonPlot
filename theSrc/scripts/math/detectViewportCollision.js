@@ -1,6 +1,6 @@
 import getScreenCoords from './getScreenCoords'
 
-module.exports = ({label, plotWidth, plotHeight}) => {
+module.exports = ({ label, plotWidth, plotHeight }) => {
   if (label.textContent === '') {
     return false
   }

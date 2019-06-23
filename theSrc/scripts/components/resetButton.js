@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash'
 
 class ResetButton {
   constructor ({ parentContainer, fontFamily, plotWidth, plotHeight, onReset }) {
