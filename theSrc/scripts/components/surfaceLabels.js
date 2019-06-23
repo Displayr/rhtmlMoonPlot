@@ -97,10 +97,14 @@ export class SurfaceLabels {
       const transformedCoords = getScreenCoords(box, ctm)
 
       // NB this does not account for the switch of text-align when anchor.x < center.x
-      const furthestLabelPointFromCenter = {
-        x: transformedCoords.x + (box.width * 1.1 * ctm.a) + (box.height * 1.1 * ctm.c),
-        y: transformedCoords.y + (box.width * 1.1 * ctm.b) + (box.height * 1.1 * ctm.d)
-      }
+      const furthestLabelPointFromCenter = (d.label.x < center.x)
+        ? {
+          x: transformedCoords.x,
+          y: transformedCoords.y
+        } : {
+          x: transformedCoords.x + (box.width * 1.1 * ctm.a) + (box.height * 1.1 * ctm.c),
+          y: transformedCoords.y + (box.width * 1.1 * ctm.b) + (box.height * 1.1 * ctm.d)
+        }
 
       const remainingSpaceToLeft = furthestLabelPointFromCenter.x
       const remainingSpaceToRight = plotWidth - furthestLabelPointFromCenter.x
@@ -120,6 +124,7 @@ export class SurfaceLabels {
         .attr('x', d.label.x)
         .attr('y', d.label.y)
         .attr('transform', d => buildRotationTransform({ circleCenter: center, rotationCenter: d.label }))
+        .attr('text-anchor', d => (d.label.x < center.x) ? 'end' : 'start')
         .attr('cursor', 'all-scroll')
     }
 
