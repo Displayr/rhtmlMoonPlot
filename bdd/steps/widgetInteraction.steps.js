@@ -48,4 +48,10 @@ module.exports = function () {
         .perform()
     })
   })
+
+  this.When(/^I press the reset button$/, function () {
+    return wrapInPromiseAndLogErrors(() => {
+      return this.context.moonPlot.resetButton().click()
+    })
+  })
 }
