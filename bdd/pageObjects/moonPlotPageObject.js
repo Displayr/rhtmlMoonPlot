@@ -11,6 +11,10 @@ class MoonPlotPageObject {
   circle () {
     return element(by.css('.moon-circle'))
   }
+
+  resetButton () {
+    return element(by.css('.plot-reset-button'))
+  }
 }
 
 module.exports = MoonPlotPageObject

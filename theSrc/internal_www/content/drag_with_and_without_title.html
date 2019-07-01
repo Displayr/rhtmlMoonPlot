@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Arvo:400,700italic,700,400italic' rel='stylesheet' type='text/css'>
+  <link href='/styles/internal_www.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <h2>Interact with both to ensure the offsets from title/subtitle dont cause drag issues</h2>
+  <div style="position:relative">
+    <div class="row">
+      <div class="example" data-width="566" data-height="530" data-resize-controls data-config='
+        data.real_data.readme-colas|
+        config.footer_enabled|config.footer_font_32_red_fantasy|
+        config.subtitle_enabled|config.subtitle_font_32_red_fantasy|
+        config.title_enabled|config.title_font_32_red_fantasy
+      '></div>
+      <div class="example" data-width="566" data-height="530" data-resize-controls data-config='
+        data.real_data.readme-colas|
+        config.footer_enabled|config.footer_font_32_red_fantasy
+      '></div>
+    </div>
+  </div>
+
+  <script src="/js/renderContentPage.js"></script>
+</body>
+</html>

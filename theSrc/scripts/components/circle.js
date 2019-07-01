@@ -1,10 +1,12 @@
 import _ from 'lodash'
 import * as d3 from 'd3'
 import distanceFromCenter from '../math/distanceFromCenter'
+import withBounds from '../math/withBounds'
 
 class Circle {
-  constructor ({ parentContainer, circleColor, crossColor, circleStrokeWidth, circleDragAreaWidth, center, radius, circleRadiusChanged }) {
-    _.assign(this, { parentContainer, circleColor, crossColor, circleStrokeWidth, circleDragAreaWidth, center, radius, circleRadiusChanged })
+  constructor ({ parentContainer, circleColor, crossColor, circleStrokeWidth, circleDragAreaWidth, center, radius, plotWidth, plotHeight, circleRadiusChanged }) {
+    _.assign(this, { parentContainer, circleColor, crossColor, circleStrokeWidth, circleDragAreaWidth, center, radius, plotWidth, plotHeight, circleRadiusChanged })
+    this.applyRadiusConstraints = this.applyRadiusConstraints.bind(this)
   }
 
   draw () {
@@ -53,12 +55,19 @@ class Circle {
       .call(this.setupDrag())
   }
 
+  applyRadiusConstraints (proposedRadius) {
+    const constrainedDimension = Math.min(this.plotWidth, this.plotHeight)
+    const minRadius = constrainedDimension / 20
+    const maxRadius = constrainedDimension / 2 - this.circleStrokeWidth
+    return withBounds(minRadius, proposedRadius, maxRadius)
+  }
+
   setupDrag () {
-    const { parentContainer, center, circleRadiusChanged } = this
+    const { parentContainer, center, applyRadiusConstraints, circleRadiusChanged } = this
 
     const dragMove = function () {
       const [mouseX, mouseY] = d3.mouse(this)
-      const newRadius = distanceFromCenter(center.x - mouseX, center.y - mouseY)
+      const newRadius = applyRadiusConstraints(distanceFromCenter(center.x - mouseX, center.y - mouseY))
       parentContainer.select('.drag-circle').attr('r', newRadius)
       parentContainer.select('.moon-circle').attr('r', newRadius)
     }
@@ -74,7 +83,7 @@ class Circle {
 
     const dragEnd = function () {
       const [mouseX, mouseY] = d3.mouse(this)
-      const newRadius = distanceFromCenter(center.x - mouseX, center.y - mouseY)
+      const newRadius = applyRadiusConstraints(distanceFromCenter(center.x - mouseX, center.y - mouseY))
       circleRadiusChanged(newRadius)
     }
 

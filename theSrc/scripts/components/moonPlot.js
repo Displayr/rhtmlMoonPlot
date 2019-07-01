@@ -5,6 +5,8 @@ import CorelLabels from './coreLabels'
 import SurfacelLabels from './surfaceLabels'
 import Circle from './circle'
 
+const DEBUG = false
+
 class MoonPlot extends BaseComponent {
   constructor ({ plotState, config, parentContainer }) {
     super()
@@ -14,6 +16,17 @@ class MoonPlot extends BaseComponent {
   draw (bounds) {
     this.element = this.parentContainer.append('g').attr('class', 'plot')
       .attr('transform', this.buildTransform(bounds))
+
+    if (DEBUG) {
+      this.element
+        .append('rect')
+        .style('stroke', 'black')
+        .style('fill', 'none')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', bounds.width)
+        .attr('height', bounds.height)
+    }
 
     const center = { x: bounds.width / 2, y: bounds.height / 2 }
     const radius = this.plotState.getCircleRadius()
@@ -29,6 +42,10 @@ class MoonPlot extends BaseComponent {
       linkColor: config.linkColor,
       center,
       radius,
+      plotWidth: bounds.width,
+      plotHeight: bounds.height,
+      plotOffsetX: bounds.left, // TODO should not need to pass this, refactor this out
+      plotOffsetY: bounds.top, // TODO should not need to pass this, refactor this out
       getLabels: plotState.getCoreLabels,
       moveLabel: plotState.moveCoreLabel
     })
@@ -42,8 +59,10 @@ class MoonPlot extends BaseComponent {
       linkWidth: config.linkWidth,
       linkColor: config.linkColor,
       center,
-      width: bounds.width,
-      height: bounds.height,
+      plotWidth: bounds.width,
+      plotHeight: bounds.height,
+      plotOffsetX: bounds.left, // TODO should not need to pass this, refactor this out
+      plotOffsetY: bounds.top, // TODO should not need to pass this, refactor this out
       getLabels: plotState.getSurfaceLabels,
       moveLabel: plotState.moveSurfaceLabel
     })
@@ -56,6 +75,8 @@ class MoonPlot extends BaseComponent {
       circleDragAreaWidth: config.circleDragAreaWidth,
       center,
       radius,
+      plotWidth: bounds.width,
+      plotHeight: bounds.height,
       circleRadiusChanged: plotState.circleRadiusChanged
     })
 

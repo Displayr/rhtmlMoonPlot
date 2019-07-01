@@ -1,5 +1,5 @@
 Feature: State Reset Conditions
-  Some config changes, all data changes, circle resizes, circle center point changes, and widget resizes cause state to be reset
+  Some config changes, all data changes, circle resizes, circle center point changes, widget resizes, and the reset button cause state to be reset
 
   @applitools @state
   Scenario: I can load the widget with core and surface label moved state and see the repositioned labels
@@ -31,3 +31,10 @@ Feature: State Reset Conditions
     Given I am viewing "data.functional_tests.minimal-one-point" with state "data.state-minimal-one-point.500x500-old-center" and dimensions 500x500
     Then the "minimal-one-point-500x500-base" snapshot matches the baseline
     And the final state callback should match "data.state-minimal-one-point.500x500-base" within 1.5
+
+  @applitools @state
+  Scenario: If the user presses reset, the widget will reset state to base
+    Given I am viewing "data.functional_tests.minimal-one-point" with state "data.state-minimal-one-point.500x500-after-core-and-surface-label-drag" and dimensions 500x500
+    Then the "minimal-one-point-500x500-after-core-and-surface-label-drag" snapshot matches the baseline
+    When I press the reset button
+    Then the "minimal-one-point-500x500-base" snapshot matches the baseline
