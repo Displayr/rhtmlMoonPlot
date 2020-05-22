@@ -8,19 +8,22 @@ https://github.com/Displayr/rhtmlMoonPlot
 }
 \usage{
 moonplot(coreNodes = NULL, surfaceNodes = NULL, width = NULL,
-  height = NULL, core.font.family = "sans-serif", core.font.size = 14,
-  core.font.color = "#333333", core.font.selected.color = "#333333",
-  core.label.minimumDistance = 7, footer = NULL, footer.font.size = 11,
+  height = NULL, core.font.family = "sans-serif",
+  core.font.size = 14, core.font.color = "#333333",
+  core.font.selected.color = "#333333", core.label.minimumDistance = 7,
+  footer = NULL, footer.font.size = 11,
   footer.font.family = "sans-serif", footer.font.color = "#000000",
   subtitle = NULL, subtitle.font.size = 18,
   subtitle.font.family = "sans-serif", subtitle.font.color = "#000000",
-  title = NULL, title.font.size = 24, title.font.family = "sans-serif",
-  title.font.color = "#000000", surface.font.family = "sans-serif",
-  surface.font.baseSize = 14, surface.font.color = "#333333",
+  title = NULL, title.font.size = 24,
+  title.font.family = "sans-serif", title.font.color = "#000000",
+  surface.font.family = "sans-serif", surface.font.baseSize = 14,
+  surface.font.color = "#333333",
   surface.font.selected.color = "#333333",
   surface.label.minimumDistance = 15, surface.label.radialPadding = 3,
-  circle.width = 1, circle.color = "#042a4b", circle.cross.color = "grey",
-  circle.drag.area.width = 8, link.color = "grey", link.width = 1)
+  circle.width = 1, circle.color = "#042a4b",
+  circle.cross.color = "grey", circle.drag.area.width = 8,
+  link.color = "grey", link.width = 1)
 }
 \arguments{
 \item{coreNodes}{: Coordinates of nodes in the center of the moon (assumes coreNodes is transformed output of MASS::corresp then $rscore[, 1:2])}
