@@ -105,7 +105,7 @@ export class CoreLabels {
 
       const newAnchor = {
         x: mouse.x - mouseOffsetRelativeToLabelAnchor.x,
-        y: mouse.y - mouseOffsetRelativeToLabelAnchor.y
+        y: mouse.y - mouseOffsetRelativeToLabelAnchor.y,
       }
 
       if (remainingSpaceToLeft < 0) { newAnchor.x += Math.abs(remainingSpaceToLeft) }

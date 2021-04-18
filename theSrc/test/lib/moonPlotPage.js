@@ -1,5 +1,3 @@
-const _ = require('lodash')
-
 class MoonPlotPage {
   constructor (page) {
     this.page = page

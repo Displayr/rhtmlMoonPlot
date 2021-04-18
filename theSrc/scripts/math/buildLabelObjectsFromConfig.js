@@ -27,7 +27,7 @@ module.exports = (config) => {
       id: i,
       name: config.coreLabels[i],
       x: node[0],
-      y: node[1]
+      y: node[1],
     }))
     .value()
 
@@ -37,13 +37,13 @@ module.exports = (config) => {
       name: config.surfaceLabels[i],
       x: node[0],
       y: node[1],
-      size: surfaceSizes[i]
+      size: surfaceSizes[i],
     }))
     .value()
 
   return {
     coreLabels,
-    surfaceLabels
+    surfaceLabels,
   }
 }
 

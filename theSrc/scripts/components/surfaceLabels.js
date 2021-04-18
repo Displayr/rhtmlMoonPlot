@@ -31,7 +31,7 @@ export class SurfaceLabels {
       .style('fill', this.fontColor)
       .attr('class', 'surface-label')
       .attr('data-id', d => d.id)
-      .attr('data-label', d =>  d.name)
+      .attr('data-label', d => d.name)
       .attr('x', d => d.label.x)
       .attr('y', d => d.label.y)
       .attr('transform', d => buildRotationTransform({ circleCenter: this.center, rotationCenter: d.label }))
@@ -80,7 +80,7 @@ export class SurfaceLabels {
       left: plotOffsetX,
       top: plotOffsetY,
       right: plotOffsetX + plotWidth,
-      bottom: plotOffsetY + plotHeight
+      bottom: plotOffsetY + plotHeight,
     }
 
     const adjustLabelLength = this.adjustLabelLength.bind(this)
@@ -103,10 +103,10 @@ export class SurfaceLabels {
       const furthestLabelPointFromCenter = (d.label.x < center.x)
         ? {
           x: transformedCoords.x,
-          y: transformedCoords.y
+          y: transformedCoords.y,
         } : {
           x: transformedCoords.x + (box.width * 1.1 * ctm.a) + (box.height * 1.1 * ctm.c),
-          y: transformedCoords.y + (box.width * 1.1 * ctm.b) + (box.height * 1.1 * ctm.d)
+          y: transformedCoords.y + (box.width * 1.1 * ctm.b) + (box.height * 1.1 * ctm.d),
         }
 
       const remainingSpaceToLeft = furthestLabelPointFromCenter.x - plot.left

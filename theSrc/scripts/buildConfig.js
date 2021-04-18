@@ -26,7 +26,7 @@ const defaultConfig = {
   surfaceLabelRadialPadding: 3,
   titleFontColor: '#000000',
   titleFontFamily: 'sans-serif',
-  titleFontSize: 24
+  titleFontSize: 24,
 }
 
 function buildConfig (userConfig) {

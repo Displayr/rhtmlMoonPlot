@@ -6,5 +6,5 @@ import widgetFactory from './rhtmlMoonPlot.factory'
 HTMLWidgets.widget({
   name: 'rhtmlMoonPlot',
   type: 'output',
-  factory: widgetFactory
+  factory: widgetFactory,
 })

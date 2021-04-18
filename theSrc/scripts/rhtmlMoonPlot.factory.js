@@ -29,7 +29,7 @@ module.exports = function (element, w, h, stateChangedFn) {
     renderValue (config, state) {
       configCopy = _.cloneDeep(config)
       doRenderValue(config, state)
-    }
+    },
   }
 }
 

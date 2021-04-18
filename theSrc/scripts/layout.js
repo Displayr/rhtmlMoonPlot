@@ -7,18 +7,18 @@ const cells = {
   SUBTITLE: 'SUBTITLE',
   FOOTER: 'FOOTER',
   PLOT: 'PLOT',
-  RESET: 'RESET'
+  RESET: 'RESET',
 }
 
 const LayoutColumns = [
-  { name: 'PLOT', cells: [cells.TITLE, cells.SUBTITLE, cells.PLOT, cells.FOOTER] }
+  { name: 'PLOT', cells: [cells.TITLE, cells.SUBTITLE, cells.PLOT, cells.FOOTER] },
 ]
 
 const LayoutRows = [
   { name: 'TITLE', cells: [cells.TITLE] },
   { name: 'SUBTITLE', cells: [cells.SUBTITLE] },
   { name: 'PLOT', cells: [cells.PLOT] },
-  { name: 'FOOTER', cells: [cells.FOOTER] }
+  { name: 'FOOTER', cells: [cells.FOOTER] },
 ]
 
 class Layout {
@@ -30,7 +30,7 @@ class Layout {
         fill: false,
         width: 0,
         height: 0,
-        meta: {}
+        meta: {},
       }
     }, {})
 

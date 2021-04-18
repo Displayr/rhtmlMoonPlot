@@ -21,7 +21,7 @@ const configInvariants = [
   'surfaceLabelMinimumLabelDistance',
   'surfaceLabelRadialPadding',
   'surfaceLabelFontBaseSize',
-  'surfaceLabelRadialPadding'
+  'surfaceLabelRadialPadding',
 ]
 
 const configDataArrays = ['coreNodes', 'surfaceNodes', 'coreLabels', 'surfaceLabels']
@@ -89,7 +89,7 @@ class OuterPlot {
       sourceData: { coreLabels: [], surfaceLabels: [] },
       plot: { coreLabels: [], surfaceLabels: [] },
       plotSize: { width: null, height: null },
-      circleRadius: null
+      circleRadius: null,
     })
   }
 
@@ -113,7 +113,7 @@ class OuterPlot {
     const plotBounds = this.layout.getCellBounds(CellNames.PLOT)
     const circleCenter = {
       x: plotBounds.left + plotBounds.width / 2,
-      y: plotBounds.top + plotBounds.height / 2
+      y: plotBounds.top + plotBounds.height / 2,
     }
     const { coreLabels, surfaceLabels } = buildLabelObjectsFromConfig(this.inputData)
     const stateIsValid = !_.isEmpty(previousState) &&
@@ -145,7 +145,7 @@ class OuterPlot {
       fontFamily: this.config.coreLabelFontFamily,
       fontSize: this.config.coreLabelFontSize,
       radius,
-      center: relativeMoonCenter
+      center: relativeMoonCenter,
     })
 
     const surfaceLabels = SurfaceLabeller.positionLabels({
@@ -156,7 +156,7 @@ class OuterPlot {
       fontFamily: this.config.surfaceLabelFontFamily,
       fontSize: this.config.surfaceLabelFontBaseSize,
       radius,
-      center: relativeMoonCenter
+      center: relativeMoonCenter,
     })
 
     this.plotState.setState(_.merge({}, OuterPlot.defaultState(), {
@@ -166,7 +166,7 @@ class OuterPlot {
       plotSize: { width: plotDimensions.width, height: plotDimensions.height },
       circleRadius: radius,
       center: absoluteMoonCenter,
-      configInvariants: _.pick(this.config, configInvariants)
+      configInvariants: _.pick(this.config, configInvariants),
     }))
   }
 
@@ -199,7 +199,7 @@ class OuterPlot {
     this.components[CellNames.PLOT] = new MoonPlot({
       parentContainer: this.svg,
       config: this.config, // this is lazy but a large percentage of config is shared ...
-      plotState: this.plotState
+      plotState: this.plotState,
     })
     this.layout.enable(CellNames.PLOT)
     this.layout.setFillCell(CellNames.PLOT)
@@ -214,7 +214,7 @@ class OuterPlot {
         maxWidth: width,
         maxHeight: height / 4, // TODO make this configurable
         bold: false,
-        innerPadding: 2 // TODO make configurable
+        innerPadding: 2, // TODO make configurable
       })
 
       const dimensions = this.components[CellNames.TITLE].computePreferredDimensions()
@@ -232,7 +232,7 @@ class OuterPlot {
         maxWidth: width,
         maxHeight: height / 4, // TODO make this configurable
         bold: false,
-        innerPadding: 2 // TODO make configurable
+        innerPadding: 2, // TODO make configurable
       })
 
       const dimensions = this.components[CellNames.SUBTITLE].computePreferredDimensions()
@@ -250,7 +250,7 @@ class OuterPlot {
         maxWidth: width,
         maxHeight: height / 4, // TODO make this configurable
         bold: false,
-        innerPadding: 2 // TODO make configurable
+        innerPadding: 2, // TODO make configurable
       })
 
       const dimensions = this.components[CellNames.FOOTER].computePreferredDimensions()
@@ -266,7 +266,7 @@ class OuterPlot {
       onReset: () => {
         this.resetState()
         this.draw()
-      }
+      },
     })
 
     this.layout.allComponentsRegistered()

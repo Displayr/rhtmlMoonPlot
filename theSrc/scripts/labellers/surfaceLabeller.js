@@ -11,7 +11,7 @@ const positionLabels = ({
   fontFamily,
   fontSize,
   radius,
-  center
+  center,
 }) => {
   const labels = _(surfaceLabels)
     .cloneDeep()
@@ -22,7 +22,7 @@ const positionLabels = ({
         parentContainer: svg,
         text: label.name,
         fontSize: label.size * fontSize,
-        fontFamily
+        fontFamily,
       })
       return {
         id: label.id,
@@ -34,7 +34,7 @@ const positionLabels = ({
         // NB adding minLabelDistance to the height is a hack, but it is an easy solution that avoids modifying the label placement algorithm
         polarLabel: polarFromCartesian({ x: label.x, y: label.y, h: height + minLabelDistance }),
         width,
-        height
+        height,
       }
     })
     // TODO I should have to call .value() here, but that throws an error ?
@@ -50,8 +50,8 @@ const positionLabels = ({
     .map((label, i) => _.merge(label, {
       label: {
         x: cartCoords[i].x + center.x,
-        y: -cartCoords[i].y + center.y
-      }
+        y: -cartCoords[i].y + center.y,
+      },
     }))
     .map(label => _.omit(label, ['polarLabel']))
     .value()
