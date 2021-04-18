@@ -23,10 +23,13 @@
         "label": {
           "height": 16,
           "width": 17.890625,
-          "x": 356,
-          "y": 147
+          "x": 347.9140625,
+          "y": 139.8671875
         },
-        "labelLineConnector": null,
+        "labelLineConnector": {
+          "x": 356.8671875,
+          "y": 139.8671875
+        },
         "moved": true,
         "name": "C1",
         "truncatedName": "C1",
