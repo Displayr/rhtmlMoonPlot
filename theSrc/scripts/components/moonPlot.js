@@ -47,7 +47,7 @@ class MoonPlot extends BaseComponent {
       plotOffsetX: bounds.left, // TODO should not need to pass this, refactor this out
       plotOffsetY: bounds.top, // TODO should not need to pass this, refactor this out
       getLabels: plotState.getCoreLabels,
-      moveLabel: plotState.moveCoreLabel
+      moveLabel: plotState.moveCoreLabel,
     })
 
     this.surfaceLabels = new SurfacelLabels({
@@ -64,7 +64,7 @@ class MoonPlot extends BaseComponent {
       plotOffsetX: bounds.left, // TODO should not need to pass this, refactor this out
       plotOffsetY: bounds.top, // TODO should not need to pass this, refactor this out
       getLabels: plotState.getSurfaceLabels,
-      moveLabel: plotState.moveSurfaceLabel
+      moveLabel: plotState.moveSurfaceLabel,
     })
 
     this.circle = new Circle({
@@ -77,7 +77,7 @@ class MoonPlot extends BaseComponent {
       radius,
       plotWidth: bounds.width,
       plotHeight: bounds.height,
-      circleRadiusChanged: plotState.circleRadiusChanged
+      circleRadiusChanged: plotState.circleRadiusChanged,
     })
 
     this.circle.draw()

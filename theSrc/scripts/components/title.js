@@ -18,19 +18,19 @@ class Title extends BaseComponent {
       maxLines: this.maxLines,
       fontSize: this.fontSize,
       fontFamily: this.fontFamily,
-      fontWeight: (this.bold) ? 'bold' : 'normal'
+      fontWeight: (this.bold) ? 'bold' : 'normal',
     })
     const lineDimensions = lines.map(text => getLabelDimensionsUsingSvgApproximation({
       text,
       parentContainer: this.parentContainer,
       fontSize: this.fontSize,
       fontFamily: this.fontFamily,
-      fontWeight: (this.bold) ? 'bold' : 'normal'
+      fontWeight: (this.bold) ? 'bold' : 'normal',
     }))
 
     return {
       width: 0, // NB title width takes what is given, and does not force width on the chart
-      height: _(lineDimensions).map('height').sum() + (lines.length - 1) * this.innerPadding
+      height: _(lineDimensions).map('height').sum() + (lines.length - 1) * this.innerPadding,
     }
   }
 
@@ -47,7 +47,7 @@ class Title extends BaseComponent {
       maxLines: this.maxLines,
       fontSize: this.fontSize,
       fontFamily: this.fontFamily,
-      fontWeight: (this.bold) ? 'bold' : 'normal'
+      fontWeight: (this.bold) ? 'bold' : 'normal',
     })
 
     const textElement = titleContainer.append('text')
