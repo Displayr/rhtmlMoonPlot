@@ -8,3 +8,5 @@ bower_components
 node_modules
 browser
 .tmp
+theSrc/internal_www/scratch.html
+__diff_output__
