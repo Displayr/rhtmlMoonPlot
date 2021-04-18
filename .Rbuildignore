@@ -1,2 +1,17 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+node_modules
+browser
+theSrc
+bdd
+bin
+docs
+examples
+gulpfile.js
+notes.md
+package.json
+package-lock.json
+.travis.yml
+.eslintignore
+.eslintrc
+.keys
