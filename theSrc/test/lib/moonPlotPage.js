@@ -8,6 +8,7 @@ class MoonPlotPage {
   circleSelector () { return '.moon-circle' }
   resetButtonSelector () { return '.plot-reset-button' }
 
+  // duplicated in rhtmlSankeyTree
   async getCoords (selector) {
     const element = await this.page.$(selector)
     const rect = await this.page.evaluate(element => {
@@ -17,6 +18,7 @@ class MoonPlotPage {
     return rect
   }
 
+  // duplicated in rhtmlSankeyTree
   async dragThing (selector, xMovement, yMovement) {
     const coords = await this.getCoords(selector)
     const steps = Math.floor(Math.max(Math.abs(xMovement), Math.abs(yMovement)) / 2)
