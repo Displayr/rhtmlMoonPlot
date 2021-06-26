@@ -72,7 +72,7 @@ describe('widget_interactions', () => {
       await testState({
         page,
         stateName: 'data.state-minimal-one-point.500x500-after-core-and-surface-label-drag',
-        tolerance: 1.5
+        tolerance: 1.5,
       })
     }
 
