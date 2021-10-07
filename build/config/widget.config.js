@@ -8,7 +8,7 @@ const config = {
   internalWebSettings: {
     includeDimensionsOnWidgetDiv: true,
     default_border: false,
-    isReadySelector: 'svg.svgContent',
+    isReadySelector: 'div[rhtmlwidget-status=ready]',
     css: [],
     singleWidgetSnapshotSelector: '#widget-container',
   },

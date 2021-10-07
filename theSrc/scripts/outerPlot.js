@@ -171,6 +171,8 @@ class OuterPlot {
   }
 
   draw () {
+    this.rootElement.setAttribute('rhtmlwidget-status', 'loading')
+
     this.clearPlot()
     const { width, height } = this.containerDimensions()
 
@@ -185,6 +187,8 @@ class OuterPlot {
 
     // reset button managed outside of layout, it is fixed at bottom right
     this.components[CellNames.RESET].draw()
+
+    this.rootElement.setAttribute('rhtmlwidget-status', 'ready')
   }
 
   initialiseComponents () {
