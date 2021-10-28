@@ -57,7 +57,7 @@ class Title extends BaseComponent {
       .attr('dy', 0)
       .style('text-anchor', 'middle')
       .style('font-weight', (this.bold) ? 'bold' : 'normal')
-      .style('font-size', this.fontSize)
+      .style('font-size', this.fontSize + 'px')
       .style('fill', this.fontColor)
       .style('font-family', this.fontFamily)
 

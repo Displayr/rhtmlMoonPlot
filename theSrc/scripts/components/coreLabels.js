@@ -57,7 +57,7 @@ export class CoreLabels {
       .attr('cursor', 'all-scroll')
       .attr('text-anchor', 'middle')
       .style('font-family', this.fontFamily)
-      .style('font-size', this.fontSize)
+      .style('font-size', this.fontSize + 'px')
       .text(d => d.name)
       .call(this.setupDrag())
 
