@@ -1,10 +1,12 @@
 Package: rhtmlMoonPlot
 Type: Package
 Title: An opinionated template for the creation of html widget repositories using ES6
-Version: 1.0.1
+Version: 1.0.2
 Author: Displayr <opensource@displayr.com>
 Maintainer: Displayr <opensource@displayr.com>
 Description: An opinionated template for the creation of html widget repositories using ES6
+Imports:
+    htmlwidgets
 License: GPL-3
 LazyData: TRUE
 RoxygenNote: 7.1.1
