@@ -18,7 +18,7 @@
     "deleteDiffs": "find theSrc/test/snapshots -iname '__diff_output__' | xargs rm -rf"
   },
   "devDependencies": {
-    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-import": "2.29.1",
     "gulp": "^4.0.2",
     "husky": "0.13.3",
     "npm-force-resolutions": "0.0.10",
