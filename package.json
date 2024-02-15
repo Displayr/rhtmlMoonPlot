@@ -20,7 +20,7 @@
   "devDependencies": {
     "eslint-plugin-import": "2.14.0",
     "gulp": "^4.0.2",
-    "husky": "0.13.3",
+    "husky": "9.0.7",
     "npm-force-resolutions": "0.0.10",
     "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#7.1.1"
   },
