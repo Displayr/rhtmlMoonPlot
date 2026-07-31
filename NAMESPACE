@@ -2,3 +2,4 @@
 
 export(moonplot)
 import(htmlwidgets)
+import(jsonlite)

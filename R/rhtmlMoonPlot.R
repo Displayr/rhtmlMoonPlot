@@ -39,6 +39,7 @@
 #' @param link.width : The width of the label links
 #'
 #' @import htmlwidgets
+#' @import jsonlite
 #'
 #' @export
 moonplot <- function(
