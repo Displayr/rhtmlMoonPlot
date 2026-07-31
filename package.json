@@ -20,7 +20,7 @@
     "eslint-plugin-import": "2.14.0",
     "gulp": "^4.0.2",
     "husky": "9.0.7",
-    "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#esbuild-spike"
+    "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#8.0.0"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
