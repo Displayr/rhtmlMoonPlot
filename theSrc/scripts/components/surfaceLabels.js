@@ -4,7 +4,7 @@ import _ from 'lodash'
 import getScreenCoords from '../math/getScreenCoords'
 import detectViewportCollision from '../math/detectViewportCollision'
 
-export class SurfaceLabels {
+class SurfaceLabels {
   constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, center, plotWidth, plotHeight, getLabels, moveLabel, plotOffsetX, plotOffsetY }) {
     _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, center, plotWidth, plotHeight, getLabels, moveLabel, plotOffsetX, plotOffsetY })
   }
@@ -85,14 +85,14 @@ export class SurfaceLabels {
 
     const adjustLabelLength = this.adjustLabelLength.bind(this)
 
-    const dragStart = function (d) {
+    const dragStart = function (event, d) {
       parentContainer.selectAll(`.surface-link[data-id='${d.id}']`).attr('opacity', 0)
       d3.select(this).style('fill', fontSelectedColor)
     }
 
-    const dragMove = function (d) {
-      const xInBounds = (d3.event.x >= plot.left && d3.event.x <= plot.right)
-      const yInBounds = (d3.event.y >= plot.top && d3.event.y <= plot.bottom)
+    const dragMove = function (event, d) {
+      const xInBounds = (event.x >= plot.left && event.x <= plot.right)
+      const yInBounds = (event.y >= plot.top && event.y <= plot.bottom)
 
       const label = d3.select(this)
       const labelNode = label.node()
@@ -114,14 +114,14 @@ export class SurfaceLabels {
       const remainingSpaceToTop = furthestLabelPointFromCenter.y - plot.top
       const remainingSpaceToBottom = plot.bottom - furthestLabelPointFromCenter.y
 
-      if (xInBounds && remainingSpaceToLeft > 0 && remainingSpaceToRight > 0) { d.label.x = d3.event.x }
-      if (yInBounds && remainingSpaceToTop > 0 && remainingSpaceToBottom > 0) { d.label.y = d3.event.y }
+      if (xInBounds && remainingSpaceToLeft > 0 && remainingSpaceToRight > 0) { d.label.x = event.x }
+      if (yInBounds && remainingSpaceToTop > 0 && remainingSpaceToBottom > 0) { d.label.y = event.y }
 
       // NB allow us to recover from weird edge cases where the previous reading was a lie !
-      if (remainingSpaceToRight <= 0) { d.label.x = Math.min(d.label.x, d3.event.x) }
-      if (remainingSpaceToLeft <= 0) { d.label.x = Math.max(d.label.x, d3.event.x) }
-      if (remainingSpaceToTop <= 0) { d.label.y = Math.max(d.label.y, d3.event.y) }
-      if (remainingSpaceToBottom <= 0) { d.label.y = Math.min(d.label.y, d3.event.y) }
+      if (remainingSpaceToRight <= 0) { d.label.x = Math.min(d.label.x, event.x) }
+      if (remainingSpaceToLeft <= 0) { d.label.x = Math.max(d.label.x, event.x) }
+      if (remainingSpaceToTop <= 0) { d.label.y = Math.max(d.label.y, event.y) }
+      if (remainingSpaceToBottom <= 0) { d.label.y = Math.min(d.label.y, event.y) }
 
       label
         .attr('x', d.label.x)
@@ -131,7 +131,7 @@ export class SurfaceLabels {
         .attr('cursor', 'all-scroll')
     }
 
-    const dragEnd = function (d) {
+    const dragEnd = function (event, d) {
       d3.select(this).style('fill', fontColor)
       parentContainer.selectAll(`.surface-link[data-id='${d.id}']`)
         .attr('x2', d => d.label.x)

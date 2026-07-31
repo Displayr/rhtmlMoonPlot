@@ -65,8 +65,8 @@ class Circle {
   setupDrag () {
     const { parentContainer, center, applyRadiusConstraints, circleRadiusChanged } = this
 
-    const dragMove = function () {
-      const [mouseX, mouseY] = d3.mouse(this)
+    const dragMove = function (event) {
+      const [mouseX, mouseY] = d3.pointer(event, this)
       const newRadius = applyRadiusConstraints(distanceFromCenter(center.x - mouseX, center.y - mouseY))
       parentContainer.select('.drag-circle').attr('r', newRadius)
       parentContainer.select('.moon-circle').attr('r', newRadius)
@@ -81,8 +81,8 @@ class Circle {
       parentContainer.selectAll('.surface-label').remove()
     }
 
-    const dragEnd = function () {
-      const [mouseX, mouseY] = d3.mouse(this)
+    const dragEnd = function (event) {
+      const [mouseX, mouseY] = d3.pointer(event, this)
       const newRadius = applyRadiusConstraints(distanceFromCenter(center.x - mouseX, center.y - mouseY))
       circleRadiusChanged(newRadius)
     }
