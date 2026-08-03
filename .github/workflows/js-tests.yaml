@@ -15,7 +15,7 @@ on:
       update_snapshots:
         description: 'Regenerate visual baselines and upload them as an artifact for you to commit'
         type: boolean
-        default: true
+        default: false
 
 # One in-flight run per branch; a new push supersedes the previous run rather
 # than stacking another full visual job behind it.
