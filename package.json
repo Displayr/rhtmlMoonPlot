@@ -8,7 +8,6 @@
     "prepush": "node ./bin/prepush",
     "test": "npm run localTest",
     "localTest": "gulp testSpecs && gulp testVisual --env=local --branch=`git rev-parse --abbrev-ref HEAD`",
-    "travisTest": "gulp testSpecs && gulp testVisual --env=travis --branch=$BRANCH",
     "gatherDiffs": "rm -rf .tmp/diffs; mkdir -p .tmp/diffs/; BRANCH=`git rev-parse --abbrev-ref HEAD` && for I in `find theSrc/test/snapshots/local/$BRANCH -type d -name __diff_output__`; do cp $I/* .tmp/diffs/ 2> /dev/null; done; true",
     "gatherMasterDiffs": "rm -rf .tmp/diffs; mkdir -p .tmp/diffs/; for I in `find theSrc/test/snapshots/local/master -type d -name __diff_output__`; do cp $I/* .tmp/diffs/ 2> /dev/null; done; true",
     "macOpenDiffs": "open .tmp/diffs",
@@ -20,7 +19,7 @@
     "eslint-plugin-import": "2.14.0",
     "gulp": "^4.0.2",
     "husky": "9.0.7",
-    "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#8.0.0"
+    "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#untracked-fix-path"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
