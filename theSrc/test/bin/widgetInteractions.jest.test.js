@@ -59,14 +59,14 @@ describe('widget_interactions', () => {
     await moonPlot.dragCoreLabel(0, 0, -20)
     await testSnapshots({ page, testName: 'minimal-one-point-500x500-after-core-label-drag' })
     // does not work in CI, have not investigated why yet
-    if(!process.env.CI){
+    if (!process.env.CI) {
       await testState({ page, stateName: 'data.state-minimal-one-point.500x500-after-core-label-drag', tolerance: 1.5 })
     }
 
     await moonPlot.dragSurfaceLabel(0, 60, -60)
     await testSnapshots({ page, testName: 'minimal-one-point-500x500-after-core-and-surface-label-drag' })
     // does not work in CI, have not investigated why yet
-    if(!process.env.CI){
+    if (!process.env.CI) {
       await testState({
         page,
         stateName: 'data.state-minimal-one-point.500x500-after-core-and-surface-label-drag',
@@ -89,7 +89,7 @@ describe('widget_interactions', () => {
     await moonPlot.dragCoreLabel(0, 0, -20)
     await moonPlot.dragSurfaceLabel(0, 60, -60)
     // does not work in CI, have not investigated why yet
-    if(!process.env.CI){
+    if (!process.env.CI) {
       await testState({
         page,
         stateName: 'data.state-minimal-one-point.500x500-after-core-and-surface-label-drag',
@@ -100,7 +100,7 @@ describe('widget_interactions', () => {
     await moonPlot.brittleCircleResize()
     await testSnapshots({ page, testName: 'minimal-one-point-500x500-after-circle-resize-labels-are-reset' })
     // does not work in CI, have not investigated why yet
-    if(!process.env.CI){
+    if (!process.env.CI) {
       await testState({ page, stateName: 'data.state-minimal-one-point.500x500-after-circle-resize', tolerance: 1.5 })
     }
 
