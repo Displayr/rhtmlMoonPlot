@@ -10,7 +10,7 @@
     "lint": "gulp lint",
     "serve": "gulp serve",
     "test": "npm run localTest",
-    "localTest": "gulp testSpecs && gulp testVisual --env=local --branch=`git rev-parse --abbrev-ref HEAD`",
+    "localTest": "node ./bin/localTest.js",
     "gatherDiffs": "rm -rf .tmp/diffs; mkdir -p .tmp/diffs/; BRANCH=`git rev-parse --abbrev-ref HEAD` && for I in `find theSrc/test/snapshots/local/$BRANCH -type d -name __diff_output__`; do cp $I/* .tmp/diffs/ 2> /dev/null; done; true",
     "gatherMasterDiffs": "rm -rf .tmp/diffs; mkdir -p .tmp/diffs/; for I in `find theSrc/test/snapshots/local/master -type d -name __diff_output__`; do cp $I/* .tmp/diffs/ 2> /dev/null; done; true",
     "macOpenDiffs": "open .tmp/diffs",

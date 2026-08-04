@@ -1,0 +1,10 @@
+version: 1
+title: xx
+general_comments: []
+width: 500
+height: 500
+type: single_page_one_example_per_config
+comments: []
+data: data.functional_tests.xx
+config:
+  - '{}'
