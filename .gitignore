@@ -2,7 +2,13 @@
 .Rhistory
 .RData
 .DSStore
+.DS_Store
 .idea
+.vscode
+*.code-workspace
+*.Rproj
+*.sublime-project
+*.sublime-workspace
 .keys
 bower_components
 node_modules
