@@ -48,6 +48,10 @@ moonplot(
 
 \item{surfaceNodes}{: Coordinates of nodes outside of the moon (assumes surfaceNodes is transformed output of MASS::corresp then $cscore[, 1:2])}
 
+\item{width}{: Ignored but must be passed}
+
+\item{height}{: Ignored but must be passed}
+
 \item{core.font.family}{: Font family for core labels}
 
 \item{core.font.size}{: Font size for core labels}

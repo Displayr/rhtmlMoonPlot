@@ -11,7 +11,8 @@ gulpfile.js
 notes.md
 package.json
 package-lock.json
-.travis.yml
+^\.github$
 .eslintignore
 .eslintrc
 .keys
+^\.claude$

@@ -8,6 +8,8 @@
 #'
 #' @param coreNodes : Coordinates of nodes in the center of the moon (assumes coreNodes is transformed output of MASS::corresp then $rscore[, 1:2])
 #' @param surfaceNodes : Coordinates of nodes outside of the moon (assumes surfaceNodes is transformed output of MASS::corresp then $cscore[, 1:2])
+#' @param width : Ignored but must be passed
+#' @param height : Ignored but must be passed
 #' @param core.font.family : Font family for core labels
 #' @param core.font.size : Font size for core labels
 #' @param core.font.color : Font color for core labels
@@ -39,6 +41,7 @@
 #' @param link.width : The width of the label links
 #'
 #' @import htmlwidgets
+#' @import jsonlite
 #'
 #' @export
 moonplot <- function(

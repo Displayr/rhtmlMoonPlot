@@ -5,7 +5,7 @@ import { getLabelAnchorPoint } from '../labellers/coreLabeller'
 import getScreenCoords from '../math/getScreenCoords'
 import detectViewportCollision from '../math/detectViewportCollision'
 
-export class CoreLabels {
+class CoreLabels {
   constructor ({ parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius, plotWidth, plotHeight, plotOffsetX, plotOffsetY }) {
     _.assign(this, { parentContainer, fontFamily, fontSize, fontColor, fontSelectedColor, linkWidth, linkColor, getLabels, moveLabel, center, radius, plotWidth, plotHeight, plotOffsetX, plotOffsetY })
   }
@@ -116,7 +116,7 @@ export class CoreLabels {
       return newAnchor
     }
 
-    const dragStart = function (d) {
+    const dragStart = function (event, d) {
       parentContainer.selectAll(`.core-link[data-id='${d.id}']`).attr('opacity', 0)
 
       const label = d3.select(this)
@@ -127,16 +127,16 @@ export class CoreLabels {
       const ctm = labelNode.getCTM()
       const transformedCoords = getScreenCoords(box, ctm)
 
-      distanceFromMouseToLabelEdge.left = (plotOffsetX + d3.event.x) - transformedCoords.x
+      distanceFromMouseToLabelEdge.left = (plotOffsetX + event.x) - transformedCoords.x
       distanceFromMouseToLabelEdge.right = box.width - distanceFromMouseToLabelEdge.left
-      distanceFromMouseToLabelEdge.top = (plotOffsetY + d3.event.y) - transformedCoords.y
+      distanceFromMouseToLabelEdge.top = (plotOffsetY + event.y) - transformedCoords.y
       distanceFromMouseToLabelEdge.bottom = box.height - distanceFromMouseToLabelEdge.top
-      mouseOffsetRelativeToLabelAnchor.x = (plotOffsetX + d3.event.x) - (transformedCoords.x + box.width / 2)
-      mouseOffsetRelativeToLabelAnchor.y = (plotOffsetY + d3.event.y) - (transformedCoords.y + box.height / 2)
+      mouseOffsetRelativeToLabelAnchor.x = (plotOffsetX + event.x) - (transformedCoords.x + box.width / 2)
+      mouseOffsetRelativeToLabelAnchor.y = (plotOffsetY + event.y) - (transformedCoords.y + box.height / 2)
     }
 
-    const dragMove = function (d) {
-      const newAnchor = getNewLabelAnchor({ x: d3.event.x, y: d3.event.y })
+    const dragMove = function (event, d) {
+      const newAnchor = getNewLabelAnchor({ x: event.x, y: event.y })
 
       d3.select(this)
         .attr('x', newAnchor.x)
@@ -147,7 +147,7 @@ export class CoreLabels {
       d.label.y = newAnchor.y
     }
 
-    const dragEnd = function (d) {
+    const dragEnd = function (event, d) {
       d3.select(this).style('fill', fontColor)
 
       const allTheAnchors = _(getLabels()).map('anchor').value()

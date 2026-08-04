@@ -7,6 +7,7 @@ const {
   puppeteerSettings,
   testSnapshots,
   jestTimeout,
+  sleep,
 } = renderExamplePageTestHelper
 
 jest.setTimeout(jestTimeout)
@@ -46,7 +47,7 @@ describe('resize', () => {
         window.resizeHook(width, height)
       }, width, height)
 
-      await page.waitFor(1000)
+      await sleep(1000)
 
       await testSnapshots({ page, testName: `1B_basic_after_resize_${width}x${height}` })
     }
