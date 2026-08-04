@@ -6,6 +6,9 @@
   },
   "scripts": {
     "prepush": "node ./bin/prepush",
+    "build": "gulp core compileWidgetEntryPoint",
+    "lint": "gulp lint",
+    "serve": "gulp serve",
     "test": "npm run localTest",
     "localTest": "gulp testSpecs && gulp testVisual --env=local --branch=`git rev-parse --abbrev-ref HEAD`",
     "gatherDiffs": "rm -rf .tmp/diffs; mkdir -p .tmp/diffs/; BRANCH=`git rev-parse --abbrev-ref HEAD` && for I in `find theSrc/test/snapshots/local/$BRANCH -type d -name __diff_output__`; do cp $I/* .tmp/diffs/ 2> /dev/null; done; true",
@@ -19,7 +22,7 @@
     "eslint-plugin-import": "2.14.0",
     "gulp": "^4.0.2",
     "husky": "9.0.7",
-    "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#untracked-fix-path"
+    "rhtmlBuildUtils": "github:Displayr/rhtmlBuildUtils#8.0.1"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
